@@ -6,9 +6,9 @@ StateManager::StateManager()
   
 }
 
-int StateManager::getNumber()
+void StateManager::update()
 {
- return 123;
+  pCurrentState->update();
 }
 
 

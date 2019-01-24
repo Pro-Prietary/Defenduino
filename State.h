@@ -1,6 +1,11 @@
+#include "GameObject.h"
+
 class State
 {
 
 public:
-  virtual void Update();
+  virtual void update();
+
+private:
+  GameObject* headObject = 0l;
 };
