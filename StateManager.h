@@ -5,8 +5,10 @@ class StateManager
 private:
    StateManager();
    State* pCurrentState;
+   State* pNextState;
 
 public:
+  void setState(State* pNewState);
    
 static StateManager& instance()
 {

@@ -1,4 +1,4 @@
-#include "GameObject.h"
+#include "Camera.h"
 #include <Arduboy2.h>
 
 class State
@@ -11,4 +11,5 @@ public:
 private:
   GameObject* pHeadObject = NULL;
   GameObject* pTailObject = NULL;
+  Camera* pCameraObject = NULL;
 };

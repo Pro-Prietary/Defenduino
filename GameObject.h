@@ -1,11 +1,15 @@
+#include <Arduboy2.h>
+
 class GameObject
 {
   public:
     virtual void update();
-    GameObject* pNextSibling = 0l;
-    GameObject* pPrevSibling = 0l;
+    GameObject* pNextSibling = NULL;
+    GameObject* pPrevSibling = NULL;
 
-  private:  
+  protected:  
     GameObject();
+    int16_t x;
+    int16_t y;
 };
 

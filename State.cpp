@@ -12,3 +12,17 @@ void State::addObject(GameObject* obj)
   obj->pPrevSibling = pTailObject;
   pTailObject = obj;
 }
+
+void State::update()
+{
+  GameObject* pNextObj = pHeadObject;
+  if(pNextObj!=NULL)
+  {
+    pHeadObject->update();
+    pNextObj = pHeadObject->pNextSibling;
+  }
+
+  pCameraObject->update();
+  pCameraObject->render(pHeadObject);
+}
+
