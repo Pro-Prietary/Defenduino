@@ -1,7 +1,13 @@
 #include "State.h"
+#include "TextObject.h"
+#include <Arduboy2.h>
 
 class MenuState : State
 {
-  public MenuState();
+public:
+	MenuState();
+
+private:
+	TextObject pressStartText(F("Press fire to start"));
 };
 

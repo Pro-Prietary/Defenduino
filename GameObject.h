@@ -1,15 +1,22 @@
 #include <Arduboy2.h>
+#include "Renderer.h"
 
+#ifndef   GAMEOBJECT_H
+#define   GAMEOBJECT_H
 class GameObject
 {
-  public:
-    virtual void update();
-    GameObject* pNextSibling = NULL;
-    GameObject* pPrevSibling = NULL;
+public:
+	virtual void update();
+	void render(int16_t cameraX, int16_t cameraY);
+	GameObject* pNextSibling = NULL;
+	GameObject* pPrevSibling = NULL;
 
-  protected:  
-    GameObject();
-    int16_t x;
-    int16_t y;
-};
+protected:
+	GameObject();
+	Renderer* pRenderer;
+	int16_t x;
+	int16_t y;
+}; 
+#endif
+
 
