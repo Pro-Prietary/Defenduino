@@ -2,5 +2,5 @@
 
 TextObject::TextObject(const __FlashStringHelper* text)
 {
-
+	pRenderer = &renderer;
 }

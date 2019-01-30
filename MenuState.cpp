@@ -2,7 +2,7 @@
 
 extern Arduboy2 arduboy;
 
-MenuState::MenuState()
+MenuState::MenuState() : State(&camera)
 {
-	arduboy.print(F("Hello"));
+	TextObject obj(F("test"));
 }

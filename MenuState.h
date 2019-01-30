@@ -8,6 +8,6 @@ public:
 	MenuState();
 
 private:
-	
+	Camera camera;
 };
 

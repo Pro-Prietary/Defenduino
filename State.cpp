@@ -1,6 +1,11 @@
 #include "State.h"
 #include <Arduboy2.h>
 
+State::State(Camera* pCamera)
+{
+	pCameraObject = pCamera;
+}
+
 void State::addObject(GameObject* obj)
 {
   if(pHeadObject==NULL)

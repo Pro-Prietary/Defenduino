@@ -7,7 +7,7 @@ class GameObject
 {
 public:
 	virtual void update();
-	void render(int16_t cameraX, int16_t cameraY);
+	virtual void render(int16_t cameraX, int16_t cameraY);
 	GameObject* pNextSibling = NULL;
 	GameObject* pPrevSibling = NULL;
 
