@@ -3,5 +3,5 @@
 class TextObject : public GameObject
 {
 public:
-		TextObject(__FlashStringHelper* text);
+		TextObject(const __FlashStringHelper* text);
 };

@@ -1,6 +1,8 @@
 #include "MenuState.h"
 
+extern Arduboy2 arduboy;
+
 MenuState::MenuState()
 {
-	addObject(&pressStartText);
+	arduboy.print(F("Hello"));
 }

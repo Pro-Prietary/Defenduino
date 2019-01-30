@@ -16,7 +16,7 @@ void State::addObject(GameObject* obj)
 void State::update()
 {
   GameObject* pNextObj = pHeadObject;
-  if(pNextObj!=NULL)
+  while(pNextObj!=NULL)
   {
     pHeadObject->update();
     pNextObj = pHeadObject->pNextSibling;

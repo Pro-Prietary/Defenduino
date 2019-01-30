@@ -8,6 +8,6 @@ public:
 	MenuState();
 
 private:
-	TextObject pressStartText(F("Press fire to start"));
+	
 };
 
