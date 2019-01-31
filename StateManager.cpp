@@ -8,8 +8,6 @@ StateManager::StateManager()
 
 void StateManager::update()
 {
-	//arduboy.println("StateManager::update()");
-
 	// Time to move to a new state?
 	if (pNextState != NULL)
 	{

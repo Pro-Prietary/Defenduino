@@ -9,4 +9,4 @@
 extern Arduboy2 arduboy;
 extern StateManager stateManager;
 extern MenuState menuState;
-extern MenuState gameState;
+extern GameState gameState;

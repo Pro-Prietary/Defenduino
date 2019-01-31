@@ -13,10 +13,9 @@ MenuState::MenuState() : State(&camera)
 void MenuState::update() 
 {
 	State::update();
-	arduboy.println("MenuState::update");
+
 	if (arduboy.justPressed(A_BUTTON)) 
 	{
-		arduboy.println("Pressed");
 		stateManager.setState(&gameState);
 	}
 }

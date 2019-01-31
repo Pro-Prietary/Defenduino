@@ -8,7 +8,7 @@ class GameState : public State
 {
 public:
 	GameState();
-	virtual void update();
+
 
 private:
 	Camera camera;

@@ -6,10 +6,11 @@
 Arduboy2 arduboy;
 StateManager stateManager;
 MenuState menuState;
-MenuState gameState;
+GameState gameState;
 
 void setup() {
     arduboy.begin();
+	stateManager.setState(&menuState);
 }
 
 void loop() {
@@ -22,7 +23,6 @@ void loop() {
   // first we clear our screen to black
   arduboy.clear();
 
-  stateManager.setState(&menuState);
   stateManager.update();
 
   // then we finaly we tell the arduboy to display what we just wrote to the display
