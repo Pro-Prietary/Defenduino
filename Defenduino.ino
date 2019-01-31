@@ -1,12 +1,15 @@
 #include <Arduboy2.h>
 #include "StateManager.h"
+#include "MenuState.h"
+#include "Globals.h"
 
 Arduboy2 arduboy;
-StateManager* pStateManager;
+StateManager stateManager;
+MenuState menuState;
+MenuState gameState;
 
 void setup() {
     arduboy.begin();
-    pStateManager = &StateManager::instance();
 }
 
 void loop() {
@@ -14,10 +17,13 @@ void loop() {
   if (!(arduboy.nextFrame()))
     return;
 
+  arduboy.pollButtons();
+
   // first we clear our screen to black
   arduboy.clear();
 
-  pStateManager->update();
+  stateManager.setState(&menuState);
+  stateManager.update();
 
   // then we finaly we tell the arduboy to display what we just wrote to the display
   arduboy.display();

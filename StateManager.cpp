@@ -1,25 +1,23 @@
 #include <Arduboy2.h>
 #include "StateManager.h"
+#include "Globals.h"
 
 StateManager::StateManager()
 {
-  
 }
 
 void StateManager::update()
 {
-  pCurrentState->update();
+	//arduboy.println("StateManager::update()");
 
-  // Time to move to a new state?
-  if(pNextState!=NULL)
-  {
-    if(pCurrentState!=NULL)
-    {
-      delete(pCurrentState);
-    }
-    pCurrentState = pNextState;
-    pNextState = NULL;
-  }
+	// Time to move to a new state?
+	if (pNextState != NULL)
+	{
+		pCurrentState = pNextState;
+		pNextState = NULL;
+	}
+
+	pCurrentState->update();
 }
 
 void StateManager::setState(State* state)

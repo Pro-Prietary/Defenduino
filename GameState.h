@@ -4,14 +4,14 @@
 #include "TextObject.h"
 #include <Arduboy2.h>
 
-class MenuState : public State
+class GameState : public State
 {
 public:
-	MenuState();
+	GameState();
 	virtual void update();
 
 private:
 	Camera camera;
-	TextObject pressStartObj;
+	TextObject testText;
 };
 

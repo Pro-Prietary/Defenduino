@@ -1,5 +1,7 @@
 #include "State.h"
+#include "Globals.h"
 #include <Arduboy2.h>
+
 
 State::State(Camera* pCamera)
 {
@@ -20,14 +22,14 @@ void State::addObject(GameObject* obj)
 
 void State::update()
 {
-  GameObject* pNextObj = pHeadObject;
-  while(pNextObj!=NULL)
-  {
-    pHeadObject->update();
-    pNextObj = pHeadObject->pNextSibling;
-  }
+	GameObject* pNextObj = pHeadObject;
+	while(pNextObj!=NULL)
+	{
+		pHeadObject->update();
+		pNextObj = pHeadObject->pNextSibling;
+	}
 
-  pCameraObject->update();
-  pCameraObject->render(pHeadObject);
+	pCameraObject->update();
+	pCameraObject->render(pHeadObject);
 }
 

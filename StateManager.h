@@ -1,21 +1,15 @@
+#pragma once
 #include "State.h"
 
 class StateManager
 {
+public:
+	StateManager();
+	void setState(State* pNewState);
+	void update();
+
 private:
-   StateManager();
    State* pCurrentState;
    State* pNextState;
-
-public:
-  void setState(State* pNewState);
-   
-static StateManager& instance()
-{
-  static StateManager INSTANCE;
-  return INSTANCE;
-}
-
-   void update();
 };
 

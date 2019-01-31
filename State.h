@@ -1,6 +1,8 @@
 #include "Camera.h"
 #include <Arduboy2.h>
 
+#ifndef   STATE_H
+#define   STATE_H
 class State
 {
 
@@ -16,3 +18,4 @@ private:
   GameObject* pTailObject = NULL;
   Camera* pCameraObject = NULL;
 };
+#endif

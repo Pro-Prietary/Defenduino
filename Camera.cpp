@@ -10,3 +10,4 @@ void Camera::render(GameObject* pFirstObj)
 	}
 }
 
+
