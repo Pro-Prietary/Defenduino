@@ -6,6 +6,7 @@ class PlayerShip : public GameObject
 {
 private:
 	SpriteRenderer renderer;
+	bool facingRight = true;
 
 public:
 	PlayerShip();

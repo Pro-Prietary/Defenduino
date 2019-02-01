@@ -130,6 +130,7 @@
     </ClInclude>
     <ClInclude Include="TextObject.h" />
     <ClInclude Include="TextRenderer.h" />
+    <ClInclude Include="Vector2.h" />
     <ClInclude Include="__vm\.Defenduino.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>

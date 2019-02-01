@@ -1,6 +1,7 @@
 #pragma once
 #include <Arduboy2.h>
 #include "Renderer.h"
+#include "Vector2.h"
 
 class GameObject
 {
@@ -15,6 +16,7 @@ protected:
 	Renderer* pRenderer;
 	int16_t x;
 	int16_t y;
+	Vector2 velocity;
 }; 
 
 
