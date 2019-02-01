@@ -1,8 +1,7 @@
+#pragma once
 #include <Arduboy2.h>
 #include "Renderer.h"
 
-#ifndef   GAMEOBJECT_H
-#define   GAMEOBJECT_H
 class GameObject
 {
 public:
@@ -17,6 +16,5 @@ protected:
 	int16_t x;
 	int16_t y;
 }; 
-#endif
 
 

@@ -5,5 +5,5 @@
 GameState::GameState() : State(&camera)
 {
 	testText.setText(F("Game State"));
-	addObject(&testText);
+	addObject(&playerShip);
 }
