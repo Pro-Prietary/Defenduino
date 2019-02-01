@@ -9,23 +9,19 @@ PlayerShip::PlayerShip() : GameObject()
 {
 	renderer.setSpriteData(spriteRight);
 	pRenderer = &renderer;
-	worldPos.x = worldPos.y = 32;
+	worldPos.x = worldPos.y = 0;
 }
 
 void PlayerShip::update()
 {
 	GameObject::update();
 
-	if (arduboy.pressed(UP_BUTTON)) 
+	if (arduboy.pressed(UP_BUTTON) && worldPos.y > -HALF_SCREEN_HEIGHT) 
 	{
-		velocity.y = -1;
+		worldPos.y--;
 	} 
-	else if (arduboy.pressed(DOWN_BUTTON)) 
+	else if (arduboy.pressed(DOWN_BUTTON) && worldPos.y < HALF_SCREEN_HEIGHT - 3)
 	{
-		velocity.y = 1;
-	}
-	else
-	{
-		velocity.y = 0;
+		worldPos.y++;
 	}
 }

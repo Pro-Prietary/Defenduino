@@ -3,6 +3,7 @@
 #include "State.h"
 #include "TextObject.h"
 #include "PlayerShip.h"
+#include "GameCamera.h"
 #include <Arduboy2.h>
 
 class GameState : public State
@@ -11,7 +12,7 @@ public:
 	GameState();
 
 private:
-	Camera camera;
+	GameCamera camera;
 	TextObject testText;
 	PlayerShip playerShip;
 };

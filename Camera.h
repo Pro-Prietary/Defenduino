@@ -1,9 +1,14 @@
+#pragma once
+
 #include "GameObject.h"
 #include "Vector2.h"
 #include "Vector2Int.h"
 
-#ifndef   CAMERA_H
-#define   CAMERA_H
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+#define HALF_SCREEN_WIDTH 64
+#define HALF_SCREEN_HEIGHT 32
+
 class Camera : public GameObject
 {
   public:
@@ -12,5 +17,5 @@ class Camera : public GameObject
 private:
 	virtual Vector2Int worldToScreenPos(Vector2 worldPos);
 };
-#endif
+
 
