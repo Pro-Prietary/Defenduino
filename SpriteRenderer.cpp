@@ -11,8 +11,8 @@ void SpriteRenderer::setSpriteData(unsigned char newSprite[])
 	spriteData = newSprite;
 }
 
-void SpriteRenderer::render(int16_t cameraX, int16_t cameraY, int16_t objectX, int16_t objectY)
+void SpriteRenderer::render(Vector2Int screenPos)
 {
-	arduboy.drawBitmap(5, 10, (const uint8_t *)spriteData, 8, 3, WHITE);
+	arduboy.drawBitmap(screenPos.x, screenPos.y, (const uint8_t *)spriteData, 8, 3, WHITE);
 
 }

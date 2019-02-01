@@ -6,7 +6,7 @@ class SpriteRenderer : public Renderer
 {
 public:
 	SpriteRenderer();
-	virtual void render(int16_t cameraX, int16_t cameraY, int16_t objectX, int16_t objectY);
+	virtual void render(Vector2Int screenPos);
 	void setSpriteData(unsigned char newSprite[]);
 
 private:

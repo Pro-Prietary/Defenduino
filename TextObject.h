@@ -1,8 +1,8 @@
+#pragma once
+
 #include "GameObject.h"
 #include "TextRenderer.h"
 
-#ifndef   TEXTOBJECT_H
-#define   TEXTOBJECT_H
 class TextObject : public GameObject
 {
 public:
@@ -13,4 +13,3 @@ public:
 private:
 	TextRenderer renderer;
 };
-#endif

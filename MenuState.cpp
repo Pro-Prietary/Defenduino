@@ -6,6 +6,9 @@
 
 MenuState::MenuState() : State(&camera)
 {
+	pressStartObj.worldPos.x = 10;
+	pressStartObj.worldPos.y = 10;
+
 	pressStartObj.setText(F("Press A To Start"));
 	addObject(&pressStartObj);
 }

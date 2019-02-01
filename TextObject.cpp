@@ -6,7 +6,7 @@ TextObject::TextObject(const __FlashStringHelper* text)
 	setText(text);
 }
 
-TextObject::TextObject()
+TextObject::TextObject() : GameObject()
 {
 	pRenderer = &renderer;
 }
