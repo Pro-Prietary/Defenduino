@@ -10,7 +10,6 @@ class GameState : public State
 public:
 	GameState();
 
-
 private:
 	Camera camera;
 	TextObject testText;
