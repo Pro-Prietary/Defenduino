@@ -8,6 +8,7 @@ class State
 
 public:
 	void addObject(GameObject* obj);
+	Camera* getCamera();
 	virtual void update();
 
 protected:

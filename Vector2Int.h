@@ -5,6 +5,8 @@
 struct Vector2Int
 {
 public:
-	int x;
-	int y;
+	int x = 0;
+	int y = 0;
+	Vector2Int();
+	Vector2Int(int newX, int newY);
 };

@@ -11,6 +11,11 @@ GameState gameState;
 void setup() {
     arduboy.begin();
 	stateManager.setState(&menuState);
+
+#ifdef _DEBUG
+	Serial.begin(9600);
+	Serial.println("Starting");
+#endif
 }
 
 void loop() {

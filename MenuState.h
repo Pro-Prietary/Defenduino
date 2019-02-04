@@ -13,5 +13,6 @@ public:
 private:
 	Camera camera;
 	TextObject pressStartObj;
+	TextObject debugMsg;
 };
 

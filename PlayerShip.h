@@ -11,4 +11,5 @@ private:
 public:
 	PlayerShip();
 	virtual void update();
+	float getCameraTarget();
 };

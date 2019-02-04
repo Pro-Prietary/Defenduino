@@ -12,12 +12,22 @@ void State::addObject(GameObject* obj)
 {
   if(pHeadObject==NULL)
   {
+#ifdef _DEBUG
+	  Serial.println("Adding new head object");
+#endif
     pHeadObject = obj;
+	pTailObject = obj;
   }
+  else
+  {
+#ifdef _DEBUG
+	  Serial.println("Adding new sibling object");
+#endif
 
-  pTailObject->pNextSibling = obj;
-  obj->pPrevSibling = pTailObject;
-  pTailObject = obj;
+	  pTailObject->pNextSibling = obj;
+	  obj->pPrevSibling = pTailObject;
+	  pTailObject = obj;
+  }
 }
 
 void State::update()
@@ -25,11 +35,15 @@ void State::update()
 	GameObject* pNextObj = pHeadObject;
 	while(pNextObj!=NULL)
 	{
-		pHeadObject->update();
-		pNextObj = pHeadObject->pNextSibling;
+		pNextObj->update();
+		pNextObj = pNextObj->pNextSibling;
 	}
 
 	pCameraObject->update();
 	pCameraObject->render(pHeadObject);
 }
 
+Camera* State::getCamera()
+{
+	return pCameraObject;
+}
