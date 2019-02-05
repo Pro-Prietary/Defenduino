@@ -63,7 +63,10 @@
     <ClInclude Include="Vector2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Landscape.h">
+    <ClInclude Include="LandscapeSegment.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2Byte.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -110,7 +113,10 @@
     <ClCompile Include="Vector2Int.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Landscape.cpp">
+    <ClCompile Include="LandscapeSegment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector2Byte.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

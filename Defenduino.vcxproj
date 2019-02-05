@@ -116,7 +116,7 @@
     </ClInclude>
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Globals.h" />
-    <ClInclude Include="Landscape.h" />
+    <ClInclude Include="LandscapeSegment.h" />
     <ClInclude Include="MenuState.h">
       <FileType>CppCode</FileType>
     </ClInclude>
@@ -132,6 +132,7 @@
     <ClInclude Include="TextObject.h" />
     <ClInclude Include="TextRenderer.h" />
     <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Vector2Byte.h" />
     <ClInclude Include="__vm\.Defenduino.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
@@ -139,7 +140,7 @@
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
-    <ClCompile Include="Landscape.cpp" />
+    <ClCompile Include="LandscapeSegment.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="PlayerShip.cpp" />
     <ClCompile Include="Renderer.cpp" />
@@ -148,6 +149,7 @@
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="TextRenderer.cpp" />
+    <ClCompile Include="Vector2Byte.cpp" />
     <ClCompile Include="Vector2Int.cpp" />
     <ClCompile Include="Vector2Int.h" />
   </ItemGroup>

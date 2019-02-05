@@ -4,7 +4,7 @@
 #include "TextObject.h"
 #include "PlayerShip.h"
 #include "GameCamera.h"
-#include "Landscape.h"
+#include "LandscapeSegment.h"
 #include <Arduboy2.h>
 
 class GameState : public State
@@ -17,6 +17,6 @@ private:
 	GameCamera camera;
 	TextObject testText;
 	PlayerShip playerShip;
-	Landscape landscape;
+	LandscapeSegment landscape[8];
 };
 
