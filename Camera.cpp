@@ -3,12 +3,15 @@
 
 void Camera::render(GameObject* pFirstObj)
 {
-	GameObject* pCurrentObj = pFirstObj;
-	while (pCurrentObj != NULL)
+	GameObject* pNextObj = pFirstObj;
+	while (pNextObj != NULL)
 	{
+		// Get next first in case it changes in the process.
+		GameObject* pCurrentObj = pNextObj;
+		pNextObj = pNextObj->pNextSibling;
+
 		Vector2Int screenPos = worldToScreenPos(pCurrentObj->worldPos);
 		pCurrentObj->render(screenPos);
-		pCurrentObj = pCurrentObj->pNextSibling;
 	}
 }
 

@@ -11,6 +11,7 @@ void StateManager::update()
 	// Time to move to a new state?
 	if (pNextState != NULL)
 	{
+		delete pCurrentState;
 		pCurrentState = pNextState;
 		pNextState = NULL;
 	}
@@ -23,4 +24,8 @@ void StateManager::setState(State* state)
   pNextState = state;
 }
 
+State* StateManager::getCurrentState()
+{
+	return pCurrentState;
+}
 

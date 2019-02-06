@@ -7,6 +7,7 @@ public:
 	StateManager();
 	void setState(State* pNewState);
 	void update();
+	State* getCurrentState();
 
 private:
    State* pCurrentState;

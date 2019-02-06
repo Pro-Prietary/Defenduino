@@ -35,8 +35,11 @@ void State::update()
 	GameObject* pNextObj = pHeadObject;
 	while(pNextObj!=NULL)
 	{
-		pNextObj->update();
+		// Get next first in case it changes in the process.
+		GameObject* thisObj = pNextObj;
 		pNextObj = pNextObj->pNextSibling;
+
+		thisObj->update();
 	}
 
 	pCameraObject->update();

@@ -25,7 +25,8 @@ const byte segmentPoints8[] PROGMEM = { 0,55, 40,60, 95,46, 115,61, 127,44 };
 GameState::GameState() : State(&camera)
 {
 	testText.setText(F("Game State"));
-	
+	camera.setPlayerShip(&playerShip);
+
 	landscape[0].setData(segmentPoints1, TOTAL_LANDSCAPE_COORDS_1);
 	landscape[1].setData(segmentPoints2, TOTAL_LANDSCAPE_COORDS_2);
 	landscape[2].setData(segmentPoints3, TOTAL_LANDSCAPE_COORDS_3);
@@ -41,10 +42,40 @@ GameState::GameState() : State(&camera)
 		addObject(&landscape[i]);
 	}
 
+	for (int i = 0; i < 10; i++)
+	{
+		humanoids[i].worldPos.x = rand() % 1024;
+		humanoids[i].worldPos.y = 29;
+		if (rand() % 2 == 0)
+		{
+			humanoids[i].velocity.x = 0.05;
+		}
+		else
+		{
+			humanoids[i].velocity.x = -0.05;
+		}
+		addObject(&humanoids[i]);
+	}
+
 	addObject(&playerShip);
+	
+	for (int i = 0; i < 4; i++)
+	{
+		laserPool.pool(&lasers[i]);
+	}
 }
 
 PlayerShip* GameState::getPlayerShip()
 {
 	return &playerShip;
+}
+
+void GameState::pool(PlayerShot* pLaser)
+{
+	laserPool.pool(pLaser);
+}
+
+PlayerShot* GameState::getPlayerShot()
+{
+	return laserPool.get();
 }

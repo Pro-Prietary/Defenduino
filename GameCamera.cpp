@@ -18,7 +18,7 @@ void GameCamera::update()
 	topEdge = worldPos.y - HALF_SCREEN_HEIGHT;
 	bottomEdge = worldPos.y + HALF_SCREEN_HEIGHT;
 
-	float targetXPos = gameState.getPlayerShip()->getCameraTarget();
+	float targetXPos = pPlayerShip->getCameraTarget();
 
 	if (worldPos.x != targetXPos)
 	{
@@ -92,4 +92,9 @@ int GameCamera::getLeftEdgeWorldCoordinate()
 int GameCamera::getRightEdgeWorldCoordinate()
 {
 	return rightEdge;
+}
+
+void GameCamera::setPlayerShip(PlayerShip* pPlayerShip)
+{
+	this->pPlayerShip = pPlayerShip;
 }

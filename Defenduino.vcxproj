@@ -116,11 +116,14 @@
     </ClInclude>
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="Humanoid.h" />
     <ClInclude Include="LandscapeSegment.h" />
     <ClInclude Include="MenuState.h">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="PlayerShip.h" />
+    <ClInclude Include="PlayerShot.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="SpriteRenderer.h" />
     <ClInclude Include="State.h">
@@ -140,9 +143,12 @@
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="Humanoid.cpp" />
     <ClCompile Include="LandscapeSegment.cpp" />
     <ClCompile Include="MenuState.cpp" />
+    <ClCompile Include="ObjectPool.cpp" />
     <ClCompile Include="PlayerShip.cpp" />
+    <ClCompile Include="PlayerShot.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="SpriteRenderer.cpp" />
     <ClCompile Include="State.cpp" />

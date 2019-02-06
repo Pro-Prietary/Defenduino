@@ -67,6 +67,11 @@ void PlayerShip::update()
 			}
 		}
 	}
+
+	if (arduboy.justPressed(B_BUTTON))
+	{
+		fire();
+	}
 }
 
 float PlayerShip::getCameraTarget()
@@ -93,4 +98,36 @@ float PlayerShip::getCameraTarget()
 
 
 	return cameraTarget;
+}
+
+void PlayerShip::fire()
+{
+	PlayerShot* shot = ((GameState*)(stateManager.getCurrentState()))->getPlayerShot();
+	if (shot != NULL)
+	{
+#ifdef _DEBUG
+		Serial.println("Firing shot");
+#endif
+
+		shot->worldPos.y = worldPos.y;
+
+		if (facingRight)
+		{
+			shot->worldPos.x = worldPos.x + 8;
+		}
+		else
+		{
+			shot->worldPos.x = worldPos.x - 1;
+		}
+
+		stateManager.getCurrentState()->addObject(shot);
+
+		shot->fire(facingRight);
+	}
+#ifdef _DEBUG
+	else
+	{
+		Serial.println(F("Laser pool exhausted. Not firing."));
+	}
+#endif
 }

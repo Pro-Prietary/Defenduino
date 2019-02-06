@@ -28,6 +28,6 @@ void MenuState::update()
 
 	if (arduboy.justPressed(A_BUTTON)) 
 	{
-		stateManager.setState(&gameState);
+		stateManager.setState(new GameState());
 	}
 }

@@ -2,15 +2,12 @@
 #include "GameObject.h"
 #include "SpriteRenderer.h"
 
-class PlayerShip : public GameObject
+class Humanoid : public GameObject
 {
 private:
 	SpriteRenderer renderer;
-	bool facingRight = true;
-	void fire();
 
 public:
-	PlayerShip();
+	Humanoid();
 	virtual void update();
-	float getCameraTarget();
 };
