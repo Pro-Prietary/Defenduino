@@ -16,25 +16,14 @@ void PlayerShot::render(Vector2Int screenPos)
 	}
 }
 
-void PlayerShot::fire(bool right)
+void PlayerShot::fire(float xVelocity)
 {
 	length = 1;
-
-	if (right)
-	{
-		velocity.x = 1;
-	}
-	else
-	{
-		velocity.x = -1;
-	}
+	velocity.x = xVelocity;
 }
 
 void PlayerShot::update()
 {
-#ifdef _DEBUG
-	Serial.println(F("PlayerShot::update"));
-#endif
 	GameObject::update();
 	length++;
 }

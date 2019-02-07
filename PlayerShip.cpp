@@ -111,18 +111,22 @@ void PlayerShip::fire()
 
 		shot->worldPos.y = worldPos.y+1;
 
+		float shotVelocity;
 		if (facingRight)
 		{
 			shot->worldPos.x = worldPos.x + 8;
+			shotVelocity = velocity.x + 3;
 		}
 		else
 		{
 			shot->worldPos.x = worldPos.x - 1;
+			shotVelocity = velocity.x - 3;
+
 		}
 
 		stateManager.getCurrentState()->addObject(shot);
 
-		shot->fire(facingRight);
+		shot->fire(shotVelocity);
 	}
 #ifdef _DEBUG
 	else

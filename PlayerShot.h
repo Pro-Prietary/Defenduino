@@ -4,7 +4,7 @@
 class PlayerShot : public GameObject
 {
 public:
-	void fire(bool right);
+	void fire(float xVelocity);
 	virtual void render(Vector2Int screenPos);
 	virtual void update();
 
