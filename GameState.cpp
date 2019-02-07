@@ -63,6 +63,17 @@ GameState::GameState() : State(&camera)
 	{
 		laserPool.pool(&lasers[i]);
 	}
+
+	for (int i = 0; i < 2; i++)
+	{
+		landerPool.pool(&landers[i]);
+	}
+
+	
+	for (int i = 0; i < 8; i++)
+	{
+		spawnLander(rand() % 1024);
+	}
 }
 
 PlayerShip* GameState::getPlayerShip()
@@ -79,4 +90,16 @@ void GameState::pool(PlayerShot* pLaser)
 PlayerShot* GameState::getPlayerShot()
 {
 	return laserPool.get();
+}
+
+void GameState::spawnLander(int worldX)
+{
+	Lander* pLander = landerPool.get();
+
+	if (pLander != NULL)
+	{
+		pLander->worldPos.x = worldX;
+		pLander->worldPos.y = -20;
+		addObject(pLander);
+	}
 }

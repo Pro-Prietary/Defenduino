@@ -13,7 +13,7 @@ public:
 	GameObject* pNextSibling = NULL;
 	GameObject* pPrevSibling = NULL;
 	Vector2 worldPos;
-	Vector2 velocity;
+
 
 protected:
 	GameObject();

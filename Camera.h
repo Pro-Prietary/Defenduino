@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameObject.h"
+#include "MovingGameObject.h"
 #include "Vector2.h"
 #include "Vector2Int.h"
 
@@ -9,7 +9,7 @@
 #define HALF_SCREEN_WIDTH 64
 #define HALF_SCREEN_HEIGHT 32
 
-class Camera : public GameObject
+class Camera : public MovingGameObject
 {
   public:
     void render(GameObject* pFirstObj);

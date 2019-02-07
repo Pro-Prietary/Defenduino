@@ -8,7 +8,7 @@ const unsigned char spriteLeft[]  PROGMEM = { 0x2, 0x2, 0x2, 0x6, 0x6, 0x7, 0x7,
 #define SHIP_MAX_SPEED 2
 #define SHIP_HORIZ_DECELERATION 0.15
 
-PlayerShip::PlayerShip() : GameObject()
+PlayerShip::PlayerShip() : MovingGameObject()
 {
 	renderer.setSpriteData(spriteRight, 8, 3);
 	pRenderer = &renderer;
@@ -17,7 +17,7 @@ PlayerShip::PlayerShip() : GameObject()
 
 void PlayerShip::update()
 {
-	GameObject::update();
+	MovingGameObject::update();
 
 	if (arduboy.pressed(UP_BUTTON) && worldPos.y > -HALF_SCREEN_HEIGHT) 
 	{

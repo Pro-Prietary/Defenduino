@@ -1,29 +1,52 @@
 #include "PlayerShot.h"
 #include "Globals.h"
 
+const unsigned char spriteRight[] PROGMEM = { 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x00, 0x00, 0x1, 0x1, 0x1, 0x00, 0x1, 0x1, 0x00, 0x1, 0x1, 0x1, 0x00, 0x00, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x00, 0x00, 0x00, 0x1, 0x1, 0x1, 0x1, 0x00, 0x1, 0x1, 0x1, 0x1, 0x00, 0x00, 0x1, 0x1, 0x1, 0x00, 0x1, 0x1, 0x1, 0x00, 0x1, 0x00, 0x1, 0x1, 0x00, 0x1, 0x1, 0x1, 0x00, 0x00, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, };
+
 void PlayerShot::render(Vector2Int screenPos)
 {
 	if (screenPos.x < 0 || screenPos.x >= SCREEN_WIDTH)
 	{
-#ifdef _DEBUG
-		Serial.println(F("Pooling shot"));
-#endif
-		((GameState*)(stateManager.getCurrentState()))->pool(this);
+		shrinking = true;
 	}
-	else
-	{
-		arduboy.drawLine(screenPos.x, screenPos.y, screenPos.x - length, screenPos.y);
-	}
+
+	arduboy.drawBitmap(screenPos.x-length, screenPos.y, (const uint8_t *)spriteRight, length, 1, WHITE);
 }
 
 void PlayerShot::fire(float xVelocity)
 {
 	length = 1;
 	velocity.x = xVelocity;
+	shrinking = false;
 }
 
 void PlayerShot::update()
 {
-	GameObject::update();
-	length++;
+	MovingGameObject::update();
+
+	if (!shrinking)
+	{
+		length += 2;
+		if (length >= 64)
+		{
+			length = 64;
+		}
+
+		// Collision detection
+	}
+	else
+	{
+		if (length <= 2)
+		{
+			length = 0;
+#ifdef _DEBUG
+			Serial.println(F("Pooling shot"));
+#endif
+			((GameState*)(stateManager.getCurrentState()))->pool(this);
+		}
+		else
+		{
+			length -= 2;
+		}
+	}
 }

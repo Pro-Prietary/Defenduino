@@ -8,6 +8,8 @@
 #include "Humanoid.h"
 #include "PlayerShot.h"
 #include "ObjectPool.h"
+#include "Lander.h"
+
 #include <Arduboy2.h>
 
 class GameState : public State
@@ -25,7 +27,10 @@ private:
 	LandscapeSegment landscape[8];
 	Humanoid humanoids[10];
 	PlayerShot lasers[4];
+	Lander landers[2];
 	ObjectPool laserPool;
+	ObjectPool landerPool;
 
+	void spawnLander(int worldX);
 };
 

@@ -3,7 +3,7 @@
 
 const unsigned char sprite[] PROGMEM = { 0x7, };
 
-Humanoid::Humanoid() : GameObject()
+Humanoid::Humanoid() : MovingGameObject()
 {
 	renderer.setSpriteData(sprite, 1, 3);
 	pRenderer = &renderer;
@@ -11,7 +11,7 @@ Humanoid::Humanoid() : GameObject()
 
 void Humanoid::update()
 {
-	GameObject::update();
+	MovingGameObject::update();
 
 	
 }

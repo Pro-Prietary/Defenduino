@@ -1,7 +1,7 @@
 #pragma once
-#include "GameObject.h"
+#include "MovingGameObject.h"
 
-class PlayerShot : public GameObject
+class PlayerShot : public MovingGameObject
 {
 public:
 	void fire(float xVelocity);
@@ -10,4 +10,5 @@ public:
 
 private:
 	byte length;
+	bool shrinking;
 };
