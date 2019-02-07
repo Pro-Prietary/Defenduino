@@ -12,9 +12,6 @@ void PlayerShot::render(Vector2Int screenPos)
 	}
 	else
 	{
-#ifdef _DEBUG
-		Serial.println(F("Drawing shot line"));
-#endif
 		arduboy.drawLine(screenPos.x, screenPos.y, screenPos.x - length, screenPos.y);
 	}
 }

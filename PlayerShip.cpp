@@ -109,7 +109,7 @@ void PlayerShip::fire()
 		Serial.println("Firing shot");
 #endif
 
-		shot->worldPos.y = worldPos.y;
+		shot->worldPos.y = worldPos.y+1;
 
 		if (facingRight)
 		{

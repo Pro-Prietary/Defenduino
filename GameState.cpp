@@ -72,6 +72,7 @@ PlayerShip* GameState::getPlayerShip()
 
 void GameState::pool(PlayerShot* pLaser)
 {
+	removeObject(pLaser);
 	laserPool.pool(pLaser);
 }
 

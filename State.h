@@ -7,10 +7,10 @@ class State
 {
 
 public:
-	void addObject(GameObject* obj);
+	void addObject(GameObject* pObj);
 	Camera* getCamera();
 	virtual void update();
-
+	void removeObject(GameObject* pObj);
 protected:
 	State(Camera* pCameraObject);
 

@@ -8,17 +8,7 @@ void ObjectPool::pool(GameObject* pObj)
 	Serial.print(F(" Current tail: "));
 	Serial.println((int)pTail);
 #endif
-	if (pObj->pNextSibling != NULL)
-	{
-		pObj->pNextSibling->pPrevSibling = pObj->pPrevSibling;
-	}
 
-	if (pObj->pPrevSibling != NULL)
-	{
-		pObj->pPrevSibling->pNextSibling = pObj->pNextSibling;
-	}
-
-	pObj->pNextSibling = NULL;
 	pObj->pPrevSibling = pTail;
 
 	if (pTail != NULL)
