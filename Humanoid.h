@@ -9,5 +9,5 @@ private:
 
 public:
 	Humanoid();
-	virtual void update();
+	virtual void update(GameObject* pPrevSibling);
 };

@@ -6,6 +6,7 @@
 class MovingGameObject : public GameObject
 {
 public:
-	virtual void update();
-	Vector2 velocity;
+	virtual void update(GameObject* pPrevSibling);
+
+	Vector2Int velocity;
 };

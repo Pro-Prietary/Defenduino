@@ -8,5 +8,5 @@ public:
 	GameObject* get();
 
 private:
-	GameObject * pTail = NULL;
+	GameObject * pHead = NULL;
 };

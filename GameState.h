@@ -17,7 +17,7 @@ class GameState : public State
 public:
 	GameState();
 	PlayerShip* getPlayerShip();
-	void pool(PlayerShot* laser);
+	void pool(PlayerShot* laser, GameObject* pPrevSibling);
 	PlayerShot* getPlayerShot();
 
 private:
@@ -27,7 +27,7 @@ private:
 	LandscapeSegment landscape[8];
 	Humanoid humanoids[10];
 	PlayerShot lasers[4];
-	Lander landers[2];
+	Lander landers[8];
 	ObjectPool laserPool;
 	ObjectPool landerPool;
 

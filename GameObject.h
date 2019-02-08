@@ -8,10 +8,9 @@
 class GameObject
 {
 public:
-	virtual void update();
+	virtual void update(GameObject* pPrevSibling);
 	virtual void render(Vector2Int screenPos);
 	GameObject* pNextSibling = NULL;
-	GameObject* pPrevSibling = NULL;
 	Vector2 worldPos;
 
 

@@ -48,11 +48,11 @@ GameState::GameState() : State(&camera)
 		humanoids[i].worldPos.y = 29;
 		if (rand() % 2 == 0)
 		{
-			humanoids[i].velocity.x = 0.05;
+			humanoids[i].velocity.x = 5;
 		}
 		else
 		{
-			humanoids[i].velocity.x = -0.05;
+			humanoids[i].velocity.x = -5;
 		}
 		addObject(&humanoids[i]);
 	}
@@ -64,7 +64,7 @@ GameState::GameState() : State(&camera)
 		laserPool.pool(&lasers[i]);
 	}
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < 8; i++)
 	{
 		landerPool.pool(&landers[i]);
 	}
@@ -81,9 +81,9 @@ PlayerShip* GameState::getPlayerShip()
 	return &playerShip;
 }
 
-void GameState::pool(PlayerShot* pLaser)
+void GameState::pool(PlayerShot* pLaser, GameObject* pPrevSibling)
 {
-	removeObject(pLaser);
+	removeObject(pLaser, pPrevSibling);
 	laserPool.pool(pLaser);
 }
 

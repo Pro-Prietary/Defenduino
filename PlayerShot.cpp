@@ -20,9 +20,9 @@ void PlayerShot::fire(float xVelocity)
 	shrinking = false;
 }
 
-void PlayerShot::update()
+void PlayerShot::update(GameObject* pPrevSibling)
 {
-	MovingGameObject::update();
+	MovingGameObject::update(pPrevSibling);
 
 	if (!shrinking)
 	{
@@ -42,7 +42,7 @@ void PlayerShot::update()
 #ifdef _DEBUG
 			Serial.println(F("Pooling shot"));
 #endif
-			((GameState*)(stateManager.getCurrentState()))->pool(this);
+			((GameState*)(stateManager.getCurrentState()))->pool(this, pPrevSibling);
 		}
 		else
 		{

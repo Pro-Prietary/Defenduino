@@ -6,7 +6,7 @@ SpriteRenderer::SpriteRenderer()
 
 }
 
-void SpriteRenderer::setSpriteData(unsigned char newSprite[], int width, int height)
+void SpriteRenderer::setSpriteData(unsigned char newSprite[], byte width, byte height)
 {
 	spriteData = newSprite;
 	this->width = width;

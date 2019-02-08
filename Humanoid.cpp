@@ -9,9 +9,9 @@ Humanoid::Humanoid() : MovingGameObject()
 	pRenderer = &renderer;
 }
 
-void Humanoid::update()
+void Humanoid::update(GameObject* pPrevSibling)
 {
-	MovingGameObject::update();
+	MovingGameObject::update(pPrevSibling);
 
 	
 }

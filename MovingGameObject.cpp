@@ -1,16 +1,16 @@
 #include "MovingGameObject.h"
 #include "Globals.h"
 
-void MovingGameObject::update()
+void MovingGameObject::update(GameObject* pPrevSibling)
 {
 	if (velocity.x != 0)
 	{
-		worldPos.x += velocity.x;
+		worldPos.x += velocity.x / 100.0;
 	}
 
 	if (velocity.y != 0)
 	{
-		worldPos.y += velocity.y;
+		worldPos.y += velocity.y / 100.0;
 	}
 
 	if (worldPos.x >= WORLD_WIDTH)

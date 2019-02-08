@@ -6,7 +6,7 @@ GameObject::GameObject()
 	worldPos.x = worldPos.y = 0;
 }
 
-void GameObject::update()
+void GameObject::update(GameObject* pPrevSibling)
 {
 }
 

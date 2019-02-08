@@ -11,6 +11,6 @@ private:
 
 public:
 	PlayerShip();
-	virtual void update();
+	virtual void update(GameObject* pPrevSibling);
 	float getCameraTarget();
 };

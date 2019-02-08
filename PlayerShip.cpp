@@ -4,9 +4,9 @@
 const unsigned char spriteRight[] PROGMEM = { 0x2, 0x7, 0x7, 0x6, 0x6, 0x2, 0x2, 0x2, };
 const unsigned char spriteLeft[]  PROGMEM = { 0x2, 0x2, 0x2, 0x6, 0x6, 0x7, 0x7, 0x2, };
 
-#define SHIP_HORIZ_ACCELERATION 0.25
-#define SHIP_MAX_SPEED 2
-#define SHIP_HORIZ_DECELERATION 0.15
+#define SHIP_HORIZ_ACCELERATION 25
+#define SHIP_MAX_SPEED 200
+#define SHIP_HORIZ_DECELERATION 15
 
 PlayerShip::PlayerShip() : MovingGameObject()
 {
@@ -15,9 +15,9 @@ PlayerShip::PlayerShip() : MovingGameObject()
 	worldPos.x = worldPos.y = 0;
 }
 
-void PlayerShip::update()
+void PlayerShip::update(GameObject* pPrevSibling)
 {
-	MovingGameObject::update();
+	MovingGameObject::update(pPrevSibling);
 
 	if (arduboy.pressed(UP_BUTTON) && worldPos.y > -HALF_SCREEN_HEIGHT) 
 	{
@@ -79,7 +79,7 @@ float PlayerShip::getCameraTarget()
 	float cameraTarget;
 	if (facingRight)
 	{
-		cameraTarget = (worldPos.x + 32) - (5 * velocity.x);
+		cameraTarget = (worldPos.x + 32) - (5 * (velocity.x/100.0));
 		if (cameraTarget >= WORLD_WIDTH)
 		{
 			cameraTarget -= WORLD_WIDTH;
@@ -87,7 +87,7 @@ float PlayerShip::getCameraTarget()
 	}
 	else
 	{
-		cameraTarget = (worldPos.x - 32) - (5 * velocity.x);
+		cameraTarget = (worldPos.x - 32) - (5 * (velocity.x/100.0));
 
 		if (cameraTarget < 0)
 		{
@@ -115,12 +115,12 @@ void PlayerShip::fire()
 		if (facingRight)
 		{
 			shot->worldPos.x = worldPos.x + 8;
-			shotVelocity = velocity.x + 3;
+			shotVelocity = velocity.x + 300;
 		}
 		else
 		{
 			shot->worldPos.x = worldPos.x - 1;
-			shotVelocity = velocity.x - 3;
+			shotVelocity = velocity.x - 300;
 
 		}
 

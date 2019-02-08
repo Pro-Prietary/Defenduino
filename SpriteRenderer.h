@@ -7,11 +7,11 @@ class SpriteRenderer : public Renderer
 public:
 	SpriteRenderer();
 	virtual void render(Vector2Int screenPos);
-	void setSpriteData(unsigned char newSprite[], int width, int height);
+	void setSpriteData(unsigned char newSprite[], byte width, byte height);
 
 private:
 	unsigned char* spriteData;
-	int width;
-	int height;
-	int halfWidth;
+	byte width;
+	byte height;
+	byte halfWidth;
 };
