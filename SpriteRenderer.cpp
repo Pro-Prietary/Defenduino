@@ -35,6 +35,16 @@ void SpriteRenderer::render(Vector2Int screenPos)
 		(rightEdge < SCREEN_WIDTH && rightEdge >= 0))
 	{
 		arduboy.drawBitmap(screenPos.x, screenPos.y, (const uint8_t *)spriteData, width, height, WHITE);
+		bIsVisible = true;
+	}
+	else
+	{
+		bIsVisible = false;
 	}
 
+}
+
+bool SpriteRenderer::isVisible()
+{
+	return bIsVisible;
 }

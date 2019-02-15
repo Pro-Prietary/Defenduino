@@ -12,24 +12,25 @@
 
 #include <Arduboy2.h>
 
+#define TOTAL_PLAYER_SHOTS 4
+#define TOTAL_LANDERS 8
+#define TOTAL_LANDSCAPE_SEGMENTS 8
+#define TOTAL_HUMANOIDS 10
+
 class GameState : public State
 {
 public:
 	GameState();
-	PlayerShip* getPlayerShip();
-	void pool(PlayerShot* laser, GameObject* pPrevSibling);
+	virtual void update();
 	PlayerShot* getPlayerShot();
 
 private:
 	GameCamera camera;
-	TextObject testText;
 	PlayerShip playerShip;
-	LandscapeSegment landscape[8];
-	Humanoid humanoids[10];
-	PlayerShot lasers[4];
-	Lander landers[8];
-	ObjectPool laserPool;
-	ObjectPool landerPool;
+	PlayerShot playerShots[TOTAL_PLAYER_SHOTS];
+	Lander landers[TOTAL_LANDERS];
+	LandscapeSegment landscapeSegments[TOTAL_LANDSCAPE_SEGMENTS];
+	Humanoid humanoids[TOTAL_HUMANOIDS];
 
 	void spawnLander(int worldX);
 };

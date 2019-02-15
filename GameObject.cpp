@@ -6,15 +6,21 @@ GameObject::GameObject()
 	worldPos.x = worldPos.y = 0;
 }
 
-void GameObject::update(GameObject* pPrevSibling)
+void GameObject::update()
 {
 }
 
 void GameObject::render(Vector2Int screenPos)
 {
-	if (pRenderer != NULL)
-	{
-		pRenderer->render(screenPos);
-	}
+}
+
+bool GameObject::isActive()
+{
+	return bActive;
+}
+
+void GameObject::setActive(bool bIsActive)
+{
+	bActive = bIsActive;
 }
 

@@ -8,15 +8,15 @@
 class GameObject
 {
 public:
-	virtual void update(GameObject* pPrevSibling);
+	virtual void update();
 	virtual void render(Vector2Int screenPos);
-	GameObject* pNextSibling = NULL;
 	Vector2 worldPos;
-
+	bool isActive();
+	void setActive(bool bActive);
 
 protected:
 	GameObject();
-	Renderer* pRenderer;
+	bool bActive = false;
 }; 
 
 

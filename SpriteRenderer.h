@@ -8,10 +8,12 @@ public:
 	SpriteRenderer();
 	virtual void render(Vector2Int screenPos);
 	void setSpriteData(unsigned char newSprite[], byte width, byte height);
+	bool isVisible();
 
 private:
 	unsigned char* spriteData;
 	byte width;
 	byte height;
 	byte halfWidth;
+	bool bIsVisible;
 };

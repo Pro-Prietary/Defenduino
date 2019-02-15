@@ -7,15 +7,12 @@ class State
 {
 
 public:
-	void addObject(GameObject* pObj);
 	Camera* getCamera();
 	virtual void update();
-	void removeObject(GameObject* pObj, GameObject* pPrevObj);
 protected:
 	State(Camera* pCameraObject);
 
 private:
-  GameObject* pHeadObject = NULL;
   Camera* pCameraObject = NULL;
 };
 #endif

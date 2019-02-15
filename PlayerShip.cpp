@@ -11,13 +11,12 @@ const unsigned char spriteLeft[]  PROGMEM = { 0x2, 0x2, 0x2, 0x6, 0x6, 0x7, 0x7,
 PlayerShip::PlayerShip() : MovingGameObject()
 {
 	renderer.setSpriteData(spriteRight, 8, 3);
-	pRenderer = &renderer;
 	worldPos.x = worldPos.y = 0;
 }
 
-void PlayerShip::update(GameObject* pPrevSibling)
+void PlayerShip::update()
 {
-	MovingGameObject::update(pPrevSibling);
+	MovingGameObject::update();
 
 	if (arduboy.pressed(UP_BUTTON) && worldPos.y > -HALF_SCREEN_HEIGHT) 
 	{
@@ -124,8 +123,7 @@ void PlayerShip::fire()
 
 		}
 
-		stateManager.getCurrentState()->addObject(shot);
-
+		shot->setActive(true);
 		shot->fire(shotVelocity);
 	}
 #ifdef _DEBUG
@@ -134,4 +132,9 @@ void PlayerShip::fire()
 		Serial.println(F("Laser pool exhausted. Not firing."));
 	}
 #endif
+}
+
+void PlayerShip::render(Vector2Int screenPos)
+{
+	renderer.render(screenPos);
 }

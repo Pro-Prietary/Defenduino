@@ -4,11 +4,15 @@
 #include "Globals.h"
 #include <Arduboy2.h>
 
+#define TOTAL_COORDINATES 8
 
-void LandscapeSegment::setData(byte* newPoints, int totalNewCoords)
+LandscapeSegment::LandscapeSegment() : GameObject()
+{
+}
+
+void LandscapeSegment::setData(byte* newPoints)
 {
 	points = newPoints;
-	totalCoords = totalNewCoords;
 }
 
 /// Screen pos is the relative screen position of the far left of the landscape
@@ -30,7 +34,7 @@ void LandscapeSegment::render(Vector2Int screenPos)
 	Vector2Int translatedFirst = translatePoint(screenPos, pgm_read_byte(points), pgm_read_byte(points+1));
 	bool firstIsVisible = translatedPointIsVisible(translatedFirst.x);
 	bool secondIsVisible = false;
-	for (int i = 2; i < totalCoords; i+=2)
+	for (int i = 2; i < TOTAL_COORDINATES; i+=2)
 	{
 		Vector2Int translatedSecond;
 		translatedSecond = translatePoint(screenPos, pgm_read_byte(points+i), pgm_read_byte(points + i + 1));

@@ -4,13 +4,14 @@
 class LandscapeSegment : public GameObject
 {
 public:
-	void setData(byte* newPoints, int totalNewCoords);
+	LandscapeSegment();
+	void setData(byte* newPoints);
 	virtual void render(Vector2Int screenPos);
 
 private:
 	Vector2Int translatePoint(Vector2Int screenPos, byte pointX, byte pointY);
 	bool translatedPointIsVisible(int point);
 	byte* points;
-	int totalCoords;
+	byte totalCoords;
 
 };

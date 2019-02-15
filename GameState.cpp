@@ -3,103 +3,129 @@
 #include "Globals.h"
 
 
-const byte segmentPoints1[] PROGMEM = { 0,45, 10,60, 100,50, 127,45 };
-const byte segmentPoints2[] PROGMEM  = { 0,45, 25,50, 75,57, 92,61, 110,49, 127,60 };
-const byte segmentPoints3[] PROGMEM = { 0,60, 20,48, 42,59, 60,49, 72,60, 100,60, 127,55 };
-const byte segmentPoints4[] PROGMEM = { 0,55, 40,60, 95,46, 115,61, 127,44 };
-const byte segmentPoints5[] PROGMEM = { 0,45, 10,60, 100,50, 127,45 };
-const byte segmentPoints6[] PROGMEM = { 0,45, 25,50, 75,57, 92,61, 110,49, 127,60 };
-const byte segmentPoints7[] PROGMEM = { 0,60, 20,48, 42,59, 60,49, 72,60, 100,60, 127,55 };
-const byte segmentPoints8[] PROGMEM = { 0,55, 40,60, 95,46, 115,61, 127,44 };
-
-#define TOTAL_LANDSCAPE_COORDS_1 8
-#define TOTAL_LANDSCAPE_COORDS_2 12
-#define TOTAL_LANDSCAPE_COORDS_3 14
-#define TOTAL_LANDSCAPE_COORDS_4 10
-#define TOTAL_LANDSCAPE_COORDS_5 8
-#define TOTAL_LANDSCAPE_COORDS_6 12
-#define TOTAL_LANDSCAPE_COORDS_7 14
-#define TOTAL_LANDSCAPE_COORDS_8 10
-
+const byte segmentPoints[8][8] PROGMEM = { { 0,45, 10,60, 100,50, 127,45 },
+{ 0,45, 20,48, 100,60, 127,55 },
+{ 0,55, 40,60, 115,61, 127,44 },
+{ 0,44, 10,60, 100,50, 127,45 },
+{ 0,45, 25,50, 75,57,  127,60 },
+{ 0,60, 72,60, 100,60, 127,55 },
+{ 0,55, 40,60, 115,61, 127,45 },
+{ 0,45, 25,55, 98,60, 127,45 } };
 
 GameState::GameState() : State(&camera)
 {
-	testText.setText(F("Game State"));
-	camera.setPlayerShip(&playerShip);
-
-	landscape[0].setData(segmentPoints1, TOTAL_LANDSCAPE_COORDS_1);
-	landscape[1].setData(segmentPoints2, TOTAL_LANDSCAPE_COORDS_2);
-	landscape[2].setData(segmentPoints3, TOTAL_LANDSCAPE_COORDS_3);
-	landscape[3].setData(segmentPoints4, TOTAL_LANDSCAPE_COORDS_4);
-	landscape[4].setData(segmentPoints5, TOTAL_LANDSCAPE_COORDS_5);
-	landscape[5].setData(segmentPoints6, TOTAL_LANDSCAPE_COORDS_6);
-	landscape[6].setData(segmentPoints7, TOTAL_LANDSCAPE_COORDS_7);
-	landscape[7].setData(segmentPoints8, TOTAL_LANDSCAPE_COORDS_8);
-
-	for (int i = 0; i < 8; i++)
+	playerShip.setActive(true);
+	for (int i = 0; i < TOTAL_LANDSCAPE_SEGMENTS; i++)
 	{
-		landscape[i].worldPos.x = i * 128;
-		addObject(&landscape[i]);
+		landscapeSegments[i].setData(segmentPoints[i]);
+		landscapeSegments[i].worldPos.x = i * 128;
+		landscapeSegments[i].setActive(true);
 	}
 
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < TOTAL_HUMANOIDS; i++)
 	{
-		humanoids[i].worldPos.x = rand() % 1024;
-		humanoids[i].worldPos.y = 29;
+		float xVel;
 		if (rand() % 2 == 0)
 		{
-			humanoids[i].velocity.x = 5;
+			xVel = 5;
 		}
 		else
 		{
-			humanoids[i].velocity.x = -5;
+			xVel = -5;
 		}
-		addObject(&humanoids[i]);
-	}
+		humanoids[i].velocity.x = xVel;
+		humanoids[i].worldPos.x = rand() % 1024;
+		humanoids[i].worldPos.y = 29;
+		humanoids[i].setActive(true);
 
-	addObject(&playerShip);
+	}
 	
-	for (int i = 0; i < 4; i++)
-	{
-		laserPool.pool(&lasers[i]);
-	}
-
-	for (int i = 0; i < 8; i++)
-	{
-		landerPool.pool(&landers[i]);
-	}
-
-	
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < TOTAL_LANDERS; i++)
 	{
 		spawnLander(rand() % 1024);
 	}
 }
 
-PlayerShip* GameState::getPlayerShip()
-{
-	return &playerShip;
-}
-
-void GameState::pool(PlayerShot* pLaser, GameObject* pPrevSibling)
-{
-	removeObject(pLaser, pPrevSibling);
-	laserPool.pool(pLaser);
-}
-
-PlayerShot* GameState::getPlayerShot()
-{
-	return laserPool.get();
-}
-
 void GameState::spawnLander(int worldX)
 {
-	Lander* pLander = landerPool.get();
+	// Find the first inactive lander in the list
+	Lander* pLander = NULL;
+	for (int i = 0; i < TOTAL_LANDERS; i++)
+	{
+		if (!landers[i].isActive())
+		{
+			pLander = &landers[i];
+			break;
+		}
+	}
 
 	if (pLander != NULL)
 	{
 		pLander->worldPos.x = worldX;
 		pLander->worldPos.y = -20;
-		addObject(pLander);
+		pLander->setActive(true);
 	}
+#ifdef _DEBUG
+	else
+	{
+		Serial.println("Tried to spawn lander but none are available.");
+	}
+#endif
+}
+
+void GameState::update()
+{
+	if (playerShip.isActive())
+	{
+		playerShip.update();
+		camera.update(&playerShip);
+		camera.render(&playerShip);
+	}
+
+	for (int i = 0; i < TOTAL_LANDSCAPE_SEGMENTS; i++)
+	{
+		camera.render(&landscapeSegments[i]);
+	}
+
+	for (int i = 0; i < TOTAL_HUMANOIDS; i++)
+	{
+		if (humanoids[i].isActive())
+		{
+			humanoids[i].update();
+			camera.render(&humanoids[i]);
+		}
+	}
+
+	for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
+	{
+		if (playerShots[i].isActive())
+		{
+			playerShots[i].update();
+			camera.render(&playerShots[i]);
+		}
+	}
+
+	for (int i = 0; i < TOTAL_LANDERS; i++)
+	{
+		if (landers[i].isActive())
+		{
+			landers[i].update();
+			camera.render(&landers[i]);
+		}
+	}
+}
+
+PlayerShot* GameState::getPlayerShot()
+{
+	PlayerShot* pShot = NULL;
+	for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
+	{
+		if (!playerShots[i].isActive())
+		{
+			pShot = &playerShots[i];
+			break;
+		}
+	}
+
+	return pShot;
 }

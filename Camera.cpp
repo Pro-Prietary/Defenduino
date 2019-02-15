@@ -1,18 +1,10 @@
 #include "Camera.h"
 #include "Globals.h"
 
-void Camera::render(GameObject* pFirstObj)
+void Camera::render(GameObject* pToRender)
 {
-	GameObject* pNextObj = pFirstObj;
-	while (pNextObj != NULL)
-	{
-		// Get next first in case it changes in the process.
-		GameObject* pCurrentObj = pNextObj;
-		pNextObj = pNextObj->pNextSibling;
-
-		Vector2Int screenPos = worldToScreenPos(pCurrentObj->worldPos);
-		pCurrentObj->render(screenPos);
-	}
+	Vector2Int screenPos = worldToScreenPos(pToRender->worldPos);
+	pToRender->render(screenPos);
 }
 
 /*

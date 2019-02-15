@@ -20,9 +20,9 @@ void PlayerShot::fire(float xVelocity)
 	shrinking = false;
 }
 
-void PlayerShot::update(GameObject* pPrevSibling)
+void PlayerShot::update()
 {
-	MovingGameObject::update(pPrevSibling);
+	MovingGameObject::update();
 
 	if (!shrinking)
 	{
@@ -40,9 +40,9 @@ void PlayerShot::update(GameObject* pPrevSibling)
 		{
 			length = 0;
 #ifdef _DEBUG
-			Serial.println(F("Pooling shot"));
+			Serial.println(F("Disabling shot"));
 #endif
-			((GameState*)(stateManager.getCurrentState()))->pool(this, pPrevSibling);
+			setActive(false);
 		}
 		else
 		{

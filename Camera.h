@@ -12,7 +12,7 @@
 class Camera : public MovingGameObject
 {
   public:
-    void render(GameObject* pFirstObj);
+    void render(GameObject* pToRender);
 
 private:
 	virtual Vector2Int worldToScreenPos(Vector2 worldPos);

@@ -8,10 +8,14 @@ TextObject::TextObject(const __FlashStringHelper* text)
 
 TextObject::TextObject() : GameObject()
 {
-	pRenderer = &renderer;
 }
 
 void TextObject::setText(const __FlashStringHelper* text)
 {
 	renderer.setText(text);
+}
+
+void TextObject::render(Vector2Int screenPos)
+{
+	renderer.render(screenPos);
 }

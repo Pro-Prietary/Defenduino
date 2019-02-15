@@ -9,5 +9,6 @@ private:
 
 public:
 	Humanoid();
-	virtual void update(GameObject* pPrevSibling);
+	virtual void update();
+	virtual void render(Vector2Int cameraPos);
 };

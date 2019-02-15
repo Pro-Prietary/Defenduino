@@ -1,7 +1,7 @@
 #include "MovingGameObject.h"
 #include "Globals.h"
 
-void MovingGameObject::update(GameObject* pPrevSibling)
+void MovingGameObject::update()
 {
 	if (velocity.x != 0)
 	{

@@ -123,7 +123,6 @@
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClInclude Include="MovingGameObject.h" />
-    <ClInclude Include="ObjectPool.h" />
     <ClInclude Include="PlayerShip.h" />
     <ClInclude Include="PlayerShot.h" />
     <ClInclude Include="Renderer.h" />
@@ -150,7 +149,6 @@
     <ClCompile Include="LandscapeSegment.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="MovingGameObject.cpp" />
-    <ClCompile Include="ObjectPool.cpp" />
     <ClCompile Include="PlayerShip.cpp" />
     <ClCompile Include="PlayerShot.cpp" />
     <ClCompile Include="Renderer.cpp" />
