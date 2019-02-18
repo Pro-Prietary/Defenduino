@@ -7,8 +7,8 @@ class GameCamera : public Camera
 {
 public:
 	GameCamera();
-	virtual Vector2Int worldToScreenPos(Vector2 worldPos);
-	virtual void update(PlayerShip* pPlayerShip);
+	Vector2Int worldToScreenPos(Vector2 worldPos);
+	void update(PlayerShip* pPlayerShip);
 
 private:
 

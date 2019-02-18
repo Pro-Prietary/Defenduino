@@ -79,12 +79,12 @@ void GameState::update()
 	{
 		playerShip.update();
 		camera.update(&playerShip);
-		camera.render(&playerShip);
+		playerShip.render(camera.worldToScreenPos(playerShip.worldPos));
 	}
 
 	for (int i = 0; i < TOTAL_LANDSCAPE_SEGMENTS; i++)
 	{
-		camera.render(&landscapeSegments[i]);
+		landscapeSegments[i].render(camera.worldToScreenPos(landscapeSegments[i].worldPos));
 	}
 
 	for (int i = 0; i < TOTAL_HUMANOIDS; i++)
@@ -92,7 +92,7 @@ void GameState::update()
 		if (humanoids[i].isActive())
 		{
 			humanoids[i].update();
-			camera.render(&humanoids[i]);
+			humanoids[i].render(camera.worldToScreenPos(humanoids[i].worldPos));
 		}
 	}
 
@@ -101,7 +101,7 @@ void GameState::update()
 		if (playerShots[i].isActive())
 		{
 			playerShots[i].update();
-			camera.render(&playerShots[i]);
+			playerShots[i].render(camera.worldToScreenPos(playerShots[i].worldPos));
 		}
 	}
 
@@ -110,7 +110,7 @@ void GameState::update()
 		if (landers[i].isActive())
 		{
 			landers[i].update();
-			camera.render(&landers[i]);
+			landers[i].render(camera.worldToScreenPos(landers[i].worldPos));
 		}
 	}
 }

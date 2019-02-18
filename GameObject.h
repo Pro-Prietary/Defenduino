@@ -8,8 +8,6 @@
 class GameObject
 {
 public:
-	virtual void update();
-	virtual void render(Vector2Int screenPos);
 	Vector2 worldPos;
 	bool isActive();
 	void setActive(bool bActive);

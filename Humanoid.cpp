@@ -5,7 +5,7 @@ const unsigned char sprite[] PROGMEM = { 0x7, };
 
 Humanoid::Humanoid() : MovingGameObject()
 {
-	renderer.setSpriteData(sprite, 1, 3);
+	setSpriteData(sprite, 1, 3);
 }
 
 void Humanoid::update()
@@ -15,5 +15,5 @@ void Humanoid::update()
 
 void Humanoid::render(Vector2Int screenPos)
 {
-	renderer.render(screenPos);
+	Sprite::render(screenPos);
 }

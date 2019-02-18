@@ -9,8 +9,9 @@ public:
 	TextObject(const __FlashStringHelper* text);
 	TextObject();
 	void setText(const __FlashStringHelper* text);
-	virtual void render(Vector2Int screenPos);
+	void render(Vector2Int screenPos);
 
 private:
-	TextRenderer renderer;
+	const __FlashStringHelper* text;
+
 };

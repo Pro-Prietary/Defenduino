@@ -1,14 +1,13 @@
 #pragma once
 
 #include "MovingGameObject.h"
-#include "SpriteRenderer.h"
+#include "Sprite.h"
 
-class Lander : public MovingGameObject
+class Lander : public MovingGameObject, public Sprite
 {
 public:
 	Lander();
-	virtual void render(Vector2Int cameraPos);
+	void update();
 
 private:
-	SpriteRenderer renderer;
 };

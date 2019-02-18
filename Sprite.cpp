@@ -1,12 +1,12 @@
-#include "SpriteRenderer.h"
+#include "Sprite.h"
 #include "Globals.h"
 
-SpriteRenderer::SpriteRenderer()
+Sprite::Sprite()
 {
 
 }
 
-void SpriteRenderer::setSpriteData(unsigned char newSprite[], byte width, byte height)
+void Sprite::setSpriteData(unsigned char newSprite[], byte width, byte height)
 {
 	spriteData = newSprite;
 	this->width = width;
@@ -14,7 +14,7 @@ void SpriteRenderer::setSpriteData(unsigned char newSprite[], byte width, byte h
 	halfWidth = width / 2;
 }
 
-void SpriteRenderer::render(Vector2Int screenPos)
+void Sprite::render(Vector2Int screenPos)
 {
 	// If far from the camera, flip to the other side for wrapping
 	if (screenPos.x < -HALF_WORLD_WIDTH)
@@ -44,7 +44,7 @@ void SpriteRenderer::render(Vector2Int screenPos)
 
 }
 
-bool SpriteRenderer::isVisible()
+bool Sprite::isVisible()
 {
 	return bIsVisible;
 }

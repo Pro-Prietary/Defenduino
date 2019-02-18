@@ -6,7 +6,7 @@ class LandscapeSegment : public GameObject
 public:
 	LandscapeSegment();
 	void setData(byte* newPoints);
-	virtual void render(Vector2Int screenPos);
+	void render(Vector2Int screenPos);
 
 private:
 	Vector2Int translatePoint(Vector2Int screenPos, byte pointX, byte pointY);

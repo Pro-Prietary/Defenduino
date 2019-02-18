@@ -10,8 +10,13 @@ const unsigned char spriteLeft[]  PROGMEM = { 0x2, 0x2, 0x2, 0x6, 0x6, 0x7, 0x7,
 
 PlayerShip::PlayerShip() : MovingGameObject()
 {
-	renderer.setSpriteData(spriteRight, 8, 3);
+	setSpriteData(spriteRight, 8, 3);
 	worldPos.x = worldPos.y = 0;
+}
+
+void PlayerShip::setActive(bool active)
+{
+	GameObject::setActive(active);
 }
 
 void PlayerShip::update()
@@ -30,7 +35,7 @@ void PlayerShip::update()
 	if (arduboy.pressed(RIGHT_BUTTON))
 	{
 		facingRight = true;
-		renderer.setSpriteData(spriteRight, 8, 3);
+		setSpriteData(spriteRight, 8, 3);
 		velocity.x += SHIP_HORIZ_ACCELERATION;
 		if (velocity.x > SHIP_MAX_SPEED)
 		{
@@ -40,7 +45,7 @@ void PlayerShip::update()
 	else if (arduboy.pressed(LEFT_BUTTON))
 	{
 		facingRight = false;
-		renderer.setSpriteData(spriteLeft, 8, 3);
+		setSpriteData(spriteLeft, 8, 3);
 		velocity.x -= SHIP_HORIZ_ACCELERATION;
 		if (velocity.x < -SHIP_MAX_SPEED)
 		{
@@ -132,9 +137,4 @@ void PlayerShip::fire()
 		Serial.println(F("Laser pool exhausted. Not firing."));
 	}
 #endif
-}
-
-void PlayerShip::render(Vector2Int screenPos)
-{
-	renderer.render(screenPos);
 }

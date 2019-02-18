@@ -25,8 +25,8 @@ void MenuState::update()
 	{
 		stateManager.setState(new GameState());
 	}
-	camera.render(&pressStartObj);
+	pressStartObj.render(camera.worldToScreenPos(pressStartObj.worldPos));
 #ifdef _DEBUG
-	camera.render(&debugMsg);
+	debugMsg.render(camera.worldToScreenPos(debugMsg.worldPos));
 #endif
 }

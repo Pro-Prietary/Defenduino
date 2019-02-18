@@ -5,8 +5,8 @@ class PlayerShot : public MovingGameObject
 {
 public:
 	void fire(float xVelocity);
-	virtual void render(Vector2Int screenPos);
-	virtual void update();
+	void render(Vector2Int screenPos);
+	void update();
 
 private:
 	byte length;

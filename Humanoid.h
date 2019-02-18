@@ -1,14 +1,13 @@
 #pragma once
 #include "MovingGameObject.h"
-#include "SpriteRenderer.h"
+#include "Sprite.h"
 
-class Humanoid : public MovingGameObject
+class Humanoid : public MovingGameObject, public Sprite
 {
 private:
-	SpriteRenderer renderer;
 
 public:
 	Humanoid();
-	virtual void update();
-	virtual void render(Vector2Int cameraPos);
+	void update();
+	void render(Vector2Int cameraPos);
 };

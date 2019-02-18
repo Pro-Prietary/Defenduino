@@ -1,17 +1,16 @@
 #pragma once
 #include "MovingGameObject.h"
-#include "SpriteRenderer.h"
+#include "Sprite.h"
 
-class PlayerShip : public MovingGameObject
+class PlayerShip : public MovingGameObject, public Sprite
 {
 private:
-	SpriteRenderer renderer;
 	bool facingRight = true;
 	void fire();
 
 public:
 	PlayerShip();
-	virtual void update();
-	virtual void render(Vector2Int screenPos);
+	void update();
 	float getCameraTarget();
+	void setActive(bool active);
 };

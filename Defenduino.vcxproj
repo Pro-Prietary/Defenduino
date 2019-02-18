@@ -125,8 +125,7 @@
     <ClInclude Include="MovingGameObject.h" />
     <ClInclude Include="PlayerShip.h" />
     <ClInclude Include="PlayerShot.h" />
-    <ClInclude Include="Renderer.h" />
-    <ClInclude Include="SpriteRenderer.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="State.h">
       <FileType>CppCode</FileType>
     </ClInclude>
@@ -134,7 +133,6 @@
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClInclude Include="TextObject.h" />
-    <ClInclude Include="TextRenderer.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector2Byte.h" />
     <ClInclude Include="__vm\.Defenduino.vsarduino.h" />
@@ -151,12 +149,10 @@
     <ClCompile Include="MovingGameObject.cpp" />
     <ClCompile Include="PlayerShip.cpp" />
     <ClCompile Include="PlayerShot.cpp" />
-    <ClCompile Include="Renderer.cpp" />
-    <ClCompile Include="SpriteRenderer.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="TextObject.cpp" />
-    <ClCompile Include="TextRenderer.cpp" />
     <ClCompile Include="Vector2Byte.cpp" />
     <ClCompile Include="Vector2Int.cpp" />
     <ClCompile Include="Vector2Int.h" />
