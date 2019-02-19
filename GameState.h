@@ -4,11 +4,10 @@
 #include "TextObject.h"
 #include "PlayerShip.h"
 #include "GameCamera.h"
-#include "LandscapeSegment.h"
 #include "Humanoid.h"
 #include "PlayerShot.h"
-#include "ObjectPool.h"
 #include "Lander.h"
+#include "Landscape.h"
 
 #include <Arduboy2.h>
 
@@ -29,7 +28,7 @@ private:
 	PlayerShip playerShip;
 	PlayerShot playerShots[TOTAL_PLAYER_SHOTS];
 	Lander landers[TOTAL_LANDERS];
-	LandscapeSegment landscapeSegments[TOTAL_LANDSCAPE_SEGMENTS];
+	Landscape landscape;
 	Humanoid humanoids[TOTAL_HUMANOIDS];
 
 	void spawnLander(int worldX);

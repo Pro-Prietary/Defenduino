@@ -11,7 +11,4 @@ public:
 	void update(PlayerShip* pPlayerShip);
 
 private:
-
-	int leftEdge;
-	int rightEdge;
 };

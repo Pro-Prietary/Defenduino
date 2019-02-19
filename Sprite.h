@@ -6,9 +6,7 @@ class Sprite
 {
 public:
 	Sprite();
-	void render(Vector2Int screenPos);
-	bool isVisible();
-
+	bool render(Vector2Int screenPos);
 
 protected:
 	void setSpriteData(unsigned char newSprite[], byte width, byte height);
@@ -18,5 +16,4 @@ private:
 	byte width;
 	byte height;
 	byte halfWidth;
-	bool bIsVisible;
 };

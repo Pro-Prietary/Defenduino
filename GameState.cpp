@@ -2,25 +2,9 @@
 #include "StateManager.h"
 #include "Globals.h"
 
-
-const byte segmentPoints[8][8] PROGMEM = { { 0,45, 10,60, 100,50, 127,45 },
-{ 0,45, 20,48, 100,60, 127,55 },
-{ 0,55, 40,60, 115,61, 127,44 },
-{ 0,44, 10,60, 100,50, 127,45 },
-{ 0,45, 25,50, 75,57,  127,60 },
-{ 0,60, 72,60, 100,60, 127,55 },
-{ 0,55, 40,60, 115,61, 127,45 },
-{ 0,45, 25,55, 98,60, 127,45 } };
-
 GameState::GameState() : State(&camera)
 {
 	playerShip.setActive(true);
-	for (int i = 0; i < TOTAL_LANDSCAPE_SEGMENTS; i++)
-	{
-		landscapeSegments[i].setData(segmentPoints[i]);
-		landscapeSegments[i].worldPos.x = i * 128;
-		landscapeSegments[i].setActive(true);
-	}
 
 	for (int i = 0; i < TOTAL_HUMANOIDS; i++)
 	{
@@ -82,19 +66,14 @@ void GameState::update()
 		playerShip.render(camera.worldToScreenPos(playerShip.worldPos));
 	}
 
+	landscape.render(camera.worldPos.x);
+
+	/*
 	for (int i = 0; i < TOTAL_LANDSCAPE_SEGMENTS; i++)
 	{
 		landscapeSegments[i].render(camera.worldToScreenPos(landscapeSegments[i].worldPos));
 	}
-
-	for (int i = 0; i < TOTAL_HUMANOIDS; i++)
-	{
-		if (humanoids[i].isActive())
-		{
-			humanoids[i].update();
-			humanoids[i].render(camera.worldToScreenPos(humanoids[i].worldPos));
-		}
-	}
+	*/
 
 	for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
 	{
@@ -105,12 +84,23 @@ void GameState::update()
 		}
 	}
 
+	for (int i = 0; i < TOTAL_HUMANOIDS; i++)
+	{
+		if (humanoids[i].isActive())
+		{
+			humanoids[i].update(&landscape);
+			humanoids[i].render(camera.worldToScreenPos(humanoids[i].worldPos));
+			humanoids[i].collisionCheck(playerShots, &playerShip);
+		}
+	}
+
 	for (int i = 0; i < TOTAL_LANDERS; i++)
 	{
 		if (landers[i].isActive())
 		{
-			landers[i].update();
+			landers[i].update(&landscape);
 			landers[i].render(camera.worldToScreenPos(landers[i].worldPos));
+			landers[i].collisionCheck(playerShots, &playerShip);
 		}
 	}
 }

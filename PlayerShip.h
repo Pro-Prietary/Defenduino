@@ -5,12 +5,11 @@
 class PlayerShip : public MovingGameObject, public Sprite
 {
 private:
-	bool facingRight = true;
 	void fire();
 
 public:
 	PlayerShip();
 	void update();
+	void render(Vector2Int cameraPos);
 	float getCameraTarget();
-	void setActive(bool active);
 };

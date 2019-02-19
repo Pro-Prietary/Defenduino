@@ -7,8 +7,8 @@ public:
 	void fire(float xVelocity);
 	void render(Vector2Int screenPos);
 	void update();
+	Rect getCollisionRect();
 
 private:
 	byte length;
-	bool shrinking;
 };

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GameObject.h"
-#include "TextRenderer.h"
 
 class TextObject : public GameObject
 {

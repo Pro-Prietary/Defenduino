@@ -118,7 +118,7 @@
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Humanoid.h" />
     <ClInclude Include="Lander.h" />
-    <ClInclude Include="LandscapeSegment.h" />
+    <ClInclude Include="Landscape.h" />
     <ClInclude Include="MenuState.h">
       <FileType>CppCode</FileType>
     </ClInclude>
@@ -144,7 +144,7 @@
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Humanoid.cpp" />
     <ClCompile Include="Lander.cpp" />
-    <ClCompile Include="LandscapeSegment.cpp" />
+    <ClCompile Include="Landscape.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="MovingGameObject.cpp" />
     <ClCompile Include="PlayerShip.cpp" />

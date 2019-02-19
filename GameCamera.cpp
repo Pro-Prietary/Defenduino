@@ -12,10 +12,6 @@ void GameCamera::update(PlayerShip* pPlayerShip)
 {
 	Camera::update();
 
-	// Recalculate bounds in world space
-	leftEdge = worldPos.x - HALF_SCREEN_WIDTH;
-	rightEdge = worldPos.x + HALF_SCREEN_WIDTH;
-
 	float targetXPos = pPlayerShip->getCameraTarget();
 
 	if (worldPos.x != targetXPos)
@@ -78,7 +74,7 @@ void GameCamera::update(PlayerShip* pPlayerShip)
 Vector2Int GameCamera::worldToScreenPos(Vector2 objPos)
 {
 	Vector2Int screenPos;
-	screenPos.x = (int)objPos.x - leftEdge;
+	screenPos.x = (int)objPos.x - (worldPos.x - HALF_SCREEN_WIDTH);
 	screenPos.y = (int)objPos.y + HALF_SCREEN_HEIGHT;
 	return screenPos;
 }

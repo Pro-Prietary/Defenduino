@@ -8,15 +8,13 @@ const unsigned char spriteLeft[]  PROGMEM = { 0x2, 0x2, 0x2, 0x6, 0x6, 0x7, 0x7,
 #define SHIP_MAX_SPEED 200
 #define SHIP_HORIZ_DECELERATION 15
 
+#define FLAG_FACING_RIGHT 0x4
+
 PlayerShip::PlayerShip() : MovingGameObject()
 {
 	setSpriteData(spriteRight, 8, 3);
 	worldPos.x = worldPos.y = 0;
-}
-
-void PlayerShip::setActive(bool active)
-{
-	GameObject::setActive(active);
+	setFlag(FLAG_FACING_RIGHT);
 }
 
 void PlayerShip::update()
@@ -34,7 +32,10 @@ void PlayerShip::update()
 
 	if (arduboy.pressed(RIGHT_BUTTON))
 	{
-		facingRight = true;
+		if (!isFlagSet(FLAG_FACING_RIGHT))
+		{
+			setFlag(FLAG_FACING_RIGHT);
+		}
 		setSpriteData(spriteRight, 8, 3);
 		velocity.x += SHIP_HORIZ_ACCELERATION;
 		if (velocity.x > SHIP_MAX_SPEED)
@@ -44,7 +45,10 @@ void PlayerShip::update()
 	}
 	else if (arduboy.pressed(LEFT_BUTTON))
 	{
-		facingRight = false;
+		if (isFlagSet(FLAG_FACING_RIGHT))
+		{
+			unsetFlag(FLAG_FACING_RIGHT);
+		}
 		setSpriteData(spriteLeft, 8, 3);
 		velocity.x -= SHIP_HORIZ_ACCELERATION;
 		if (velocity.x < -SHIP_MAX_SPEED)
@@ -81,7 +85,7 @@ void PlayerShip::update()
 float PlayerShip::getCameraTarget()
 {
 	float cameraTarget;
-	if (facingRight)
+	if (isFlagSet(FLAG_FACING_RIGHT))
 	{
 		cameraTarget = (worldPos.x + 32) - (5 * (velocity.x/100.0));
 		if (cameraTarget >= WORLD_WIDTH)
@@ -99,8 +103,6 @@ float PlayerShip::getCameraTarget()
 		}
 	}
 
-
-
 	return cameraTarget;
 }
 
@@ -109,14 +111,10 @@ void PlayerShip::fire()
 	PlayerShot* shot = ((GameState*)(stateManager.getCurrentState()))->getPlayerShot();
 	if (shot != NULL)
 	{
-#ifdef _DEBUG
-		Serial.println("Firing shot");
-#endif
-
 		shot->worldPos.y = worldPos.y+1;
 
 		float shotVelocity;
-		if (facingRight)
+		if (isFlagSet(FLAG_FACING_RIGHT))
 		{
 			shot->worldPos.x = worldPos.x + 8;
 			shotVelocity = velocity.x + 300;
@@ -137,4 +135,16 @@ void PlayerShip::fire()
 		Serial.println(F("Laser pool exhausted. Not firing."));
 	}
 #endif
+}
+
+void PlayerShip::render(Vector2Int screenPos)
+{
+	if (Sprite::render(screenPos))
+	{
+		setFlag(FLAG_VISIBLE);
+	}
+	else
+	{
+		unsetFlag(FLAG_VISIBLE);
+	}
 }

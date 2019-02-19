@@ -14,8 +14,9 @@ void Sprite::setSpriteData(unsigned char newSprite[], byte width, byte height)
 	halfWidth = width / 2;
 }
 
-void Sprite::render(Vector2Int screenPos)
+bool Sprite::render(Vector2Int screenPos)
 {
+	bool bIsVisible = false;
 	// If far from the camera, flip to the other side for wrapping
 	if (screenPos.x < -HALF_WORLD_WIDTH)
 	{
@@ -37,14 +38,6 @@ void Sprite::render(Vector2Int screenPos)
 		arduboy.drawBitmap(screenPos.x, screenPos.y, (const uint8_t *)spriteData, width, height, WHITE);
 		bIsVisible = true;
 	}
-	else
-	{
-		bIsVisible = false;
-	}
 
-}
-
-bool Sprite::isVisible()
-{
 	return bIsVisible;
 }
