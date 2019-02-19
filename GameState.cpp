@@ -68,13 +68,6 @@ void GameState::update()
 
 	landscape.render(camera.worldPos.x);
 
-	/*
-	for (int i = 0; i < TOTAL_LANDSCAPE_SEGMENTS; i++)
-	{
-		landscapeSegments[i].render(camera.worldToScreenPos(landscapeSegments[i].worldPos));
-	}
-	*/
-
 	for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
 	{
 		if (playerShots[i].isActive())
@@ -103,6 +96,15 @@ void GameState::update()
 			landers[i].collisionCheck(playerShots, &playerShip);
 		}
 	}
+
+	for (int i = 0; i < TOTAL_PARTICLES; i++)
+	{
+		if (particles[i].isActive())
+		{
+			particles[i].update();
+			particles[i].render(camera.worldToScreenPos(particles[i].worldPos));
+		}
+	}
 }
 
 PlayerShot* GameState::getPlayerShot()
@@ -118,4 +120,19 @@ PlayerShot* GameState::getPlayerShot()
 	}
 
 	return pShot;
+}
+
+Particles* GameState::getParticles()
+{
+	Particles* pParticles = NULL;
+	for (int i = 0; i < TOTAL_PARTICLES; i++)
+	{
+		if (!pParticles[i].isActive())
+		{
+			pParticles = &particles[i];
+			break;
+		}
+	}
+
+	return pParticles;
 }

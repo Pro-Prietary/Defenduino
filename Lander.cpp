@@ -113,5 +113,12 @@ Rect Lander::getCollisionRect()
 void Lander::destroy()
 {
 	unsetFlag(FLAG_ACTIVE);
+	Particles* pExplosion = ((GameState*)(stateManager.getCurrentState()))->getParticles();
+	if (pExplosion != NULL)
+	{
+		pExplosion->worldPos.x = worldPos.x;
+		pExplosion->worldPos.y = worldPos.y;
+		pExplosion->show(false);
+	}
 }
 

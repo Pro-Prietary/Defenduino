@@ -79,4 +79,12 @@ Rect Humanoid::getCollisionRect()
 void Humanoid::destroy()
 {
 	unsetFlag(FLAG_ACTIVE);
+
+	Particles* pExplosion = ((GameState*)(stateManager.getCurrentState()))->getParticles();
+	if (pExplosion != NULL)
+	{
+		pExplosion->worldPos.x = worldPos.x;
+		pExplosion->worldPos.y = worldPos.y;
+		pExplosion->show(false);
+	}
 }
