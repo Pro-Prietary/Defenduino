@@ -71,7 +71,11 @@ bool Lander::render(Vector2Int screenPos)
 void Lander::setActive(bool active)
 {
 	GameObject::setActive(active);
-	startSeeking();
+
+	if (active)
+	{
+		startSeeking();
+	}
 }
 
 void Lander::startSeeking()
@@ -100,8 +104,14 @@ void Lander::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 		{
 			pPlayerShots[i].setActive(false);
 			destroy();
-			break;
+			return;
 		}
+	}
+
+	if (pPlayerShip->isActive() and !pPlayerShip->isExploding() && arduboy.collide(pPlayerShip->getCollisionRect(), thisRect))
+	{
+		destroy();
+		pPlayerShip->destroy();
 	}
 }
 
@@ -118,7 +128,7 @@ void Lander::destroy()
 	{
 		pExplosion->worldPos.x = worldPos.x;
 		pExplosion->worldPos.y = worldPos.y;
-		pExplosion->show(false);
+		pExplosion->show(false, false);
 	}
 }
 

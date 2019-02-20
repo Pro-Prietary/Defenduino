@@ -42,3 +42,16 @@ void GameObject::unsetFlag(byte flagToUnset)
 {
 	flags = flags & ~flagToUnset;
 }
+
+void GameObject::setFlag(byte flagToSet, bool setValue)
+{
+	if (setValue)
+	{
+		setFlag(flagToSet);
+	}
+	else
+	{
+		unsetFlag(flagToSet);
+	}
+}
+

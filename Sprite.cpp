@@ -41,3 +41,4 @@ bool Sprite::render(Vector2Int screenPos)
 
 	return bIsVisible;
 }
+

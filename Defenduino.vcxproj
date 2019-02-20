@@ -115,6 +115,7 @@
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="GameStatus.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Humanoid.h" />
     <ClInclude Include="Lander.h" />
@@ -143,6 +144,7 @@
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="GameStatus.cpp" />
     <ClCompile Include="Humanoid.cpp" />
     <ClCompile Include="Lander.cpp" />
     <ClCompile Include="Landscape.cpp" />

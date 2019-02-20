@@ -9,6 +9,8 @@ const unsigned char spriteLeft[]  PROGMEM = { 0x2, 0x2, 0x2, 0x6, 0x6, 0x7, 0x7,
 #define SHIP_HORIZ_DECELERATION 15
 
 #define FLAG_FACING_RIGHT 0x4
+#define FLAG_EXPLODING 0x8
+#define FLAG_HIDDEN 0x10
 
 PlayerShip::PlayerShip() : MovingGameObject()
 {
@@ -19,12 +21,25 @@ PlayerShip::PlayerShip() : MovingGameObject()
 
 void PlayerShip::update()
 {
+	if(isFlagSet(FLAG_EXPLODING))
+	{ 
+		explodingUpdate();
+	}
+	else
+	{
+		activeUpdate();
+	}
+	
+}
+
+void PlayerShip::activeUpdate()
+{
 	MovingGameObject::update();
 
-	if (arduboy.pressed(UP_BUTTON) && worldPos.y > -HALF_SCREEN_HEIGHT) 
+	if (arduboy.pressed(UP_BUTTON) && worldPos.y > -HALF_SCREEN_HEIGHT)
 	{
 		worldPos.y--;
-	} 
+	}
 	else if (arduboy.pressed(DOWN_BUTTON) && worldPos.y < HALF_SCREEN_HEIGHT - 3)
 	{
 		worldPos.y++;
@@ -79,6 +94,19 @@ void PlayerShip::update()
 	if (arduboy.justPressed(B_BUTTON))
 	{
 		fire();
+	}
+}
+
+void PlayerShip::explodingUpdate() 
+{
+	explosionTimer--;
+	if (explosionTimer == 0)
+	{
+		explode();
+	}
+	else if(explosionTimer % 4 == 0)
+	{
+		setFlag(FLAG_HIDDEN, !isFlagSet(FLAG_HIDDEN));
 	}
 }
 
@@ -139,12 +167,58 @@ void PlayerShip::fire()
 
 void PlayerShip::render(Vector2Int screenPos)
 {
-	if (Sprite::render(screenPos))
+	if (!isFlagSet(FLAG_HIDDEN))
 	{
-		setFlag(FLAG_VISIBLE);
+		if (Sprite::render(screenPos))
+		{
+			setFlag(FLAG_VISIBLE);
+		}
+		else
+		{
+			unsetFlag(FLAG_VISIBLE);
+		}
 	}
-	else
+}
+
+void PlayerShip::destroy()
+{
+	if (!isFlagSet(FLAG_EXPLODING))
 	{
-		unsetFlag(FLAG_VISIBLE);
+		setFlag(FLAG_EXPLODING);
+		explosionTimer = 30;
 	}
+}
+
+Rect PlayerShip::getCollisionRect()
+{
+	return Rect(worldPos.x, worldPos.y, 8, 3);
+}
+
+
+void PlayerShip::setActive(bool active)
+{
+	GameObject::setActive(active);
+
+	if (active)
+	{
+		unsetFlag(FLAG_EXPLODING);
+		unsetFlag(FLAG_HIDDEN);
+	}
+}
+
+void PlayerShip::explode()
+{
+	unsetFlag(FLAG_ACTIVE);
+	Particles* pExplosion = ((GameState*)(stateManager.getCurrentState()))->getParticles();
+	if (pExplosion != NULL)
+	{
+		pExplosion->worldPos.x = worldPos.x;
+		pExplosion->worldPos.y = worldPos.y;
+		pExplosion->show(false, false, true);
+	}
+}
+
+bool PlayerShip::isExploding()
+{
+	return isFlagSet(FLAG_EXPLODING);
 }

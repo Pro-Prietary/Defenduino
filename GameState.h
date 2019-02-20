@@ -14,7 +14,6 @@
 
 #define TOTAL_PLAYER_SHOTS 4
 #define TOTAL_LANDERS 8
-#define TOTAL_LANDSCAPE_SEGMENTS 8
 #define TOTAL_HUMANOIDS 10
 #define TOTAL_PARTICLES 4
 
@@ -25,6 +24,7 @@ public:
 	virtual void update();
 	PlayerShot* getPlayerShot();
 	Particles* getParticles();
+	void lostLife();
 
 private:
 	GameCamera camera;
@@ -36,5 +36,12 @@ private:
 	Particles particles[TOTAL_PARTICLES];
 
 	void spawnLander(int worldX);
+
+	byte enemies = 0;
+	byte lives = 3;
+	byte smartBombs = 3;
+	byte remainingHumanoids = 10;
+
+	int score = 0;
 };
 

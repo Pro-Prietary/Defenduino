@@ -85,6 +85,6 @@ void Humanoid::destroy()
 	{
 		pExplosion->worldPos.x = worldPos.x;
 		pExplosion->worldPos.y = worldPos.y;
-		pExplosion->show(false);
+		pExplosion->show(false, false);
 	}
 }

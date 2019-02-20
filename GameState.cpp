@@ -4,6 +4,8 @@
 
 GameState::GameState() : State(&camera)
 {
+	
+
 	playerShip.setActive(true);
 
 	for (int i = 0; i < TOTAL_HUMANOIDS; i++)
@@ -135,4 +137,9 @@ Particles* GameState::getParticles()
 	}
 
 	return pParticles;
+}
+
+void GameState::lostLife()
+{
+	lives--;
 }
