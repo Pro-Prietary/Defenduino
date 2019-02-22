@@ -14,10 +14,11 @@ public:
 	bool render(Vector2Int cameraPos);
 	void setActive(bool active);
 	void collisionCheck(PlayerShot* playerShots, PlayerShip* pPlayerShip);
+	void startSeeking();
+	bool isMutant();
 
 
 private:
-	void startSeeking();
 	void seekingUpdate(Landscape* pLandscape);
 	Rect getCollisionRect();
 	void destroy();

@@ -27,7 +27,7 @@ bool Sprite::render(Vector2Int screenPos)
 		screenPos.x -= WORLD_WIDTH;
 	}
 
-	GameCamera* pCamera = (GameCamera*)(stateManager.getCurrentState()->getCamera());
+	GameCamera* pCamera = ((GameState*)stateManager.getCurrentState())->getCamera();
 
 	int leftEdge = screenPos.x - halfWidth;
 	int rightEdge = screenPos.x + halfWidth;

@@ -4,7 +4,7 @@
 #include "Globals.h"
 
 
-MenuState::MenuState() : State(&camera)
+MenuState::MenuState() : State()
 {
 	pressStartObj.worldPos.x = 14;
 	pressStartObj.worldPos.y = 10;
@@ -21,7 +21,7 @@ MenuState::MenuState() : State(&camera)
 
 void MenuState::update() 
 {
-	if (arduboy.justPressed(A_BUTTON)) 
+	if (arduboy.justPressed(A_BUTTON) || arduboy.justPressed(B_BUTTON))
 	{
 		stateManager.setState(new GameState());
 	}

@@ -3,7 +3,6 @@
 
 GameObject::GameObject()
 {
-	worldPos.x = worldPos.y = 0;
 }
 
 bool GameObject::isActive()
@@ -25,33 +24,6 @@ void GameObject::setActive(bool bIsActive)
 	else
 	{
 		unsetFlag(FLAG_ACTIVE);
-	}
-}
-
-bool GameObject::isFlagSet(byte flagToCheck)
-{
-	return (flags & flagToCheck) != 0;
-}
-
-void GameObject::setFlag(byte flagToSet)
-{
-	flags = flags | flagToSet;
-}
-
-void GameObject::unsetFlag(byte flagToUnset)
-{
-	flags = flags & ~flagToUnset;
-}
-
-void GameObject::setFlag(byte flagToSet, bool setValue)
-{
-	if (setValue)
-	{
-		setFlag(flagToSet);
-	}
-	else
-	{
-		unsetFlag(flagToSet);
 	}
 }
 

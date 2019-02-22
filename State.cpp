@@ -2,17 +2,11 @@
 #include "Globals.h"
 #include <Arduboy2.h>
 
-
-State::State(Camera* pCamera)
+State::State()
 {
-	pCameraObject = pCamera;
+
 }
 
 void State::update()
 {
-}
-
-Camera* State::getCamera()
-{
-	return pCameraObject;
 }

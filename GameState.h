@@ -9,15 +9,16 @@
 #include "Lander.h"
 #include "Landscape.h"
 #include "Particles.h"
+#include "Flaggable.h"
 
 #include <Arduboy2.h>
 
 #define TOTAL_PLAYER_SHOTS 4
-#define TOTAL_LANDERS 8
+#define TOTAL_LANDERS 20
 #define TOTAL_HUMANOIDS 10
 #define TOTAL_PARTICLES 4
 
-class GameState : public State
+class GameState : public State, public Flaggable
 {
 public:
 	GameState();
@@ -25,6 +26,10 @@ public:
 	PlayerShot* getPlayerShot();
 	Particles* getParticles();
 	void lostLife();
+	GameCamera* getCamera();
+	void freezeActors();
+	Lander* getInactiveLander();
+
 
 private:
 	GameCamera camera;
@@ -35,12 +40,16 @@ private:
 	Humanoid humanoids[TOTAL_HUMANOIDS];
 	Particles particles[TOTAL_PARTICLES];
 
-	void spawnLander(int worldX);
+	void spawnLander();
+	bool spawnPosTooCloseToPlayer(int xPos);
+	int getSafeLanderSpawn();
 
 	byte enemies = 0;
 	byte lives = 3;
 	byte smartBombs = 3;
 	byte remainingHumanoids = 10;
+
+	byte flags = 0;
 
 	int score = 0;
 };

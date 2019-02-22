@@ -7,12 +7,9 @@ class State
 {
 
 public:
-	Camera* getCamera();
 	virtual void update();
 protected:
-	State(Camera* pCameraObject);
+	State();
 
-private:
-  Camera* pCameraObject = NULL;
 };
 #endif

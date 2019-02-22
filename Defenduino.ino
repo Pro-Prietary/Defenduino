@@ -16,7 +16,7 @@ void setup() {
 
 #ifdef _DEBUG
 	Serial.begin(9600);
-	Serial.println("Starting");
+	Serial.println(F("Starting"));
 #endif
 }
 
@@ -30,7 +30,7 @@ void loop() {
   if (frameCount == 60*5)
   {
 	  frameCount = 0;
-	  Serial.print("Free memory: ");
+	  Serial.print(F("Free memory: "));
 	  Serial.println(freeRam());
   }
 #endif

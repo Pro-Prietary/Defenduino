@@ -110,10 +110,12 @@
     <ClInclude Include="Camera.h">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClInclude Include="Flaggable.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameObject.h">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClInclude Include="GameOverState.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GameStatus.h" />
     <ClInclude Include="Globals.h" />
@@ -141,8 +143,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Flaggable.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameOverState.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GameStatus.cpp" />
     <ClCompile Include="Humanoid.cpp" />

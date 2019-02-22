@@ -1,40 +1,29 @@
 #include "Particles.h"
 #include "Globals.h"
 
-#define FLAG_IMPLODING 0x4
+#define FLAG_SPAWNING 0x4
 #define FLAG_INVERTED 0x8
-#define FLAG_LARGE 0x10
+#define FLAG_PLAYER 0x10
 
 #define MAX_DISTANCE_SMALL 32
 #define MAX_DISTANCE_LARGE 128
 
-void Particles::show(bool implosion, bool invertScreen, bool large)
+void Particles::show(byte type)
 {
 	GameObject::setActive(true);
 
-	setFlag(FLAG_LARGE, large);
+	unsetFlag(FLAG_PLAYER);
+	unsetFlag(FLAG_SPAWNING);
+	distance = 0;
 
-	if (implosion)
+	if (type == PARTICLES_SPAWN)
 	{
-		setFlag(FLAG_IMPLODING);
-
-		if (large)
-		{
-			distance = MAX_DISTANCE_LARGE;
-		}
-		else
-		{
-			distance = MAX_DISTANCE_SMALL;
-		}
+		setFlag(FLAG_SPAWNING);
+		distance = MAX_DISTANCE_SMALL;
 	}
-	else
+	else if(type == PARTICLES_PLAYER)
 	{
-		unsetFlag(FLAG_IMPLODING);
-		distance = 0;
-	}
-
-	if (invertScreen)
-	{
+		setFlag(FLAG_PLAYER);
 		arduboy.invert(true);
 		setFlag(FLAG_INVERTED);
 	}
@@ -42,19 +31,33 @@ void Particles::show(bool implosion, bool invertScreen, bool large)
 
 void Particles::update()
 {
-	if (isFlagSet(FLAG_IMPLODING))
+	if (isFlagSet(FLAG_SPAWNING))
 	{
 		distance-=2;
 		if (distance <= 0)
 		{
 			unsetFlag(FLAG_ACTIVE);
+			Lander* pLander = ((GameState*)(stateManager.getCurrentState()))->getInactiveLander();
+
+			if (pLander != NULL)
+			{
+				pLander->worldPos.x = worldPos.x;
+				pLander->worldPos.y = worldPos.y;
+				pLander->setActive(true);
+			}
+#ifdef _DEBUG
+			else
+			{
+				Serial.println(F("Tried to get lander after spawn particles completed, but none was available."));
+			}
+#endif
 		}
 	}
 	else
 	{
 		distance+=2;
 		byte maxDistance;
-		if (isFlagSet(FLAG_LARGE))
+		if (isFlagSet(FLAG_PLAYER))
 		{
 			maxDistance = MAX_DISTANCE_LARGE;
 		}
@@ -66,6 +69,11 @@ void Particles::update()
 		if (distance >= maxDistance)
 		{
 			unsetFlag(FLAG_ACTIVE);
+
+			if (isFlagSet(FLAG_PLAYER))
+			{
+				((GameState*)(stateManager.getCurrentState()))->lostLife();
+			}
 		}
 	}
 

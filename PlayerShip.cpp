@@ -184,6 +184,7 @@ void PlayerShip::destroy()
 {
 	if (!isFlagSet(FLAG_EXPLODING))
 	{
+		((GameState*)(stateManager.getCurrentState()))->freezeActors();
 		setFlag(FLAG_EXPLODING);
 		explosionTimer = 30;
 	}
@@ -203,6 +204,7 @@ void PlayerShip::setActive(bool active)
 	{
 		unsetFlag(FLAG_EXPLODING);
 		unsetFlag(FLAG_HIDDEN);
+		setFlag(FLAG_FACING_RIGHT);
 	}
 }
 
@@ -214,7 +216,7 @@ void PlayerShip::explode()
 	{
 		pExplosion->worldPos.x = worldPos.x;
 		pExplosion->worldPos.y = worldPos.y;
-		pExplosion->show(false, false, true);
+		pExplosion->show(PARTICLES_PLAYER);
 	}
 }
 

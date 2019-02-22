@@ -128,7 +128,12 @@ void Lander::destroy()
 	{
 		pExplosion->worldPos.x = worldPos.x;
 		pExplosion->worldPos.y = worldPos.y;
-		pExplosion->show(false, false);
+		pExplosion->show(PARTICLES_EXPLOSION);
 	}
+}
+
+bool Lander::isMutant()
+{
+	return isFlagSet(FLAG_MUTANT);
 }
 
