@@ -13,8 +13,11 @@ public:
 	bool render(Vector2Int cameraPos);
 	void setActive(bool active);
 	void collisionCheck(PlayerShot* playerShots, PlayerShip* pPlayerShip);
+	bool isCapturable();
+	void setCaptured(bool captured);
+	void destroy();
+
 
 private:
 	Rect getCollisionRect();
-	void destroy();
 };

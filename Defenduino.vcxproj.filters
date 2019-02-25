@@ -87,6 +87,9 @@
     <ClInclude Include="Flaggable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyShot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -153,6 +156,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Flaggable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyShot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

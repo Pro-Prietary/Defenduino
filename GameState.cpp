@@ -7,8 +7,12 @@
 
 #define FLAG_FREEZE_ACTORS 0x1
 
+#define SPAWN_INTERVAL 600
+
 GameState::GameState() : State()
 {
+	//arduboy.initRandomSeed();
+	srand(arduboy.generateRandomSeed());
 	playerShip.setActive(true);
 
 	for (int i = 0; i < TOTAL_HUMANOIDS; i++)
@@ -28,11 +32,6 @@ GameState::GameState() : State()
 		humanoids[i].setActive(true);
 
 	}
-	
-	for (int i = 0; i < TOTAL_LANDERS; i++)
-	{
-		spawnLander();
-	}
 }
 
 GameCamera* GameState::getCamera()
@@ -43,7 +42,7 @@ GameCamera* GameState::getCamera()
 
 // Tries to start spawning a lander, but no guaranteed to do so if
 // no resources are available.
-void GameState::spawnLander()
+void GameState::startSpawningLander()
 {
 	int worldX = getSafeLanderSpawn();
 
@@ -84,6 +83,19 @@ bool GameState::spawnPosTooCloseToPlayer(int xPos)
 void GameState::update()
 {
 	bool freezeActors = isFlagSet(FLAG_FREEZE_ACTORS);
+
+	uint8_t expectedLanders = level == 1 ? 15 : 20;
+	if(!freezeActors && spawnedLanders < expectedLanders)
+	{
+		if (spawnCountdown == 0)
+		{
+			spawnWave(expectedLanders);
+		}
+		else
+		{
+			spawnCountdown--;
+		}
+	}
 
 	if (playerShip.isActive())
 	{
@@ -129,7 +141,7 @@ void GameState::update()
 		{
 			if (!freezeActors)
 			{
-				landers[i].update(&landscape);
+				landers[i].update(&landscape, &playerShip);
 			}
 
 			landers[i].render(camera.worldToScreenPos(landers[i].worldPos));
@@ -137,6 +149,24 @@ void GameState::update()
 			if (!freezeActors)
 			{
 				landers[i].collisionCheck(playerShots, &playerShip);
+			}
+		}
+	}
+
+	for (int i = 0; i < TOTAL_ENEMY_SHOTS; i++)
+	{
+		if (enemyShots[i].isActive())
+		{
+			if (!freezeActors)
+			{
+				enemyShots[i].update();
+			}
+
+			enemyShots[i].render(camera.worldToScreenPos(enemyShots[i].worldPos));
+
+			if (!freezeActors)
+			{
+				enemyShots[i].collisionCheck(&playerShip);
 			}
 		}
 	}
@@ -151,10 +181,30 @@ void GameState::update()
 	}
 }
 
+void GameState::spawnWave(uint8_t maxForLevel)
+{
+	uint8_t toSpawn = maxForLevel - spawnedLanders;
+	if (toSpawn > 4)
+	{
+		toSpawn = 4;
+	}
+
+#ifdef _DEBUG
+		Serial.print(F("Attempting to spawn "));
+		Serial.println(toSpawn);
+#endif
+
+	for (uint8_t i = 0; i < toSpawn; i++)
+	{
+		startSpawningLander();
+	}
+	spawnCountdown = SPAWN_INTERVAL;
+}
+
 PlayerShot* GameState::getPlayerShot()
 {
 	PlayerShot* pShot = NULL;
-	for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
+	for (uint8_t i = 0; i < TOTAL_PLAYER_SHOTS; i++)
 	{
 		if (!playerShots[i].isActive())
 		{
@@ -218,17 +268,46 @@ void GameState::freezeActors()
 	setFlag(FLAG_FREEZE_ACTORS);
 }
 
-Lander* GameState::getInactiveLander()
+void GameState::completeSpawningLander(int xPos, int yPos)
 {
-	// Find the first inactive lander in the list
-	Lander* pLander = NULL;
+	// Find the first inactive lander in the list, activate and place it.
 	for (int i = 0; i < TOTAL_LANDERS; i++)
 	{
 		if (!landers[i].isActive())
 		{
-			pLander = &landers[i];
+			landers[i].setActive(true);
+			landers[i].worldPos.x = xPos;
+			landers[i].worldPos.y = yPos;
+			spawnedLanders++;
+			liveEnemiesRemaining++;
+			return;
+		}
+	}
+	
+#ifdef _DEBUG
+	Serial.println(F("Tried to get lander after spawn particles completed, but none was available."));
+#endif
+
+}
+
+// Get the index of a humanoid that can be captured, or NO_HUMANOID_FOUND if there is none.
+uint8_t GameState::getCapturableHumanoidAtPosition(uint16_t xPos)
+{
+	uint8_t index = NO_HUMANOID_FOUND;
+
+	for (uint8_t i = 0; i < TOTAL_HUMANOIDS; i++)
+	{
+		if (humanoids[i].isCapturable() && (uint16_t)(humanoids[i].worldPos.x) == xPos)
+		{
+			index = i;
 			break;
 		}
 	}
-	return pLander;
+
+	return index;
+}
+
+Humanoid* GameState::getHumanoid(uint8_t index)
+{
+	return &humanoids[index];
 }

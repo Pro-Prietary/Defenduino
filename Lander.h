@@ -10,7 +10,7 @@ class Lander : public MovingGameObject, public Sprite
 {
 public:
 	Lander();
-	void update(Landscape* pLandscape);
+	void update(Landscape* pLandscape, PlayerShip* pPlayerShip);
 	bool render(Vector2Int cameraPos);
 	void setActive(bool active);
 	void collisionCheck(PlayerShot* playerShots, PlayerShip* pPlayerShip);
@@ -20,6 +20,12 @@ public:
 
 private:
 	void seekingUpdate(Landscape* pLandscape);
+	void landingUpdate();
+	void escapingUpdate();
+	void mutantUpdate(PlayerShip* pPlayerShip);
+
 	Rect getCollisionRect();
 	void destroy();
+
+	uint8_t humanoid;
 };

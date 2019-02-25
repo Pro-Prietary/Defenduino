@@ -10,6 +10,7 @@
 #include "Landscape.h"
 #include "Particles.h"
 #include "Flaggable.h"
+#include "EnemyShot.h"
 
 #include <Arduboy2.h>
 
@@ -17,6 +18,9 @@
 #define TOTAL_LANDERS 20
 #define TOTAL_HUMANOIDS 10
 #define TOTAL_PARTICLES 4
+#define TOTAL_ENEMY_SHOTS 4
+
+#define NO_HUMANOID_FOUND 255
 
 class GameState : public State, public Flaggable
 {
@@ -28,8 +32,10 @@ public:
 	void lostLife();
 	GameCamera* getCamera();
 	void freezeActors();
-	Lander* getInactiveLander();
-
+	void completeSpawningLander(int xPos, int yPos);
+	uint8_t getCapturableHumanoidAtPosition(uint16_t xPos);
+	Humanoid* getHumanoid(uint8_t index);
+	uint8_t liveEnemiesRemaining = 0;
 
 private:
 	GameCamera camera;
@@ -39,18 +45,23 @@ private:
 	Landscape landscape;
 	Humanoid humanoids[TOTAL_HUMANOIDS];
 	Particles particles[TOTAL_PARTICLES];
+	EnemyShot enemyShots[TOTAL_ENEMY_SHOTS];
 
-	void spawnLander();
+	void startSpawningLander();
 	bool spawnPosTooCloseToPlayer(int xPos);
 	int getSafeLanderSpawn();
+	void spawnWave(uint8_t maxForLevel);
 
-	byte enemies = 0;
-	byte lives = 3;
-	byte smartBombs = 3;
-	byte remainingHumanoids = 10;
+	uint8_t spawnedLanders = 0;
+	uint8_t lives = 3;
+	uint8_t smartBombs = 3;
+	uint8_t remainingHumanoids = 10;
+	uint8_t level = 1;
 
-	byte flags = 0;
+	uint8_t flags = 0;
 
-	int score = 0;
+	uint16_t spawnCountdown = 0;
+
+	uint16_t score = 0;
 };
 

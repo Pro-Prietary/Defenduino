@@ -5,9 +5,7 @@
 
 class MovingGameObject : public GameObject
 {
-protected:
-	void update();
-
 public:
+	void update();
 	Vector2Int velocity;
 };

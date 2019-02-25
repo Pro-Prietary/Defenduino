@@ -37,20 +37,7 @@ void Particles::update()
 		if (distance <= 0)
 		{
 			unsetFlag(FLAG_ACTIVE);
-			Lander* pLander = ((GameState*)(stateManager.getCurrentState()))->getInactiveLander();
-
-			if (pLander != NULL)
-			{
-				pLander->worldPos.x = worldPos.x;
-				pLander->worldPos.y = worldPos.y;
-				pLander->setActive(true);
-			}
-#ifdef _DEBUG
-			else
-			{
-				Serial.println(F("Tried to get lander after spawn particles completed, but none was available."));
-			}
-#endif
+			((GameState*)(stateManager.getCurrentState()))->completeSpawningLander(worldPos.x, worldPos.y);
 		}
 	}
 	else

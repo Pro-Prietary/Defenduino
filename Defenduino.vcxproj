@@ -110,6 +110,7 @@
     <ClInclude Include="Camera.h">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClInclude Include="EnemyShot.h" />
     <ClInclude Include="Flaggable.h" />
     <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameObject.h">
@@ -143,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="EnemyShot.cpp" />
     <ClCompile Include="Flaggable.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameObject.cpp" />

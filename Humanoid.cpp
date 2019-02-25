@@ -6,6 +6,8 @@ const unsigned char sprite[] PROGMEM = { 0x7, };
 #define FLOOR 29
 
 #define FLAG_CLIMBER 0x4
+#define FLAG_CAPTURED 0x8
+#define FLAG_FALLING 0x10
 
 Humanoid::Humanoid() : MovingGameObject()
 {
@@ -15,17 +17,20 @@ Humanoid::Humanoid() : MovingGameObject()
 void Humanoid::update(Landscape* pLandscape)
 {
 	MovingGameObject::update();
-
-	byte landscapeHeight = pLandscape->getHeight(worldPos.x) - 29;
-
-	if (isFlagSet(FLAG_CLIMBER) && landscapeHeight < worldPos.y)
+	if (!isFlagSet(FLAG_CAPTURED) && !isFlagSet(FLAG_FALLING))
 	{
-		worldPos.y--;
+		byte landscapeHeight = pLandscape->getHeight(worldPos.x) - 29;
+
+		if (isFlagSet(FLAG_CLIMBER) && landscapeHeight < worldPos.y)
+		{
+			worldPos.y--;
+		}
+		else if (landscapeHeight > worldPos.y && worldPos.y < FLOOR)
+		{
+			worldPos.y++;
+		}
 	}
-	else if (landscapeHeight > worldPos.y && worldPos.y < FLOOR)
-	{
-		worldPos.y++;
-	}
+	
 }
 
 bool Humanoid::render(Vector2Int screenPos)
@@ -87,4 +92,16 @@ void Humanoid::destroy()
 		pExplosion->worldPos.y = worldPos.y;
 		pExplosion->show(PARTICLES_EXPLOSION);
 	}
+}
+
+bool Humanoid::isCapturable()
+{
+	return isActive() && !isFlagSet(FLAG_CAPTURED) && !isFlagSet(FLAG_FALLING);
+}
+
+void Humanoid::setCaptured(bool captured)
+{
+	setFlag(FLAG_CAPTURED, captured);
+	velocity.x = 0;
+	velocity.y = 0;
 }
