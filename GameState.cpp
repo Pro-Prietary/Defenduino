@@ -159,7 +159,7 @@ void GameState::update()
 		{
 			if (!freezeActors)
 			{
-				enemyShots[i].update();
+				enemyShots[i].update(&playerShip);
 			}
 
 			enemyShots[i].render(camera.worldToScreenPos(enemyShots[i].worldPos));
@@ -209,6 +209,21 @@ PlayerShot* GameState::getPlayerShot()
 		if (!playerShots[i].isActive())
 		{
 			pShot = &playerShots[i];
+			break;
+		}
+	}
+
+	return pShot;
+}
+
+EnemyShot* GameState::getEnemyShot()
+{
+	EnemyShot* pShot = NULL;
+	for (uint8_t i = 0; i < TOTAL_ENEMY_SHOTS; i++)
+	{
+		if (!enemyShots[i].isActive())
+		{
+			pShot = &enemyShots[i];
 			break;
 		}
 	}

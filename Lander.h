@@ -19,10 +19,11 @@ public:
 
 
 private:
-	void seekingUpdate(Landscape* pLandscape);
-	void landingUpdate();
-	void escapingUpdate();
+	void seekingUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip);
+	void landingUpdate(PlayerShip* pPlayerShip);
+	void escapingUpdate(PlayerShip* pPlayerShip);
 	void mutantUpdate(PlayerShip* pPlayerShip);
+	void fire(PlayerShip* pPlayerShip);
 
 	Rect getCollisionRect();
 	void destroy();

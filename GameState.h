@@ -28,6 +28,8 @@ public:
 	GameState();
 	virtual void update();
 	PlayerShot* getPlayerShot();
+	EnemyShot* getEnemyShot();
+
 	Particles* getParticles();
 	void lostLife();
 	GameCamera* getCamera();

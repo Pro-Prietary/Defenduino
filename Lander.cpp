@@ -25,15 +25,15 @@ void Lander::update(Landscape* pLandscape, PlayerShip* pPlayerShip)
 
 	if (isFlagSet(FLAG_SEEKING))
 	{
-		seekingUpdate(pLandscape);
+		seekingUpdate(pLandscape, pPlayerShip);
 	} 
 	else if (isFlagSet(FLAG_LANDING))
 	{
-		landingUpdate();
+		landingUpdate(pPlayerShip);
 	}
 	else if (isFlagSet(FLAG_ESCAPING))
 	{
-		escapingUpdate();
+		escapingUpdate(pPlayerShip);
 	}
 	else if (isFlagSet(FLAG_MUTANT))
 	{
@@ -41,7 +41,7 @@ void Lander::update(Landscape* pLandscape, PlayerShip* pPlayerShip)
 	}
 }
 
-void Lander::seekingUpdate(Landscape* pLandscape)
+void Lander::seekingUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 {
 
 	uint8_t landscapeHeight = pLandscape->getHeight(worldPos.x);
@@ -81,9 +81,15 @@ void Lander::seekingUpdate(Landscape* pLandscape)
 			velocity.y = 50;
 		}
 	}
+
+	// 1/128 chance we'll fire
+	if (isFlagSet(FLAG_VISIBLE) && rand() % 128 == 0)
+	{
+		fire(pPlayerShip);
+	}
 }
 
-void Lander::landingUpdate()
+void Lander::landingUpdate(PlayerShip* pPlayerShip)
 {
 	Humanoid* pHumanoid = ((GameState*)(stateManager.getCurrentState()))->getHumanoid(humanoid);
 
@@ -102,10 +108,16 @@ void Lander::landingUpdate()
 
 			velocity.y = -50;
 		}
+
+		// 1/100 chance we'll fire
+		if (isFlagSet(FLAG_VISIBLE) && rand() % 100 == 0)
+		{
+			fire(pPlayerShip);
+		}
 	}
 }
 
-void Lander::escapingUpdate()
+void Lander::escapingUpdate(PlayerShip* pPlayerShip)
 {
 	Humanoid* pHumanoid = ((GameState*)(stateManager.getCurrentState()))->getHumanoid(humanoid);
 	pHumanoid->worldPos.y = worldPos.y + 6;
@@ -122,13 +134,19 @@ void Lander::escapingUpdate()
 	else if (worldPos.y <= -32 && pHumanoid->isActive())
 	{
 #ifdef _DEBUG
-		Serial.print(F("Mutant time!"));
+		Serial.println(F("Mutant time!"));
 #endif
 		// Mutant time!
 		pHumanoid->destroy();
 		setSpriteData(mutantSprite, 7, 6);
 		unsetFlag(FLAG_ESCAPING);
 		setFlag(FLAG_MUTANT);
+	}
+
+	// 1/100 chance we'll fire
+	if (isFlagSet(FLAG_VISIBLE) && rand() % 100 == 0)
+	{
+		fire(pPlayerShip);
 	}
 }
 
@@ -156,6 +174,12 @@ void Lander::mutantUpdate(PlayerShip* pPlayerShip)
 	if (rand() % 3 == 1)
 	{
 		velocity.y *= -1;
+	}
+
+	// 1/64 chance we'll fire
+	if (isFlagSet(FLAG_VISIBLE) && rand() % 64 == 0)
+	{
+		fire(pPlayerShip);
 	}
 }
 
@@ -247,3 +271,11 @@ bool Lander::isMutant()
 	return isFlagSet(FLAG_MUTANT);
 }
 
+void Lander::fire(PlayerShip* pPlayerShip) {
+	EnemyShot* pShot = ((GameState*)(stateManager.getCurrentState()))->getEnemyShot();
+
+	if (pShot != NULL)
+	{
+		pShot->fire(pPlayerShip, worldPos);
+	}
+}

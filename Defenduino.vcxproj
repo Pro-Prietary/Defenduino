@@ -163,6 +163,7 @@
     <ClCompile Include="State.cpp" />
     <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="TextObject.cpp" />
+    <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector2Byte.cpp" />
     <ClCompile Include="Vector2Int.cpp" />
     <ClCompile Include="Vector2Int.h" />
