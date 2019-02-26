@@ -44,14 +44,14 @@ void Lander::update(Landscape* pLandscape, PlayerShip* pPlayerShip)
 void Lander::seekingUpdate(Landscape* pLandscape)
 {
 
-	byte landscapeHeight = pLandscape->getHeight(worldPos.x);
-	byte preferredHeight;
+	uint8_t landscapeHeight = pLandscape->getHeight(worldPos.x);
+	int preferredHeight;
 	// Convert to camera space and sub 11  so we keep above it
-	landscapeHeight -= 43;
+	int convertedLandscapeHeight = landscapeHeight - 43;
 
-	if (landscapeHeight < CRUISING_ALTITUDE)
+	if (convertedLandscapeHeight < CRUISING_ALTITUDE)
 	{
-		preferredHeight = landscapeHeight;
+		preferredHeight = convertedLandscapeHeight;
 	}
 	else
 	{
@@ -134,10 +134,6 @@ void Lander::escapingUpdate()
 
 void Lander::mutantUpdate(PlayerShip* pPlayerShip)
 {
-#ifdef _DEBUG
-	Serial.print(F("Mutant update"));
-#endif
-
 	if (pPlayerShip->worldPos.x < worldPos.x)
 	{
 		velocity.x = -LANDER_HORIZ_SPEED;
