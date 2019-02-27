@@ -17,7 +17,12 @@ Humanoid::Humanoid() : MovingGameObject()
 void Humanoid::update(Landscape* pLandscape)
 {
 	MovingGameObject::update();
-	if (!isFlagSet(FLAG_CAPTURED) && !isFlagSet(FLAG_FALLING))
+
+	if (isFlagSet(FLAG_FALLING))
+	{
+		fallingUpdate(pLandscape);
+	}
+	else if (!isFlagSet(FLAG_CAPTURED))
 	{
 		byte landscapeHeight = pLandscape->getHeight(worldPos.x) - 29;
 
@@ -30,7 +35,30 @@ void Humanoid::update(Landscape* pLandscape)
 			worldPos.y++;
 		}
 	}
-	
+}
+
+void Humanoid::onSafeLanding()
+{
+	unsetFlag(FLAG_FALLING);
+	startWalking();
+}
+
+void Humanoid::fallingUpdate(Landscape* pLandscape)
+{
+	velocity.y++;
+	byte landscapeHeight = pLandscape->getHeight(worldPos.x) - 29;
+	if (worldPos.y >= landscapeHeight)
+	{
+		// Hit the ground
+		if (velocity.y >= 20)
+		{
+			destroy();
+		}
+		else
+		{
+			onSafeLanding();
+		}
+	}
 }
 
 bool Humanoid::render(Vector2Int screenPos)
@@ -59,6 +87,19 @@ void Humanoid::setActive(bool active)
 	else
 	{
 		unsetFlag(FLAG_CLIMBER);
+	}
+	startWalking();
+}
+
+void Humanoid::startWalking()
+{
+	if (rand() % 2 == 0)
+	{
+		velocity.x = 5;
+	}
+	else
+	{
+		velocity.x = -5;
 	}
 }
 
@@ -104,4 +145,10 @@ void Humanoid::setCaptured(bool captured)
 	setFlag(FLAG_CAPTURED, captured);
 	velocity.x = 0;
 	velocity.y = 0;
+}
+
+void Humanoid::startFalling()
+{
+	unsetFlag(FLAG_CAPTURED);
+	setFlag(FLAG_FALLING);
 }

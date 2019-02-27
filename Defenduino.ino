@@ -2,9 +2,11 @@
 #include "StateManager.h"
 #include "MenuState.h"
 #include "Globals.h"
+#include "Font3x5.h"
 
 Arduboy2 arduboy;
 StateManager stateManager;
+Font3x5 smallFont;
 
 #ifdef _DEBUG
 int frameCount = 0;

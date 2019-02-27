@@ -8,6 +8,7 @@
 #define FLAG_FREEZE_ACTORS 0x1
 
 #define SPAWN_INTERVAL 600
+#define HUMANOID_SPAWN_Y 29
 
 GameState::GameState() : State()
 {
@@ -17,20 +18,9 @@ GameState::GameState() : State()
 
 	for (int i = 0; i < TOTAL_HUMANOIDS; i++)
 	{
-		float xVel;
-		if (rand() % 2 == 0)
-		{
-			xVel = 5;
-		}
-		else
-		{
-			xVel = -5;
-		}
-		humanoids[i].velocity.x = xVel;
 		humanoids[i].worldPos.x = rand() % 1024;
-		humanoids[i].worldPos.y = 29;
+		humanoids[i].worldPos.y = HUMANOID_SPAWN_Y;
 		humanoids[i].setActive(true);
-
 	}
 }
 
@@ -269,6 +259,16 @@ void GameState::lostLife()
 			if (!landers[i].isMutant())
 			{
 				landers[i].startSeeking();
+			}
+		}
+
+		// All remaining humanoids should be placed on the ground.
+		for (int i = 0; i < TOTAL_HUMANOIDS; i++)
+		{
+			if (humanoids[i].isActive())
+			{
+				humanoids[i].worldPos.y = HUMANOID_SPAWN_Y;
+				humanoids[i].onSafeLanding();
 			}
 		}
 	}

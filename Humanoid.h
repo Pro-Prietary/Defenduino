@@ -16,8 +16,11 @@ public:
 	bool isCapturable();
 	void setCaptured(bool captured);
 	void destroy();
-
+	void startFalling();
+	void onSafeLanding();
 
 private:
 	Rect getCollisionRect();
+	void fallingUpdate(Landscape* pLandscape);
+	void startWalking();
 };

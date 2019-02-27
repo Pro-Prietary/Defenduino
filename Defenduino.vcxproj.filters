@@ -90,6 +90,9 @@
     <ClInclude Include="EnemyShot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Font3x5.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp">
@@ -162,6 +165,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Vector2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Font3x5.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

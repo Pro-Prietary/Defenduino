@@ -264,6 +264,18 @@ void Lander::destroy()
 		pExplosion->show(PARTICLES_EXPLOSION);
 		((GameState*)(stateManager.getCurrentState()))->liveEnemiesRemaining--;
 	}
+
+	if (isFlagSet(FLAG_ESCAPING) && humanoid != NO_HUMANOID_FOUND)
+	{
+		Humanoid* pHumanoid = ((GameState*)(stateManager.getCurrentState()))->getHumanoid(humanoid);
+		humanoid = NO_HUMANOID_FOUND;
+
+		if (pHumanoid->isActive())
+		{
+			pHumanoid->startFalling();
+		}
+	}
+
 }
 
 bool Lander::isMutant()

@@ -10,3 +10,4 @@
 
 extern Arduboy2 arduboy;
 extern StateManager stateManager;
+extern Font3x5 smallFont;
