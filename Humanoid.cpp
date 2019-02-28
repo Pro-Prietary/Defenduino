@@ -5,22 +5,31 @@ const unsigned char sprite[] PROGMEM = { 0x7, };
 
 #define FLOOR 29
 
+#define CAUGHT_SCORE 500
+#define DROPPED_SCORE 500
+#define LANDING_SCORE 250
+
 #define FLAG_CLIMBER 0x4
 #define FLAG_CAPTURED 0x8
 #define FLAG_FALLING 0x10
+#define FLAG_CAUGHT 0x20
 
 Humanoid::Humanoid() : MovingGameObject()
 {
 	setSpriteData(sprite, 1, 3);
 }
 
-void Humanoid::update(Landscape* pLandscape)
+void Humanoid::update(Landscape* pLandscape, PlayerShip* pPlayerShip)
 {
 	MovingGameObject::update();
 
 	if (isFlagSet(FLAG_FALLING))
 	{
 		fallingUpdate(pLandscape);
+	}
+	else if (isFlagSet(FLAG_CAUGHT))
+	{
+		caughtUpdate(pLandscape, pPlayerShip);
 	}
 	else if (!isFlagSet(FLAG_CAPTURED))
 	{
@@ -40,6 +49,7 @@ void Humanoid::update(Landscape* pLandscape)
 void Humanoid::onSafeLanding()
 {
 	unsetFlag(FLAG_FALLING);
+	unsetFlag(FLAG_CAUGHT);
 	startWalking();
 }
 
@@ -50,16 +60,32 @@ void Humanoid::fallingUpdate(Landscape* pLandscape)
 	if (worldPos.y >= landscapeHeight)
 	{
 		// Hit the ground
-		if (velocity.y >= 20)
+		if (velocity.y >= 30)
 		{
 			destroy();
 		}
 		else
 		{
+			((GameState*)(stateManager.getCurrentState()))->score += LANDING_SCORE;
 			onSafeLanding();
 		}
 	}
 }
+
+void Humanoid::caughtUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
+{
+	worldPos.x = pPlayerShip->worldPos.x + 3;
+	worldPos.y = pPlayerShip->worldPos.y + 4;
+
+	byte landscapeHeight = pLandscape->getHeight(worldPos.x) - 29;
+	if (worldPos.y >= landscapeHeight)
+	{
+		// Dropped off
+		((GameState*)(stateManager.getCurrentState()))->score += DROPPED_SCORE;
+		onSafeLanding();
+	}
+}
+
 
 bool Humanoid::render(Vector2Int screenPos)
 {
@@ -105,14 +131,26 @@ void Humanoid::startWalking()
 
 void Humanoid::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 {
-	Rect thisRect = getCollisionRect();
-	for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
+	if (!isFlagSet(FLAG_CAUGHT))
 	{
-		if (pPlayerShots[i].isActive() && arduboy.collide(pPlayerShots[i].getCollisionRect(), thisRect))
+		Rect thisRect = getCollisionRect();
+		for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
 		{
-			pPlayerShots[i].setActive(false);
-			destroy();
-			break;
+			if (pPlayerShots[i].isActive() && arduboy.collide(pPlayerShots[i].getCollisionRect(), thisRect))
+			{
+				pPlayerShots[i].setActive(false);
+				destroy();
+				return;
+			}
+		}
+
+		if (isFlagSet(FLAG_FALLING) && arduboy.collide(pPlayerShip->getCollisionRect(), thisRect))
+		{
+			// Caught
+			((GameState*)(stateManager.getCurrentState()))->score += CAUGHT_SCORE;
+			unsetFlag(FLAG_FALLING);
+			setFlag(FLAG_CAUGHT);
+			velocity.y = 0;
 		}
 	}
 }

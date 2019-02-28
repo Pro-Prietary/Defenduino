@@ -6,7 +6,7 @@ const unsigned char spriteLeft[]  PROGMEM = { 0x2, 0x2, 0x2, 0x6, 0x6, 0x7, 0x7,
 
 #define SHIP_HORIZ_ACCELERATION 25
 #define SHIP_MAX_SPEED 200
-#define SHIP_HORIZ_DECELERATION 15
+#define SHIP_HORIZ_DECELERATION 5
 
 #define FLAG_FACING_RIGHT 0x4
 #define FLAG_EXPLODING 0x8

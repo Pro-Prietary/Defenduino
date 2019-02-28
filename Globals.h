@@ -4,6 +4,7 @@
 #include "StateManager.h"
 #include "MenuState.h"
 #include "GameState.h"
+#include "Font3x5.h"
 
 #define WORLD_WIDTH 1024
 #define HALF_WORLD_WIDTH 512

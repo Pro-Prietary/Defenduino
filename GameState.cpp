@@ -6,9 +6,12 @@
 #define LANDER_SPAWN_ALT -20
 
 #define FLAG_FREEZE_ACTORS 0x1
+#define FLAG_UI_BOTTOM 0x2
 
 #define SPAWN_INTERVAL 600
 #define HUMANOID_SPAWN_Y 29
+
+#define SCORE_BOTTOM_Y 57
 
 GameState::GameState() : State()
 {
@@ -92,6 +95,8 @@ void GameState::update()
 		playerShip.update();
 		camera.update(&playerShip);
 		playerShip.render(camera.worldToScreenPos(playerShip.worldPos));
+
+		setFlag(FLAG_UI_BOTTOM, playerShip.worldPos.y < -16);
 	}
 
 	landscape.render(camera.worldPos.x);
@@ -114,7 +119,7 @@ void GameState::update()
 		{
 			if (!freezeActors)
 			{
-				humanoids[i].update(&landscape);
+				humanoids[i].update(&landscape, &playerShip);
 			}
 			humanoids[i].render(camera.worldToScreenPos(humanoids[i].worldPos));
 
@@ -169,6 +174,8 @@ void GameState::update()
 			particles[i].render(camera.worldToScreenPos(particles[i].worldPos));
 		}
 	}
+
+	drawGui();
 }
 
 void GameState::spawnWave(uint8_t maxForLevel)
@@ -325,4 +332,10 @@ uint8_t GameState::getCapturableHumanoidAtPosition(uint16_t xPos)
 Humanoid* GameState::getHumanoid(uint8_t index)
 {
 	return &humanoids[index];
+}
+
+void GameState::drawGui()
+{
+	smallFont.setCursor(0, isFlagSet(FLAG_UI_BOTTOM) ? SCORE_BOTTOM_Y : 0);
+	smallFont.print(score);
 }

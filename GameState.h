@@ -38,6 +38,8 @@ public:
 	uint8_t getCapturableHumanoidAtPosition(uint16_t xPos);
 	Humanoid* getHumanoid(uint8_t index);
 	uint8_t liveEnemiesRemaining = 0;
+	unsigned long score = 0;
+
 
 private:
 	GameCamera camera;
@@ -53,6 +55,7 @@ private:
 	bool spawnPosTooCloseToPlayer(int xPos);
 	int getSafeLanderSpawn();
 	void spawnWave(uint8_t maxForLevel);
+	void drawGui();
 
 	uint8_t spawnedLanders = 0;
 	uint8_t lives = 3;
@@ -64,6 +67,5 @@ private:
 
 	uint16_t spawnCountdown = 0;
 
-	uint16_t score = 0;
 };
 

@@ -9,7 +9,7 @@ class Humanoid : public MovingGameObject, public Sprite
 {
 public:
 	Humanoid();
-	void update(Landscape* pLandscape);
+	void update(Landscape* pLandscape, PlayerShip* pPlayerShip);
 	bool render(Vector2Int cameraPos);
 	void setActive(bool active);
 	void collisionCheck(PlayerShot* playerShots, PlayerShip* pPlayerShip);
@@ -22,5 +22,6 @@ public:
 private:
 	Rect getCollisionRect();
 	void fallingUpdate(Landscape* pLandscape);
+	void caughtUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip);
 	void startWalking();
 };

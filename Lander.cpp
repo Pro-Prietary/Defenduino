@@ -14,6 +14,8 @@ const unsigned char mutantSprite[] PROGMEM = { 0x24, 0x16, 0x9, 0x31, 0x9, 0x16,
 
 #define CRUISING_ALTITUDE 10
 
+#define LANDER_SCORE 150
+
 Lander::Lander() : MovingGameObject()
 {
 
@@ -120,7 +122,7 @@ void Lander::landingUpdate(PlayerShip* pPlayerShip)
 void Lander::escapingUpdate(PlayerShip* pPlayerShip)
 {
 	Humanoid* pHumanoid = ((GameState*)(stateManager.getCurrentState()))->getHumanoid(humanoid);
-	pHumanoid->worldPos.y = worldPos.y + 6;
+	pHumanoid->worldPos.y = worldPos.y + 8;
 	
 	if (worldPos.y <= -38)
 	{
@@ -255,8 +257,9 @@ Rect Lander::getCollisionRect()
 
 void Lander::destroy()
 {
+	GameState* pGameState = ((GameState*)(stateManager.getCurrentState()));
 	unsetFlag(FLAG_ACTIVE);
-	Particles* pExplosion = ((GameState*)(stateManager.getCurrentState()))->getParticles();
+	Particles* pExplosion = pGameState->getParticles();
 	if (pExplosion != NULL)
 	{
 		pExplosion->worldPos.x = worldPos.x;
@@ -267,7 +270,7 @@ void Lander::destroy()
 
 	if (isFlagSet(FLAG_ESCAPING) && humanoid != NO_HUMANOID_FOUND)
 	{
-		Humanoid* pHumanoid = ((GameState*)(stateManager.getCurrentState()))->getHumanoid(humanoid);
+		Humanoid* pHumanoid = pGameState->getHumanoid(humanoid);
 		humanoid = NO_HUMANOID_FOUND;
 
 		if (pHumanoid->isActive())
@@ -276,6 +279,7 @@ void Lander::destroy()
 		}
 	}
 
+	pGameState->score += LANDER_SCORE;
 }
 
 bool Lander::isMutant()
