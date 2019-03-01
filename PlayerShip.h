@@ -21,4 +21,5 @@ public:
 	byte explosionTimer = 0;
 	void setActive(bool active);
 	bool isExploding();
+	bool facingRight();
 };

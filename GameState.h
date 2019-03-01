@@ -56,6 +56,8 @@ private:
 	int getSafeLanderSpawn();
 	void spawnWave(uint8_t maxForLevel);
 	void drawGui();
+	void drawScanner();
+	void plotOnScanner(int scannerY, GameObject* pGameObject);
 
 	uint8_t spawnedLanders = 0;
 	uint8_t lives = 3;

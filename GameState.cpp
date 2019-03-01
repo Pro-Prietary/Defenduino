@@ -12,6 +12,7 @@
 #define HUMANOID_SPAWN_Y 29
 
 #define SCORE_BOTTOM_Y 57
+#define SCANNER_BOTTOM_Y 52
 
 GameState::GameState() : State()
 {
@@ -176,6 +177,7 @@ void GameState::update()
 	}
 
 	drawGui();
+
 }
 
 void GameState::spawnWave(uint8_t maxForLevel)
@@ -338,4 +340,72 @@ void GameState::drawGui()
 {
 	smallFont.setCursor(0, isFlagSet(FLAG_UI_BOTTOM) ? SCORE_BOTTOM_Y : 0);
 	smallFont.print(score);
+	drawScanner();
+}
+
+void GameState::drawScanner()
+{
+	int scannerY = isFlagSet(FLAG_UI_BOTTOM) ? SCANNER_BOTTOM_Y : 0;
+
+	arduboy.drawRect(31, scannerY, 66, 12, WHITE);
+	scannerY++;
+	arduboy.fillRect(32, scannerY, 64, 10, BLACK);
+
+	// Draw lanscape on scanner
+	int landscapeIdx = camera.worldPos.x - 512;
+	if (landscapeIdx < 0)
+	{
+		landscapeIdx += 1024;
+	}
+
+	for (int i = 0; i < 64; i++)
+	{
+		byte height = landscape.getHeight(landscapeIdx);
+
+		arduboy.drawPixel(32 + i, scannerY + (height / 6.4));
+
+		landscapeIdx += 16;
+		if (landscapeIdx >= 1024)
+		{
+			landscapeIdx = 0;
+		}
+	}
+
+	for (int i = 0; i < TOTAL_LANDERS; i++)
+	{
+		if (landers[i].isActive())
+		{
+			plotOnScanner(scannerY, &landers[i]);
+		}
+	}
+
+	for (int i = 0; i < TOTAL_HUMANOIDS; i++)
+	{
+		if (humanoids[i].isActive())
+		{
+			plotOnScanner(scannerY, &humanoids[i]);
+		}
+	}
+
+	// Playership
+	int yPos = scannerY + ((playerShip.worldPos.y + 32) / 6.4);
+
+	// Different xpos depending on left or right of cam.
+	int xPos = playerShip.facingRight() ? 62 : 65;
+	arduboy.drawLine(xPos, yPos, xPos+1, yPos, WHITE);
+
+}
+
+void GameState::plotOnScanner(int scannerY, GameObject* pGameObject)
+{
+	int xPos = ((pGameObject->worldPos.x - camera.worldPos.x) / 16);
+	if (xPos >= 32)
+	{
+		xPos -= 64;
+	}
+	else if (xPos <= -32)
+	{
+		xPos += 64;
+	}
+	arduboy.drawPixel(xPos + 64, scannerY + ((pGameObject->worldPos.y + 32) / 6.4), WHITE);
 }

@@ -224,3 +224,8 @@ bool PlayerShip::isExploding()
 {
 	return isFlagSet(FLAG_EXPLODING);
 }
+
+bool PlayerShip::facingRight()
+{
+	return isFlagSet(FLAG_FACING_RIGHT);
+}
