@@ -1,5 +1,4 @@
 #include "GameState.h"
-#include "StateManager.h"
 #include "Globals.h"
 #include "GameOverState.h"
 
@@ -277,13 +276,30 @@ void GameState::lostLife()
 			if (humanoids[i].isActive())
 			{
 				humanoids[i].worldPos.y = HUMANOID_SPAWN_Y;
-				humanoids[i].onSafeLanding();
+				humanoids[i].startWalking();
+			}
+		}
+
+		// All shots should be removed
+		for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
+		{
+			if (playerShots[i].isActive())
+			{
+				playerShots[i].setActive(false);
+			}
+		}
+
+		for (int i = 0; i < TOTAL_ENEMY_SHOTS; i++)
+		{
+			if (enemyShots[i].isActive())
+			{
+				enemyShots[i].setActive(false);
 			}
 		}
 	}
 	else
 	{
-		stateManager.setState(new GameOverState());
+		setState(new GameOverState());
 	}
 }
 

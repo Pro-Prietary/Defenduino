@@ -1,12 +1,13 @@
 #include <Arduboy2.h>
-#include "StateManager.h"
 #include "MenuState.h"
 #include "Globals.h"
 #include "Font3x5.h"
 
 Arduboy2 arduboy;
-StateManager stateManager;
 Font3x5 smallFont;
+
+State* pCurrentState;
+State* pNextState;
 
 #ifdef _DEBUG
 int frameCount = 0;
@@ -14,12 +15,17 @@ int frameCount = 0;
 
 void setup() {
     arduboy.begin();
-	stateManager.setState(new MenuState());
+	setState(new MenuState());
 
 #ifdef _DEBUG
 	Serial.begin(9600);
 	Serial.println(F("Starting"));
 #endif
+}
+
+void globalMethod()
+{
+	Serial.println("Public!");
 }
 
 void loop() {
@@ -42,11 +48,35 @@ void loop() {
   // first we clear our screen to black
   arduboy.clear();
 
-  stateManager.update();
+  update();
 
   // then we finaly we tell the arduboy to display what we just wrote to the display
   arduboy.display();
 }
+
+void update()
+{
+	// Time to move to a new state?
+	if (pNextState != NULL)
+	{
+		delete pCurrentState;
+		pCurrentState = pNextState;
+		pNextState = NULL;
+	}
+
+	pCurrentState->update();
+}
+
+void setState(State* state)
+{
+	pNextState = state;
+}
+
+State* getCurrentState()
+{
+	return pCurrentState;
+}
+
 
 #ifdef _DEBUG
 int freeRam() {

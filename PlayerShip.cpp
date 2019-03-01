@@ -136,7 +136,7 @@ float PlayerShip::getCameraTarget()
 
 void PlayerShip::fire()
 {
-	PlayerShot* shot = ((GameState*)(stateManager.getCurrentState()))->getPlayerShot();
+	PlayerShot* shot = ((GameState*)(getCurrentState()))->getPlayerShot();
 	if (shot != NULL)
 	{
 		shot->worldPos.y = worldPos.y+1;
@@ -184,7 +184,7 @@ void PlayerShip::destroy()
 {
 	if (!isFlagSet(FLAG_EXPLODING))
 	{
-		((GameState*)(stateManager.getCurrentState()))->freezeActors();
+		((GameState*)(getCurrentState()))->freezeActors();
 		setFlag(FLAG_EXPLODING);
 		explosionTimer = 30;
 	}
@@ -205,18 +205,30 @@ void PlayerShip::setActive(bool active)
 		unsetFlag(FLAG_EXPLODING);
 		unsetFlag(FLAG_HIDDEN);
 		setFlag(FLAG_FACING_RIGHT);
+		setSpriteData(spriteRight, 8, 3);
 	}
 }
 
 void PlayerShip::explode()
 {
 	unsetFlag(FLAG_ACTIVE);
-	Particles* pExplosion = ((GameState*)(stateManager.getCurrentState()))->getParticles();
+	GameState* pGameState = ((GameState*)(getCurrentState()));
+	Particles* pExplosion = pGameState->getParticles();
 	if (pExplosion != NULL)
 	{
 		pExplosion->worldPos.x = worldPos.x;
 		pExplosion->worldPos.y = worldPos.y;
 		pExplosion->show(PARTICLES_PLAYER);
+	}
+
+	// Destroy any carried humans
+	for (int i = 0; i < TOTAL_HUMANOIDS; i++)
+	{
+		Humanoid* pHumanoid = pGameState->getHumanoid(i);
+		if (pHumanoid->isActive() && pHumanoid->isCarried())
+		{
+			pHumanoid->destroy();
+		}
 	}
 }
 

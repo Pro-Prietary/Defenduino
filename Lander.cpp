@@ -72,7 +72,7 @@ void Lander::seekingUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 	// 1/20 chance we'll check for humanoids below
 	if (arduboy.frameCount % 20 == 0)
 	{
-		humanoid = ((GameState*)(stateManager.getCurrentState()))->getCapturableHumanoidAtPosition(worldPos.x+3);
+		humanoid = ((GameState*)(getCurrentState()))->getCapturableHumanoidAtPosition(worldPos.x+3);
 
 		if (humanoid != NO_HUMANOID_FOUND)
 		{
@@ -93,7 +93,7 @@ void Lander::seekingUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 
 void Lander::landingUpdate(PlayerShip* pPlayerShip)
 {
-	Humanoid* pHumanoid = ((GameState*)(stateManager.getCurrentState()))->getHumanoid(humanoid);
+	Humanoid* pHumanoid = ((GameState*)(getCurrentState()))->getHumanoid(humanoid);
 
 	if (!pHumanoid->isCapturable())
 	{
@@ -121,7 +121,7 @@ void Lander::landingUpdate(PlayerShip* pPlayerShip)
 
 void Lander::escapingUpdate(PlayerShip* pPlayerShip)
 {
-	Humanoid* pHumanoid = ((GameState*)(stateManager.getCurrentState()))->getHumanoid(humanoid);
+	Humanoid* pHumanoid = ((GameState*)(getCurrentState()))->getHumanoid(humanoid);
 	pHumanoid->worldPos.y = worldPos.y + 8;
 	
 	if (worldPos.y <= -38)
@@ -130,7 +130,7 @@ void Lander::escapingUpdate(PlayerShip* pPlayerShip)
 		Serial.print(F("Lander escaped"));
 #endif
 		// Escaped off the top of the screen with no humanoid
-		((GameState*)(stateManager.getCurrentState()))->liveEnemiesRemaining--;
+		((GameState*)(getCurrentState()))->liveEnemiesRemaining--;
 		setActive(false);
 	} 
 	else if (worldPos.y <= -32 && pHumanoid->isActive())
@@ -235,7 +235,7 @@ void Lander::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 	Rect thisRect = getCollisionRect();
 	for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
 	{
-		if (pPlayerShots[i].isActive() && arduboy.collide(pPlayerShots[i].getCollisionRect(), thisRect))
+		if (pPlayerShots[i].isActive() && pPlayerShots[i].tipOnScreen() && arduboy.collide(pPlayerShots[i].getCollisionRect(), thisRect))
 		{
 			pPlayerShots[i].setActive(false);
 			destroy();
@@ -257,7 +257,7 @@ Rect Lander::getCollisionRect()
 
 void Lander::destroy()
 {
-	GameState* pGameState = ((GameState*)(stateManager.getCurrentState()));
+	GameState* pGameState = ((GameState*)(getCurrentState()));
 	unsetFlag(FLAG_ACTIVE);
 	Particles* pExplosion = pGameState->getParticles();
 	if (pExplosion != NULL)
@@ -265,7 +265,7 @@ void Lander::destroy()
 		pExplosion->worldPos.x = worldPos.x;
 		pExplosion->worldPos.y = worldPos.y;
 		pExplosion->show(PARTICLES_EXPLOSION);
-		((GameState*)(stateManager.getCurrentState()))->liveEnemiesRemaining--;
+		((GameState*)(getCurrentState()))->liveEnemiesRemaining--;
 	}
 
 	if (isFlagSet(FLAG_ESCAPING) && humanoid != NO_HUMANOID_FOUND)
@@ -288,7 +288,7 @@ bool Lander::isMutant()
 }
 
 void Lander::fire(PlayerShip* pPlayerShip) {
-	EnemyShot* pShot = ((GameState*)(stateManager.getCurrentState()))->getEnemyShot();
+	EnemyShot* pShot = ((GameState*)(getCurrentState()))->getEnemyShot();
 
 	if (pShot != NULL)
 	{

@@ -8,6 +8,7 @@ public:
 	void render(Vector2Int screenPos);
 	void update();
 	Rect getCollisionRect();
+	bool tipOnScreen();
 
 private:
 	byte length;

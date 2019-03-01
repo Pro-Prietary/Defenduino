@@ -135,9 +135,6 @@
     <ClInclude Include="State.h">
       <FileType>CppCode</FileType>
     </ClInclude>
-    <ClInclude Include="StateManager.h">
-      <FileType>CppCode</FileType>
-    </ClInclude>
     <ClInclude Include="TextObject.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector2Byte.h" />
@@ -163,7 +160,6 @@
     <ClCompile Include="PlayerShot.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="State.cpp" />
-    <ClCompile Include="StateManager.cpp" />
     <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector2Byte.cpp" />

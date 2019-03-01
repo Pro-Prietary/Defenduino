@@ -37,7 +37,7 @@ void Particles::update()
 		if (distance <= 0)
 		{
 			unsetFlag(FLAG_ACTIVE);
-			((GameState*)(stateManager.getCurrentState()))->completeSpawningLander(worldPos.x, worldPos.y);
+			((GameState*)(getCurrentState()))->completeSpawningLander(worldPos.x, worldPos.y);
 		}
 	}
 	else
@@ -59,7 +59,7 @@ void Particles::update()
 
 			if (isFlagSet(FLAG_PLAYER))
 			{
-				((GameState*)(stateManager.getCurrentState()))->lostLife();
+				((GameState*)(getCurrentState()))->lostLife();
 			}
 		}
 	}

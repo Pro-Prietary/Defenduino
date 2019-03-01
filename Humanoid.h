@@ -14,14 +14,15 @@ public:
 	void setActive(bool active);
 	void collisionCheck(PlayerShot* playerShots, PlayerShip* pPlayerShip);
 	bool isCapturable();
+	bool isCarried();
 	void setCaptured(bool captured);
 	void destroy();
 	void startFalling();
-	void onSafeLanding();
+	void startWalking();
+
 
 private:
 	Rect getCollisionRect();
 	void fallingUpdate(Landscape* pLandscape);
 	void caughtUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip);
-	void startWalking();
 };

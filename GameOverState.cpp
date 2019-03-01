@@ -13,6 +13,6 @@ void GameOverState::update()
 
 	if (arduboy.justPressed(A_BUTTON) || arduboy.justPressed(B_BUTTON))
 	{
-		stateManager.setState(new MenuState());
+		setState(new MenuState());
 	}
 }

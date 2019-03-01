@@ -1,5 +1,4 @@
 #include "MenuState.h"
-#include "StateManager.h"
 #include "GameState.h"
 #include "Globals.h"
 
@@ -23,7 +22,7 @@ void MenuState::update()
 {
 	if (arduboy.justPressed(A_BUTTON) || arduboy.justPressed(B_BUTTON))
 	{
-		stateManager.setState(new GameState());
+		setState(new GameState());
 	}
 	pressStartObj.render(camera.worldToScreenPos(pressStartObj.worldPos));
 #ifdef _DEBUG
