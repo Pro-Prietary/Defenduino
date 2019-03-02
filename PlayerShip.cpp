@@ -1,8 +1,8 @@
 #include "PlayerShip.h"
 #include "Globals.h"
 
-const unsigned char spriteRight[] PROGMEM = { 0x2, 0x7, 0x7, 0x6, 0x6, 0x2, 0x2, 0x2, };
-const unsigned char spriteLeft[]  PROGMEM = { 0x2, 0x2, 0x2, 0x6, 0x6, 0x7, 0x7, 0x2, };
+const unsigned char spriteRight[] PROGMEM = { 0x8, 0x8, 0x2, 0x7, 0x7, 0x6, 0x6, 0x2, 0x2, 0x2, };
+const unsigned char spriteLeft[]  PROGMEM = { 0x8, 0x8, 0x2, 0x2, 0x2, 0x6, 0x6, 0x7, 0x7, 0x2, };
 
 #define SHIP_HORIZ_ACCELERATION 25
 #define SHIP_MAX_SPEED 200
@@ -14,7 +14,6 @@ const unsigned char spriteLeft[]  PROGMEM = { 0x2, 0x2, 0x2, 0x6, 0x6, 0x7, 0x7,
 
 PlayerShip::PlayerShip() : MovingGameObject()
 {
-	setSpriteData(spriteRight, 8, 3);
 	worldPos.x = worldPos.y = 0;
 	setFlag(&flags, FLAG_FACING_RIGHT);
 }
@@ -51,7 +50,6 @@ void PlayerShip::activeUpdate()
 		{
 			setFlag(&flags, FLAG_FACING_RIGHT);
 		}
-		setSpriteData(spriteRight, 8, 3);
 		velocity.x += SHIP_HORIZ_ACCELERATION;
 		if (velocity.x > SHIP_MAX_SPEED)
 		{
@@ -64,7 +62,6 @@ void PlayerShip::activeUpdate()
 		{
 			unsetFlag(&flags, FLAG_FACING_RIGHT);
 		}
-		setSpriteData(spriteLeft, 8, 3);
 		velocity.x -= SHIP_HORIZ_ACCELERATION;
 		if (velocity.x < -SHIP_MAX_SPEED)
 		{
@@ -169,7 +166,7 @@ void PlayerShip::render(Vector2Int screenPos)
 {
 	if (!isFlagSet(flags, FLAG_HIDDEN))
 	{
-		if (Sprite::render(screenPos))
+		if (renderSprite(isFlagSet(flags, FLAG_FACING_RIGHT) ? spriteRight : spriteLeft, screenPos))
 		{
 			setFlag(&flags, FLAG_VISIBLE);
 		}
@@ -205,7 +202,6 @@ void PlayerShip::setActive(bool active)
 		unsetFlag(&flags, FLAG_EXPLODING);
 		unsetFlag(&flags, FLAG_HIDDEN);
 		setFlag(&flags, FLAG_FACING_RIGHT);
-		setSpriteData(spriteRight, 8, 3);
 	}
 }
 

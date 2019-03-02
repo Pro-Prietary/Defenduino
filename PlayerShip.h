@@ -1,8 +1,7 @@
 #pragma once
 #include "MovingGameObject.h"
-#include "Sprite.h"
 
-class PlayerShip : public MovingGameObject, public Sprite
+class PlayerShip : public MovingGameObject
 {
 private:
 	void fire();

@@ -1,8 +1,8 @@
 #include "Lander.h"
 #include "Globals.h"
 
-const unsigned char landerSprite[] PROGMEM = { 0x24, 0x16, 0xd, 0x3f, 0xd, 0x16, 0x24, };
-const unsigned char mutantSprite[] PROGMEM = { 0x24, 0x16, 0x9, 0x31, 0x9, 0x16, 0x24, };
+const unsigned char landerSprite[] PROGMEM = { 0x7, 0x8, 0x24, 0x16, 0xd, 0x3f, 0xd, 0x16, 0x24, };
+const unsigned char mutantSprite[] PROGMEM = { 0x7, 0x8, 0x24, 0x16, 0x9, 0x31, 0x9, 0x16, 0x24, };
 
 #define FLAG_SEEKING 0x4
 #define FLAG_LANDING 0x8
@@ -140,7 +140,6 @@ void Lander::escapingUpdate(PlayerShip* pPlayerShip)
 #endif
 		// Mutant time!
 		pHumanoid->destroy();
-		setSpriteData(mutantSprite, 7, 6);
 		unsetFlag(&flags, FLAG_ESCAPING);
 		setFlag(&flags, FLAG_MUTANT);
 	}
@@ -188,7 +187,7 @@ void Lander::mutantUpdate(PlayerShip* pPlayerShip)
 bool Lander::render(Vector2Int screenPos)
 {
 	bool isVisible;
-	if (Sprite::render(screenPos))
+	if (renderSprite(isFlagSet(flags, FLAG_MUTANT) ? mutantSprite : landerSprite, screenPos))
 	{
 		isVisible = true;
 		setFlag(&flags, FLAG_VISIBLE);
@@ -207,7 +206,6 @@ void Lander::setActive(bool active)
 
 	if (active)
 	{
-		setSpriteData(landerSprite, 7, 6);
 		startSeeking();
 	}
 }

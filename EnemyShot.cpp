@@ -1,16 +1,17 @@
 #include "EnemyShot.h"
 #include "Globals.h"
 
-const unsigned char shotSprite[] PROGMEM = { 0x2, 0x7, 0x2, };
+const unsigned char shotSprite[] PROGMEM = { 0x3, 0x8, 0x2, 0x7, 0x2, };
 
 #define SHOT_VELOCITY 150
 
 #define FLAG_CHASER 0x4
 
+#define COLLISION_HEIGHT 3
+
 
 EnemyShot::EnemyShot() : MovingGameObject()
 {
-	setSpriteData(shotSprite, 3, 3);
 }
 
 void EnemyShot::update(PlayerShip* pPlayerShip)
@@ -26,7 +27,7 @@ void EnemyShot::update(PlayerShip* pPlayerShip)
 bool EnemyShot::render(Vector2Int screenPos)
 {
 	bool isVisible;
-	if (Sprite::render(screenPos))
+	if(renderSprite(shotSprite, screenPos))
 	{
 		isVisible = true;
 		setFlag(&flags, FLAG_VISIBLE);

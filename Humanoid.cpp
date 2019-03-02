@@ -1,8 +1,6 @@
 #include "Humanoid.h"
 #include "Globals.h"
 
-const unsigned char sprite[] PROGMEM = { 0x7, };
-
 #define FLOOR 29
 
 #define CAUGHT_SCORE 500
@@ -16,7 +14,6 @@ const unsigned char sprite[] PROGMEM = { 0x7, };
 
 Humanoid::Humanoid() : MovingGameObject()
 {
-	setSpriteData(sprite, 1, 3);
 }
 
 void Humanoid::update(Landscape* pLandscape, PlayerShip* pPlayerShip)
@@ -84,10 +81,11 @@ void Humanoid::caughtUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 bool Humanoid::render(Vector2Int screenPos)
 {
 	bool isVisible;
-	if (Sprite::render(screenPos))
+	if (screenPos.x >= 0 and screenPos.y < SCREEN_WIDTH)
 	{
 		isVisible = true;
 		setFlag(&flags, FLAG_VISIBLE);
+		arduboy.drawLine(screenPos.x, screenPos.y, screenPos.x, screenPos.y + 2, WHITE);
 	}
 	else
 	{

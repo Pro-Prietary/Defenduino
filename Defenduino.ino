@@ -1,9 +1,11 @@
 #include <Arduboy2.h>
+#include <Sprites.h>
 #include "MenuState.h"
 #include "Globals.h"
 #include "Font3x5.h"
 
 Arduboy2 arduboy;
+Sprites sprites;
 Font3x5 smallFont;
 
 State* pCurrentState;
@@ -102,6 +104,32 @@ void setFlag(uint8_t* pFlags, uint8_t flagToSet, bool setValue)
 	{
 		unsetFlag(pFlags, flagToSet);
 	}
+}
+
+bool renderSprite(const uint8_t* spriteData, Vector2Int screenPos)
+{
+	bool bIsVisible = false;
+	// If far from the camera, flip to the other side for wrapping
+	if (screenPos.x < -HALF_WORLD_WIDTH)
+	{
+		screenPos.x += WORLD_WIDTH;
+	}
+	else if (screenPos.x > HALF_WORLD_WIDTH)
+	{
+		screenPos.x -= WORLD_WIDTH;
+	}
+
+	int leftEdge = screenPos.x;
+	int rightEdge = screenPos.x + pgm_read_byte(spriteData);
+
+	if ((leftEdge < SCREEN_WIDTH && leftEdge >= 0) ||
+		(rightEdge < SCREEN_WIDTH && rightEdge >= 0))
+	{
+		sprites.drawSelfMasked(screenPos.x, screenPos.y, (const uint8_t *)spriteData, 0);
+		bIsVisible = true;
+	}
+
+	return bIsVisible;
 }
 
 #ifdef _DEBUG

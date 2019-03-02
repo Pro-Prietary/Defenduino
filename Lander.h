@@ -1,12 +1,11 @@
 #pragma once
 
 #include "MovingGameObject.h"
-#include "Sprite.h"
 #include "Landscape.h"
 #include "PlayerShot.h"
 #include "PlayerShip.h"
 
-class Lander : public MovingGameObject, public Sprite
+class Lander : public MovingGameObject
 {
 public:
 	Lander();

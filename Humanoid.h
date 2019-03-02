@@ -5,7 +5,7 @@
 #include "PlayerShot.h"
 #include "PlayerShip.h"
 
-class Humanoid : public MovingGameObject, public Sprite
+class Humanoid : public MovingGameObject
 {
 public:
 	Humanoid();
