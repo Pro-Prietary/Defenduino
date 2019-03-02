@@ -16,12 +16,12 @@ PlayerShip::PlayerShip() : MovingGameObject()
 {
 	setSpriteData(spriteRight, 8, 3);
 	worldPos.x = worldPos.y = 0;
-	setFlag(FLAG_FACING_RIGHT);
+	setFlag(&flags, FLAG_FACING_RIGHT);
 }
 
 void PlayerShip::update()
 {
-	if(isFlagSet(FLAG_EXPLODING))
+	if(isFlagSet(flags, FLAG_EXPLODING))
 	{ 
 		explodingUpdate();
 	}
@@ -47,9 +47,9 @@ void PlayerShip::activeUpdate()
 
 	if (arduboy.pressed(RIGHT_BUTTON))
 	{
-		if (!isFlagSet(FLAG_FACING_RIGHT))
+		if (!isFlagSet(flags, FLAG_FACING_RIGHT))
 		{
-			setFlag(FLAG_FACING_RIGHT);
+			setFlag(&flags, FLAG_FACING_RIGHT);
 		}
 		setSpriteData(spriteRight, 8, 3);
 		velocity.x += SHIP_HORIZ_ACCELERATION;
@@ -60,9 +60,9 @@ void PlayerShip::activeUpdate()
 	}
 	else if (arduboy.pressed(LEFT_BUTTON))
 	{
-		if (isFlagSet(FLAG_FACING_RIGHT))
+		if (isFlagSet(flags, FLAG_FACING_RIGHT))
 		{
-			unsetFlag(FLAG_FACING_RIGHT);
+			unsetFlag(&flags, FLAG_FACING_RIGHT);
 		}
 		setSpriteData(spriteLeft, 8, 3);
 		velocity.x -= SHIP_HORIZ_ACCELERATION;
@@ -106,14 +106,14 @@ void PlayerShip::explodingUpdate()
 	}
 	else if(explosionTimer % 4 == 0)
 	{
-		setFlag(FLAG_HIDDEN, !isFlagSet(FLAG_HIDDEN));
+		setFlag(&flags, FLAG_HIDDEN, !isFlagSet(flags, FLAG_HIDDEN));
 	}
 }
 
 float PlayerShip::getCameraTarget()
 {
 	float cameraTarget;
-	if (isFlagSet(FLAG_FACING_RIGHT))
+	if (isFlagSet(flags, FLAG_FACING_RIGHT))
 	{
 		cameraTarget = (worldPos.x + 32) - (5 * (velocity.x/100.0));
 		if (cameraTarget >= WORLD_WIDTH)
@@ -142,7 +142,7 @@ void PlayerShip::fire()
 		shot->worldPos.y = worldPos.y+1;
 
 		float shotVelocity;
-		if (isFlagSet(FLAG_FACING_RIGHT))
+		if (isFlagSet(flags, FLAG_FACING_RIGHT))
 		{
 			shot->worldPos.x = worldPos.x + 8;
 			shotVelocity = velocity.x + 300;
@@ -167,25 +167,25 @@ void PlayerShip::fire()
 
 void PlayerShip::render(Vector2Int screenPos)
 {
-	if (!isFlagSet(FLAG_HIDDEN))
+	if (!isFlagSet(flags, FLAG_HIDDEN))
 	{
 		if (Sprite::render(screenPos))
 		{
-			setFlag(FLAG_VISIBLE);
+			setFlag(&flags, FLAG_VISIBLE);
 		}
 		else
 		{
-			unsetFlag(FLAG_VISIBLE);
+			unsetFlag(&flags, FLAG_VISIBLE);
 		}
 	}
 }
 
 void PlayerShip::destroy()
 {
-	if (!isFlagSet(FLAG_EXPLODING))
+	if (!isFlagSet(flags, FLAG_EXPLODING))
 	{
 		((GameState*)(getCurrentState()))->freezeActors();
-		setFlag(FLAG_EXPLODING);
+		setFlag(&flags, FLAG_EXPLODING);
 		explosionTimer = 30;
 	}
 }
@@ -202,16 +202,16 @@ void PlayerShip::setActive(bool active)
 
 	if (active)
 	{
-		unsetFlag(FLAG_EXPLODING);
-		unsetFlag(FLAG_HIDDEN);
-		setFlag(FLAG_FACING_RIGHT);
+		unsetFlag(&flags, FLAG_EXPLODING);
+		unsetFlag(&flags, FLAG_HIDDEN);
+		setFlag(&flags, FLAG_FACING_RIGHT);
 		setSpriteData(spriteRight, 8, 3);
 	}
 }
 
 void PlayerShip::explode()
 {
-	unsetFlag(FLAG_ACTIVE);
+	unsetFlag(&flags, FLAG_ACTIVE);
 	GameState* pGameState = ((GameState*)(getCurrentState()));
 	Particles* pExplosion = pGameState->getParticles();
 	if (pExplosion != NULL)
@@ -234,10 +234,10 @@ void PlayerShip::explode()
 
 bool PlayerShip::isExploding()
 {
-	return isFlagSet(FLAG_EXPLODING);
+	return isFlagSet(flags, FLAG_EXPLODING);
 }
 
 bool PlayerShip::facingRight()
 {
-	return isFlagSet(FLAG_FACING_RIGHT);
+	return isFlagSet(flags, FLAG_FACING_RIGHT);
 }

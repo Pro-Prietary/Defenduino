@@ -20,7 +20,8 @@ void PlayerShot::render(Vector2Int screenPos)
 
 	if (screenPos.x < 0 || screenPos.x >= SCREEN_WIDTH)
 	{
-		setFlag(FLAG_SHRINKING);
+		setFlag(&flags, FLAG_SHRINKING);
+		unsetFlag(&flags, FLAG_TIP_ON_SCREEN);
 	}
 
 	if (velocity.x > 0)
@@ -31,22 +32,22 @@ void PlayerShot::render(Vector2Int screenPos)
 	{
 		arduboy.drawBitmap(screenPos.x, screenPos.y, (const uint8_t *)spriteRight, length, 1, WHITE);
 	}
-
-	setFlag(FLAG_TIP_ON_SCREEN, screenPos.x >= 0 && screenPos.x < 64);
 }
 
 void PlayerShot::fire(float xVelocity)
 {
 	length = 1;
 	velocity.x = xVelocity;
-	unsetFlag(FLAG_SHRINKING);
+	unsetFlag(&flags, FLAG_SHRINKING);
+	setFlag(&flags, FLAG_TIP_ON_SCREEN);
+
 }
 
 void PlayerShot::update()
 {
 	MovingGameObject::update();
 
-	if (!isFlagSet(FLAG_SHRINKING))
+	if (!isFlagSet(flags, FLAG_SHRINKING))
 	{
 		length += 2;
 		if (length >= 64)
@@ -88,5 +89,5 @@ Rect PlayerShot::getCollisionRect()
 
 bool PlayerShot::tipOnScreen()
 {
-	return isFlagSet(FLAG_TIP_ON_SCREEN);
+	return isFlagSet(flags, FLAG_TIP_ON_SCREEN);
 }

@@ -25,19 +25,19 @@ void Lander::update(Landscape* pLandscape, PlayerShip* pPlayerShip)
 {
 	MovingGameObject::update();
 
-	if (isFlagSet(FLAG_SEEKING))
+	if (isFlagSet(flags, FLAG_SEEKING))
 	{
 		seekingUpdate(pLandscape, pPlayerShip);
 	} 
-	else if (isFlagSet(FLAG_LANDING))
+	else if (isFlagSet(flags, FLAG_LANDING))
 	{
 		landingUpdate(pPlayerShip);
 	}
-	else if (isFlagSet(FLAG_ESCAPING))
+	else if (isFlagSet(flags, FLAG_ESCAPING))
 	{
 		escapingUpdate(pPlayerShip);
 	}
-	else if (isFlagSet(FLAG_MUTANT))
+	else if (isFlagSet(flags, FLAG_MUTANT))
 	{
 		mutantUpdate(pPlayerShip);
 	}
@@ -76,8 +76,8 @@ void Lander::seekingUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 
 		if (humanoid != NO_HUMANOID_FOUND)
 		{
-			unsetFlag(FLAG_SEEKING);
-			setFlag(FLAG_LANDING);
+			unsetFlag(&flags, FLAG_SEEKING);
+			setFlag(&flags, FLAG_LANDING);
 
 			velocity.x = 0;
 			velocity.y = 50;
@@ -85,7 +85,7 @@ void Lander::seekingUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 	}
 
 	// 1/128 chance we'll fire
-	if (isFlagSet(FLAG_VISIBLE) && rand() % 128 == 0)
+	if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 128 == 0)
 	{
 		fire(pPlayerShip);
 	}
@@ -105,14 +105,14 @@ void Lander::landingUpdate(PlayerShip* pPlayerShip)
 		if (worldPos.y >= pHumanoid->worldPos.y - 6)
 		{
 			pHumanoid->setCaptured(true);
-			unsetFlag(FLAG_LANDING);
-			setFlag(FLAG_ESCAPING);
+			unsetFlag(&flags, FLAG_LANDING);
+			setFlag(&flags, FLAG_ESCAPING);
 
 			velocity.y = -50;
 		}
 
 		// 1/100 chance we'll fire
-		if (isFlagSet(FLAG_VISIBLE) && rand() % 100 == 0)
+		if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 100 == 0)
 		{
 			fire(pPlayerShip);
 		}
@@ -141,12 +141,12 @@ void Lander::escapingUpdate(PlayerShip* pPlayerShip)
 		// Mutant time!
 		pHumanoid->destroy();
 		setSpriteData(mutantSprite, 7, 6);
-		unsetFlag(FLAG_ESCAPING);
-		setFlag(FLAG_MUTANT);
+		unsetFlag(&flags, FLAG_ESCAPING);
+		setFlag(&flags, FLAG_MUTANT);
 	}
 
 	// 1/100 chance we'll fire
-	if (isFlagSet(FLAG_VISIBLE) && rand() % 100 == 0)
+	if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 100 == 0)
 	{
 		fire(pPlayerShip);
 	}
@@ -179,7 +179,7 @@ void Lander::mutantUpdate(PlayerShip* pPlayerShip)
 	}
 
 	// 1/64 chance we'll fire
-	if (isFlagSet(FLAG_VISIBLE) && rand() % 64 == 0)
+	if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 64 == 0)
 	{
 		fire(pPlayerShip);
 	}
@@ -191,12 +191,12 @@ bool Lander::render(Vector2Int screenPos)
 	if (Sprite::render(screenPos))
 	{
 		isVisible = true;
-		setFlag(FLAG_VISIBLE);
+		setFlag(&flags, FLAG_VISIBLE);
 	}
 	else
 	{
 		isVisible = false;
-		unsetFlag(FLAG_VISIBLE);
+		unsetFlag(&flags, FLAG_VISIBLE);
 	}
 	return isVisible;
 }
@@ -214,10 +214,10 @@ void Lander::setActive(bool active)
 
 void Lander::startSeeking()
 {
-	unsetFlag(FLAG_LANDING);
-	unsetFlag(FLAG_ESCAPING);
-	unsetFlag(FLAG_MUTANT);
-	setFlag(FLAG_SEEKING);
+	unsetFlag(&flags, FLAG_LANDING);
+	unsetFlag(&flags, FLAG_ESCAPING);
+	unsetFlag(&flags, FLAG_MUTANT);
+	setFlag(&flags, FLAG_SEEKING);
 
 	velocity.y = 0;
 	if (rand() % 3 == 0)
@@ -258,7 +258,7 @@ Rect Lander::getCollisionRect()
 void Lander::destroy()
 {
 	GameState* pGameState = ((GameState*)(getCurrentState()));
-	unsetFlag(FLAG_ACTIVE);
+	unsetFlag(&flags, FLAG_ACTIVE);
 	Particles* pExplosion = pGameState->getParticles();
 	if (pExplosion != NULL)
 	{
@@ -268,7 +268,7 @@ void Lander::destroy()
 		((GameState*)(getCurrentState()))->liveEnemiesRemaining--;
 	}
 
-	if (isFlagSet(FLAG_ESCAPING) && humanoid != NO_HUMANOID_FOUND)
+	if (isFlagSet(flags, FLAG_ESCAPING) && humanoid != NO_HUMANOID_FOUND)
 	{
 		Humanoid* pHumanoid = pGameState->getHumanoid(humanoid);
 		humanoid = NO_HUMANOID_FOUND;
@@ -284,7 +284,7 @@ void Lander::destroy()
 
 bool Lander::isMutant()
 {
-	return isFlagSet(FLAG_MUTANT);
+	return isFlagSet(flags, FLAG_MUTANT);
 }
 
 void Lander::fire(PlayerShip* pPlayerShip) {

@@ -23,19 +23,19 @@ void Humanoid::update(Landscape* pLandscape, PlayerShip* pPlayerShip)
 {
 	MovingGameObject::update();
 
-	if (isFlagSet(FLAG_FALLING))
+	if (isFlagSet(flags, FLAG_FALLING))
 	{
 		fallingUpdate(pLandscape);
 	}
-	else if (isFlagSet(FLAG_CAUGHT))
+	else if (isFlagSet(flags, FLAG_CAUGHT))
 	{
 		caughtUpdate(pLandscape, pPlayerShip);
 	}
-	else if (!isFlagSet(FLAG_CAPTURED))
+	else if (!isFlagSet(flags, FLAG_CAPTURED))
 	{
 		byte landscapeHeight = pLandscape->getHeight(worldPos.x) - 29;
 
-		if (isFlagSet(FLAG_CLIMBER) && landscapeHeight < worldPos.y)
+		if (isFlagSet(flags, FLAG_CLIMBER) && landscapeHeight < worldPos.y)
 		{
 			worldPos.y--;
 		}
@@ -54,7 +54,7 @@ void Humanoid::fallingUpdate(Landscape* pLandscape)
 	if (worldPos.y >= landscapeHeight)
 	{
 		// Hit the ground
-		if (velocity.y >= 30)
+		if (velocity.y >= 50)
 		{
 			destroy();
 		}
@@ -87,12 +87,12 @@ bool Humanoid::render(Vector2Int screenPos)
 	if (Sprite::render(screenPos))
 	{
 		isVisible = true;
-		setFlag(FLAG_VISIBLE);
+		setFlag(&flags, FLAG_VISIBLE);
 	}
 	else
 	{
 		isVisible = false;
-		unsetFlag(FLAG_VISIBLE);
+		unsetFlag(&flags, FLAG_VISIBLE);
 	}
 	return isVisible;
 }
@@ -102,11 +102,11 @@ void Humanoid::setActive(bool active)
 	GameObject::setActive(active);
 	if (rand() % 2 == 1)
 	{
-		setFlag(FLAG_CLIMBER);
+		setFlag(&flags, FLAG_CLIMBER);
 	}
 	else
 	{
-		unsetFlag(FLAG_CLIMBER);
+		unsetFlag(&flags, FLAG_CLIMBER);
 	}
 	startWalking();
 }
@@ -121,15 +121,16 @@ void Humanoid::startWalking()
 	{
 		velocity.x = -5;
 	}
+	velocity.y = 0;
 
-	unsetFlag(FLAG_CAUGHT);
-	unsetFlag(FLAG_CAPTURED);
-	unsetFlag(FLAG_FALLING);
+	unsetFlag(&flags, FLAG_CAUGHT);
+	unsetFlag(&flags, FLAG_CAPTURED);
+	unsetFlag(&flags, FLAG_FALLING);
 }
 
 void Humanoid::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 {
-	if (!isFlagSet(FLAG_CAUGHT))
+	if (!isFlagSet(flags, FLAG_CAUGHT))
 	{
 		Rect thisRect = getCollisionRect();
 		for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
@@ -142,12 +143,12 @@ void Humanoid::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 			}
 		}
 
-		if (isFlagSet(FLAG_FALLING) && arduboy.collide(pPlayerShip->getCollisionRect(), thisRect))
+		if (isFlagSet(flags, FLAG_FALLING) && arduboy.collide(pPlayerShip->getCollisionRect(), thisRect))
 		{
 			// Caught
 			((GameState*)(getCurrentState()))->score += CAUGHT_SCORE;
-			unsetFlag(FLAG_FALLING);
-			setFlag(FLAG_CAUGHT);
+			unsetFlag(&flags, FLAG_FALLING);
+			setFlag(&flags, FLAG_CAUGHT);
 			velocity.y = 0;
 		}
 	}
@@ -160,7 +161,7 @@ Rect Humanoid::getCollisionRect()
 
 void Humanoid::destroy()
 {
-	unsetFlag(FLAG_ACTIVE);
+	unsetFlag(&flags, FLAG_ACTIVE);
 
 	Particles* pExplosion = ((GameState*)(getCurrentState()))->getParticles();
 	if (pExplosion != NULL)
@@ -173,23 +174,23 @@ void Humanoid::destroy()
 
 bool Humanoid::isCapturable()
 {
-	return isActive() && !isFlagSet(FLAG_CAPTURED) && !isFlagSet(FLAG_FALLING) && !isFlagSet(FLAG_CAUGHT);
+	return isActive() && !isFlagSet(flags, FLAG_CAPTURED) && !isFlagSet(flags, FLAG_FALLING) && !isFlagSet(flags, FLAG_CAUGHT);
 }
 
 void Humanoid::setCaptured(bool captured)
 {
-	setFlag(FLAG_CAPTURED, captured);
+	setFlag(&flags, FLAG_CAPTURED, captured);
 	velocity.x = 0;
 	velocity.y = 0;
 }
 
 void Humanoid::startFalling()
 {
-	unsetFlag(FLAG_CAPTURED);
-	setFlag(FLAG_FALLING);
+	unsetFlag(&flags, FLAG_CAPTURED);
+	setFlag(&flags, FLAG_FALLING);
 }
 
 bool Humanoid::isCarried()
 {
-	return isFlagSet(FLAG_CAUGHT);
+	return isFlagSet(flags, FLAG_CAUGHT);
 }

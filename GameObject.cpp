@@ -7,23 +7,23 @@ GameObject::GameObject()
 
 bool GameObject::isActive()
 {
-	return isFlagSet(FLAG_ACTIVE);
+	return isFlagSet(flags, FLAG_ACTIVE);
 }
 
 bool GameObject::isVisible()
 {
-	return isFlagSet(FLAG_VISIBLE);
+	return isFlagSet(flags, FLAG_VISIBLE);
 }
 
 void GameObject::setActive(bool bIsActive)
 {
 	if (bIsActive)
 	{
-		setFlag(FLAG_ACTIVE);
+		setFlag(&flags, FLAG_ACTIVE);
 	}
 	else
 	{
-		unsetFlag(FLAG_ACTIVE);
+		unsetFlag(&flags, FLAG_ACTIVE);
 	}
 }
 

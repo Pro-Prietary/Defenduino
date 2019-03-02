@@ -12,31 +12,31 @@ void Particles::show(byte type)
 {
 	GameObject::setActive(true);
 
-	unsetFlag(FLAG_PLAYER);
-	unsetFlag(FLAG_SPAWNING);
+	unsetFlag(&flags, FLAG_PLAYER);
+	unsetFlag(&flags, FLAG_SPAWNING);
 	distance = 0;
 
 	if (type == PARTICLES_SPAWN)
 	{
-		setFlag(FLAG_SPAWNING);
+		setFlag(&flags, FLAG_SPAWNING);
 		distance = MAX_DISTANCE_SMALL;
 	}
 	else if(type == PARTICLES_PLAYER)
 	{
-		setFlag(FLAG_PLAYER);
+		setFlag(&flags, FLAG_PLAYER);
 		arduboy.invert(true);
-		setFlag(FLAG_INVERTED);
+		setFlag(&flags, FLAG_INVERTED);
 	}
 }
 
 void Particles::update()
 {
-	if (isFlagSet(FLAG_SPAWNING))
+	if (isFlagSet(flags, FLAG_SPAWNING))
 	{
 		distance-=2;
 		if (distance <= 0)
 		{
-			unsetFlag(FLAG_ACTIVE);
+			unsetFlag(&flags, FLAG_ACTIVE);
 			((GameState*)(getCurrentState()))->completeSpawningLander(worldPos.x, worldPos.y);
 		}
 	}
@@ -44,7 +44,7 @@ void Particles::update()
 	{
 		distance+=2;
 		byte maxDistance;
-		if (isFlagSet(FLAG_PLAYER))
+		if (isFlagSet(flags, FLAG_PLAYER))
 		{
 			maxDistance = MAX_DISTANCE_LARGE;
 		}
@@ -55,19 +55,19 @@ void Particles::update()
 
 		if (distance >= maxDistance)
 		{
-			unsetFlag(FLAG_ACTIVE);
+			unsetFlag(&flags, FLAG_ACTIVE);
 
-			if (isFlagSet(FLAG_PLAYER))
+			if (isFlagSet(flags, FLAG_PLAYER))
 			{
 				((GameState*)(getCurrentState()))->lostLife();
 			}
 		}
 	}
 
-	if (isFlagSet(FLAG_INVERTED))
+	if (isFlagSet(flags, FLAG_INVERTED))
 	{
 		arduboy.invert(false);
-		unsetFlag(FLAG_INVERTED);
+		unsetFlag(&flags, FLAG_INVERTED);
 	}
 }
 

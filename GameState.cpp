@@ -75,7 +75,7 @@ bool GameState::spawnPosTooCloseToPlayer(int xPos)
 
 void GameState::update()
 {
-	bool freezeActors = isFlagSet(FLAG_FREEZE_ACTORS);
+	bool freezeActors = isFlagSet(flags, FLAG_FREEZE_ACTORS);
 
 	uint8_t expectedLanders = level == 1 ? 15 : 20;
 	if(!freezeActors && spawnedLanders < expectedLanders)
@@ -96,7 +96,7 @@ void GameState::update()
 		camera.update(&playerShip);
 		playerShip.render(camera.worldToScreenPos(playerShip.worldPos));
 
-		setFlag(FLAG_UI_BOTTOM, playerShip.worldPos.y < -16);
+		setFlag(&flags, FLAG_UI_BOTTOM, playerShip.worldPos.y < -16);
 	}
 
 	landscape.render(camera.worldPos.x);
@@ -246,7 +246,7 @@ Particles* GameState::getParticles()
 
 void GameState::lostLife()
 {
-	unsetFlag(FLAG_FREEZE_ACTORS);
+	unsetFlag(&flags, FLAG_FREEZE_ACTORS);
 	lives--;
 
 	if (lives > 0)
@@ -305,7 +305,7 @@ void GameState::lostLife()
 
 void GameState::freezeActors()
 {
-	setFlag(FLAG_FREEZE_ACTORS);
+	setFlag(&flags, FLAG_FREEZE_ACTORS);
 }
 
 void GameState::completeSpawningLander(int xPos, int yPos)
@@ -354,14 +354,14 @@ Humanoid* GameState::getHumanoid(uint8_t index)
 
 void GameState::drawGui()
 {
-	smallFont.setCursor(0, isFlagSet(FLAG_UI_BOTTOM) ? SCORE_BOTTOM_Y : 0);
+	smallFont.setCursor(0, isFlagSet(flags, FLAG_UI_BOTTOM) ? SCORE_BOTTOM_Y : 0);
 	smallFont.print(score);
 	drawScanner();
 }
 
 void GameState::drawScanner()
 {
-	int scannerY = isFlagSet(FLAG_UI_BOTTOM) ? SCANNER_BOTTOM_Y : 0;
+	int scannerY = isFlagSet(flags, FLAG_UI_BOTTOM) ? SCANNER_BOTTOM_Y : 0;
 
 	arduboy.drawRect(31, scannerY, 66, 12, WHITE);
 	scannerY++;

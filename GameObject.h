@@ -7,7 +7,7 @@
 #define FLAG_ACTIVE 0x1
 #define FLAG_VISIBLE 0x2
 
-class GameObject : public Flaggable
+class GameObject
 {
 public:
 	Vector2 worldPos;
@@ -17,6 +17,7 @@ public:
 
 protected:
 	GameObject();
+	uint8_t flags = 0;
 }; 
 
 

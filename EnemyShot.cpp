@@ -17,7 +17,7 @@ void EnemyShot::update(PlayerShip* pPlayerShip)
 {
 	MovingGameObject::update();
 	
-	if (isFlagSet(FLAG_CHASER))
+	if (isFlagSet (flags, FLAG_CHASER))
 	{
 		velocity.x = baseVelX + pPlayerShip->velocity.x;
 	}
@@ -29,15 +29,15 @@ bool EnemyShot::render(Vector2Int screenPos)
 	if (Sprite::render(screenPos))
 	{
 		isVisible = true;
-		setFlag(FLAG_VISIBLE);
+		setFlag(&flags, FLAG_VISIBLE);
 	}
 	else
 	{
 		isVisible = false;
-		unsetFlag(FLAG_VISIBLE);
+		unsetFlag(&flags, FLAG_VISIBLE);
 
 		// Turn it off if it goes off the screen
-		unsetFlag(FLAG_ACTIVE);
+		unsetFlag(&flags, FLAG_ACTIVE);
 	}
 	return isVisible;
 }
@@ -57,12 +57,12 @@ void EnemyShot::fire(PlayerShip* pPlayerShip, Vector2 startPos)
 	velocity.x += miss;
 	velocity.y -= miss;
 
-	setFlag(FLAG_ACTIVE);
+	setFlag(&flags, FLAG_ACTIVE);
 
 	baseVelX = velocity.x;
 
 	// 50% chance this will be a chaser
-	setFlag(FLAG_CHASER, arduboy.frameCount % 2 == 0);
+	setFlag(&flags, FLAG_CHASER, arduboy.frameCount % 2 == 0);
 	
 }
 
@@ -71,7 +71,7 @@ void EnemyShot::collisionCheck(PlayerShip* pPlayerShip)
 	Rect thisRect = getCollisionRect();
 	if (pPlayerShip->isActive() and !pPlayerShip->isExploding() && arduboy.collide(pPlayerShip->getCollisionRect(), thisRect))
 	{
-		unsetFlag(FLAG_ACTIVE);
+		unsetFlag(&flags, FLAG_ACTIVE);
 		pPlayerShip->destroy();
 	}
 }

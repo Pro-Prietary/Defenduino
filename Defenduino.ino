@@ -77,6 +77,32 @@ State* getCurrentState()
 	return pCurrentState;
 }
 
+bool isFlagSet(uint8_t flags, uint8_t flagToCheck)
+{
+	return (flags & flagToCheck) != 0;
+}
+
+void setFlag(uint8_t* pFlags, uint8_t flagToSet)
+{
+	*pFlags = *pFlags | flagToSet;
+}
+
+void unsetFlag(uint8_t* pFlags, byte flagToUnset)
+{
+	*pFlags = *pFlags & ~flagToUnset;
+}
+
+void setFlag(uint8_t* pFlags, uint8_t flagToSet, bool setValue)
+{
+	if (setValue)
+	{
+		setFlag(pFlags, flagToSet);
+	}
+	else
+	{
+		unsetFlag(pFlags, flagToSet);
+	}
+}
 
 #ifdef _DEBUG
 int freeRam() {

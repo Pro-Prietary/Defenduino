@@ -22,7 +22,7 @@
 
 #define NO_HUMANOID_FOUND 255
 
-class GameState : public State, public Flaggable
+class GameState : public State
 {
 public:
 	GameState();
@@ -59,13 +59,12 @@ private:
 	void drawScanner();
 	void plotOnScanner(int scannerY, GameObject* pGameObject);
 
+	uint8_t flags = 0;
 	uint8_t spawnedLanders = 0;
 	uint8_t lives = 3;
 	uint8_t smartBombs = 3;
 	uint8_t remainingHumanoids = 10;
 	uint8_t level = 1;
-
-	uint8_t flags = 0;
 
 	uint16_t spawnCountdown = 0;
 
