@@ -5,7 +5,7 @@
 
 GameCamera::GameCamera() : Camera()
 {
-	worldPos.x = 32;
+
 }
 
 void GameCamera::update(PlayerShip* pPlayerShip)

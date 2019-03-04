@@ -6,6 +6,7 @@
 
 #define FLAG_FREEZE_ACTORS 0x1
 #define FLAG_UI_BOTTOM 0x2
+#define FLAG_INTERSTITIAL 0x4
 
 #define SPAWN_INTERVAL 600
 #define HUMANOID_SPAWN_Y 29
@@ -17,14 +18,7 @@ GameState::GameState() : State()
 {
 	//arduboy.initRandomSeed();
 	srand(arduboy.generateRandomSeed());
-	playerShip.setActive(true);
-
-	for (int i = 0; i < TOTAL_HUMANOIDS; i++)
-	{
-		humanoids[i].worldPos.x = rand() % 1024;
-		humanoids[i].worldPos.y = HUMANOID_SPAWN_Y;
-		humanoids[i].setActive(true);
-	}
+	onNewLevel();
 }
 
 GameCamera* GameState::getCamera()
@@ -46,6 +40,7 @@ void GameState::startSpawningLander()
 		pParticles->worldPos.x = worldX;
 		pParticles->worldPos.y = LANDER_SPAWN_ALT;
 		pParticles->show(PARTICLES_SPAWN);
+		liveEnemies++;
 	}
 #ifdef _DEBUG
 	else
@@ -75,10 +70,65 @@ bool GameState::spawnPosTooCloseToPlayer(int xPos)
 
 void GameState::update()
 {
+	if (isFlagSet(flags, FLAG_INTERSTITIAL))
+	{
+		interstitialUpdate();
+	}
+	else
+	{
+		inPlayUpdate();
+	}
+
+	drawGui();
+}
+
+void GameState::interstitialUpdate()
+{
+	arduboy.setCursor(25, 20);
+	arduboy.print(F("ATTACK WAVE "));
+	arduboy.print(level);
+	arduboy.setCursor(37, 32);
+	arduboy.print(F("COMPLETED"));
+	arduboy.setCursor(31, 50);
+
+	uint16_t bonus = level * 100;
+	if (bonus > 500)
+	{
+		bonus = 500;
+	}
+
+	arduboy.print(F("BONUS X "));
+	arduboy.print(bonus);
+
+	uint8_t toDraw = ((remainingHumanoids * 10) - spawnCountdown) / 10;
+
+	for (int i = 0; i < toDraw; i++)
+	{
+		uint8_t xPos = 31 + (i * 6);
+		arduboy.drawLine(xPos, 59, xPos, 61);
+	}
+
+	if (spawnCountdown > 0)
+	{
+		spawnCountdown--;
+
+		if (spawnCountdown % 10 == 0)
+		{
+			addToScore(bonus);
+		}
+	}
+	else if (arduboy.justPressed(A_BUTTON) || arduboy.justPressed(B_BUTTON))
+	{
+		onNewLevel();
+	}
+}
+
+void GameState::inPlayUpdate()
+{
 	bool freezeActors = isFlagSet(flags, FLAG_FREEZE_ACTORS);
 
-	uint8_t expectedLanders = level == 1 ? 15 : 20;
-	if(!freezeActors && spawnedLanders < expectedLanders)
+	uint8_t expectedLanders = getExpectedLandersForLevel();
+	if (!freezeActors && spawnedLanders < expectedLanders)
 	{
 		if (spawnCountdown == 0)
 		{
@@ -174,9 +224,11 @@ void GameState::update()
 			particles[i].render(camera.worldToScreenPos(particles[i].worldPos));
 		}
 	}
+}
 
-	drawGui();
-
+uint8_t GameState::getExpectedLandersForLevel()
+{
+	return level == 1 ? 15 : 20;
 }
 
 void GameState::spawnWave(uint8_t maxForLevel)
@@ -424,4 +476,86 @@ void GameState::plotOnScanner(int scannerY, GameObject* pGameObject)
 		xPos += 64;
 	}
 	arduboy.drawPixel(xPos + 64, scannerY + ((pGameObject->worldPos.y + 32) / 6.4), WHITE);
+}
+
+void GameState::onCountedEnemyDeath()
+{
+	liveEnemies--;
+
+	if (liveEnemies == 0 && spawnedLanders == getExpectedLandersForLevel())
+	{
+		// Start interstitial
+		setFlag(&flags, FLAG_INTERSTITIAL);
+		unsetFlag(&flags, FLAG_UI_BOTTOM);
+		unsetFlag(&flags, FLAG_FREEZE_ACTORS);
+		spawnCountdown = remainingHumanoids * 10;
+
+		// If the last enemy was killed by the player crashing into it, cancel the explosion but still take away a life.
+		// They might get an extra one from the surviving human bonus, so don't go to game over until after that.
+		if (playerShip.isExploding())
+		{
+			playerShip.cancelExplosion();
+			lives--;
+		}
+	}
+}
+
+void GameState::addToScore(uint16_t toAdd)
+{
+	score += toAdd;
+}
+
+void GameState::onNewLevel()
+{
+	if (lives == 0)
+	{
+		setState(new GameOverState());
+	}
+	else
+	{
+		level++;
+
+		if (level % 5 == 0)
+		{
+			remainingHumanoids = TOTAL_HUMANOIDS;
+		}
+
+		flags = 0;
+		spawnedLanders = 0;
+		remainingHumanoids = TOTAL_HUMANOIDS;
+		liveEnemies = 0;
+
+		playerShip.setActive(true);
+		playerShip.worldPos.x = playerShip.worldPos.y = 0;
+		camera.worldPos.x = 32;
+
+		for (int i = 0; i < TOTAL_HUMANOIDS; i++)
+		{
+			if (i < remainingHumanoids)
+			{
+				humanoids[i].worldPos.x = rand() % 1024;
+				humanoids[i].worldPos.y = HUMANOID_SPAWN_Y;
+				humanoids[i].setActive(true);
+			}
+			else
+			{
+				humanoids[i].setActive(false);
+			}
+		}
+
+		for (int i = 0; i < TOTAL_PARTICLES; i++)
+		{
+			particles[i].setActive(false);
+		}
+
+		for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
+		{
+			playerShots[i].setActive(false);
+		}
+
+		for (int i = 0; i < TOTAL_ENEMY_SHOTS; i++)
+		{
+			enemyShots[i].setActive(false);
+		}
+	}
 }

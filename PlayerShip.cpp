@@ -202,6 +202,7 @@ void PlayerShip::setActive(bool active)
 		unsetFlag(&flags, FLAG_EXPLODING);
 		unsetFlag(&flags, FLAG_HIDDEN);
 		setFlag(&flags, FLAG_FACING_RIGHT);
+		velocity.x = velocity.y = 0;
 	}
 }
 
@@ -236,4 +237,9 @@ bool PlayerShip::isExploding()
 bool PlayerShip::facingRight()
 {
 	return isFlagSet(flags, FLAG_FACING_RIGHT);
+}
+
+void PlayerShip::cancelExplosion()
+{
+	unsetFlag(&flags, FLAG_EXPLODING);
 }

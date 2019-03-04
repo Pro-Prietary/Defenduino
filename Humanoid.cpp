@@ -57,7 +57,7 @@ void Humanoid::fallingUpdate(Landscape* pLandscape)
 		}
 		else
 		{
-			((GameState*)(getCurrentState()))->score += LANDING_SCORE;
+			((GameState*)(getCurrentState()))->addToScore(LANDING_SCORE);
 			startWalking();
 		}
 	}
@@ -72,7 +72,7 @@ void Humanoid::caughtUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 	if (worldPos.y >= landscapeHeight)
 	{
 		// Dropped off
-		((GameState*)(getCurrentState()))->score += DROPPED_SCORE;
+		((GameState*)(getCurrentState()))->addToScore(DROPPED_SCORE);
 		startWalking();
 	}
 }
@@ -144,7 +144,7 @@ void Humanoid::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 		if (isFlagSet(flags, FLAG_FALLING) && arduboy.collide(pPlayerShip->getCollisionRect(), thisRect))
 		{
 			// Caught
-			((GameState*)(getCurrentState()))->score += CAUGHT_SCORE;
+			((GameState*)(getCurrentState()))->addToScore(CAUGHT_SCORE);
 			unsetFlag(&flags, FLAG_FALLING);
 			setFlag(&flags, FLAG_CAUGHT);
 			velocity.y = 0;

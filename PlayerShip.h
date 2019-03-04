@@ -3,13 +3,6 @@
 
 class PlayerShip : public MovingGameObject
 {
-private:
-	void fire();
-	void activeUpdate();
-	void explodingUpdate();
-	void explode();
-
-
 public:
 	PlayerShip();
 	void update();
@@ -21,4 +14,12 @@ public:
 	void setActive(bool active);
 	bool isExploding();
 	bool facingRight();
+	void cancelExplosion();
+
+private:
+	void fire();
+	void activeUpdate();
+	void explodingUpdate();
+	void explode();
+
 };

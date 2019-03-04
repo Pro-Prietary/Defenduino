@@ -38,8 +38,8 @@ public:
 	uint8_t getCapturableHumanoidAtPosition(uint16_t xPos);
 	Humanoid* getHumanoid(uint8_t index);
 	uint8_t liveEnemiesRemaining = 0;
-	unsigned long score = 0;
-
+	void onCountedEnemyDeath();
+	void addToScore(uint16_t toAdd);
 
 private:
 	GameCamera camera;
@@ -50,6 +50,8 @@ private:
 	Humanoid humanoids[TOTAL_HUMANOIDS];
 	Particles particles[TOTAL_PARTICLES];
 	EnemyShot enemyShots[TOTAL_ENEMY_SHOTS];
+	unsigned long score = 0;
+
 
 	void startSpawningLander();
 	bool spawnPosTooCloseToPlayer(int xPos);
@@ -58,13 +60,18 @@ private:
 	void drawGui();
 	void drawScanner();
 	void plotOnScanner(int scannerY, GameObject* pGameObject);
+	void inPlayUpdate();
+	void interstitialUpdate();
+	uint8_t getExpectedLandersForLevel();
+	void onNewLevel();
 
 	uint8_t flags = 0;
 	uint8_t spawnedLanders = 0;
 	uint8_t lives = 3;
 	uint8_t smartBombs = 3;
-	uint8_t remainingHumanoids = 10;
-	uint8_t level = 1;
+	uint8_t remainingHumanoids = TOTAL_HUMANOIDS;
+	uint8_t level = 0;
+	uint8_t liveEnemies = 0;
 
 	uint16_t spawnCountdown = 0;
 

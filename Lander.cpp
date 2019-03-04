@@ -277,7 +277,8 @@ void Lander::destroy()
 		}
 	}
 
-	pGameState->score += LANDER_SCORE;
+	pGameState->addToScore(LANDER_SCORE);
+	pGameState->onCountedEnemyDeath();
 }
 
 bool Lander::isMutant()
