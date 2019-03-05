@@ -51,7 +51,7 @@ void Humanoid::fallingUpdate(Landscape* pLandscape)
 	if (worldPos.y >= landscapeHeight)
 	{
 		// Hit the ground
-		if (velocity.y >= 50)
+		if (velocity.y >= 100)
 		{
 			destroy();
 		}
@@ -73,10 +73,31 @@ void Humanoid::caughtUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 	{
 		// Dropped off
 		((GameState*)(getCurrentState()))->addToScore(DROPPED_SCORE);
+		worldPos.y = landscapeHeight;
+
+		// Make sure we're not in the same place as another one.
+		while (sameXAsAnotherHuman())
+		{
+			worldPos.x -= 2;
+		}
+
 		startWalking();
 	}
 }
 
+bool Humanoid::sameXAsAnotherHuman()
+{
+	GameState* pState = (GameState*)getCurrentState();
+	for (uint8_t i = 0; i < TOTAL_HUMANOIDS; i++)
+	{
+		Humanoid* pHumanoid = pState->getHumanoid(i);
+		if (pHumanoid != this && pHumanoid->isActive() && pHumanoid->worldPos.x == worldPos.x)
+		{
+			return true;
+		}
+	}
+	return false;
+}
 
 bool Humanoid::render(Vector2Int screenPos)
 {

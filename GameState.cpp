@@ -406,9 +406,15 @@ Humanoid* GameState::getHumanoid(uint8_t index)
 
 void GameState::drawGui()
 {
-	smallFont.setCursor(0, isFlagSet(flags, FLAG_UI_BOTTOM) ? SCORE_BOTTOM_Y : 0);
+	uint8_t guiY = isFlagSet(flags, FLAG_UI_BOTTOM) ? SCORE_BOTTOM_Y : 0;
+	smallFont.setCursor(0, guiY);
 	smallFont.print(score);
 	drawScanner();
+
+	String sLives(lives-1);
+	uint8_t xPos = 127 - (sLives.length() * 4);
+	smallFont.setCursor(xPos, guiY);
+	smallFont.print(sLives);
 }
 
 void GameState::drawScanner()

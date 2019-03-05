@@ -25,4 +25,5 @@ private:
 	Rect getCollisionRect();
 	void fallingUpdate(Landscape* pLandscape);
 	void caughtUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip);
+	bool sameXAsAnotherHuman();
 };

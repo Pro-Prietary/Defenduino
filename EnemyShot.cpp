@@ -53,7 +53,7 @@ void EnemyShot::fire(PlayerShip* pPlayerShip, Vector2 startPos)
 	velocity = Vector2Int(SHOT_VELOCITY * normalized.x, SHOT_VELOCITY * normalized.y);
 
 	// Now add some randomness
-	int miss = (rand() % 10) - 20;
+	int miss = (rand() % 20) - 10;
 
 	velocity.x += miss;
 	velocity.y -= miss;
