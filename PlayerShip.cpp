@@ -92,6 +92,11 @@ void PlayerShip::activeUpdate()
 	{
 		fire();
 	}
+
+	if (arduboy.justPressed(A_BUTTON) && !arduboy.pressed(B_BUTTON))
+	{
+		((GameState*)(getCurrentState()))->onSmartBomb();
+	}
 }
 
 void PlayerShip::explodingUpdate() 
@@ -210,6 +215,7 @@ void PlayerShip::explode()
 {
 	unsetFlag(&flags, FLAG_ACTIVE);
 	GameState* pGameState = ((GameState*)(getCurrentState()));
+	pGameState->addToScore(25);
 	Particles* pExplosion = pGameState->getParticles();
 	if (pExplosion != NULL)
 	{

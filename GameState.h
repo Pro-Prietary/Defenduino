@@ -40,6 +40,7 @@ public:
 	uint8_t liveEnemiesRemaining = 0;
 	void onCountedEnemyDeath();
 	void addToScore(uint16_t toAdd);
+	void onSmartBomb();
 
 private:
 	GameCamera camera;
@@ -72,6 +73,7 @@ private:
 	uint8_t remainingHumanoids = TOTAL_HUMANOIDS;
 	uint8_t level = 0;
 	uint8_t liveEnemies = 0;
+	uint8_t smartbombCountdown = 0;
 
 	uint16_t spawnCountdown = 0;
 

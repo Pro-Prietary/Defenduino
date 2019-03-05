@@ -15,6 +15,7 @@ public:
 	void collisionCheck(PlayerShot* playerShots, PlayerShip* pPlayerShip);
 	void startSeeking();
 	bool isMutant();
+	void destroy();
 
 
 private:
@@ -25,7 +26,6 @@ private:
 	void fire(PlayerShip* pPlayerShip);
 
 	Rect getCollisionRect();
-	void destroy();
 
 	uint8_t humanoid;
 };

@@ -224,6 +224,12 @@ void GameState::inPlayUpdate()
 			particles[i].render(camera.worldToScreenPos(particles[i].worldPos));
 		}
 	}
+
+	if (smartbombCountdown > 0)
+	{
+		smartbombCountdown--;
+		arduboy.invert(smartbombCountdown % 2 != 0);
+	}
 }
 
 uint8_t GameState::getExpectedLandersForLevel()
@@ -415,6 +421,11 @@ void GameState::drawGui()
 	uint8_t xPos = 127 - (sLives.length() * 4);
 	smallFont.setCursor(xPos, guiY);
 	smallFont.print(sLives);
+
+	String sBombs(smartBombs);
+	xPos -= ((sBombs.length()+1) * 4);
+	smallFont.setCursor(xPos, guiY);
+	smallFont.print(sBombs);
 }
 
 void GameState::drawScanner()
@@ -495,6 +506,8 @@ void GameState::onCountedEnemyDeath()
 		unsetFlag(&flags, FLAG_UI_BOTTOM);
 		unsetFlag(&flags, FLAG_FREEZE_ACTORS);
 		spawnCountdown = remainingHumanoids * 10;
+		smartbombCountdown = 0;
+		arduboy.invert(false);
 
 		// If the last enemy was killed by the player crashing into it, cancel the explosion but still take away a life.
 		// They might get an extra one from the surviving human bonus, so don't go to game over until after that.
@@ -557,6 +570,28 @@ void GameState::onNewLevel()
 		for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
 		{
 			playerShots[i].setActive(false);
+		}
+
+		for (int i = 0; i < TOTAL_ENEMY_SHOTS; i++)
+		{
+			enemyShots[i].setActive(false);
+		}
+	}
+}
+
+void GameState::onSmartBomb()
+{
+	if (smartBombs > 0 && smartbombCountdown == 0)
+	{
+		smartbombCountdown = 10;
+		smartBombs--;
+
+		for (int i = 0; i < TOTAL_LANDERS; i++)
+		{
+			if (landers[i].isActive() && landers[i].isVisible())
+			{
+				landers[i].destroy();
+			}
 		}
 
 		for (int i = 0; i < TOTAL_ENEMY_SHOTS; i++)
