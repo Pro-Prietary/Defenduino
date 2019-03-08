@@ -31,7 +31,7 @@ GameCamera* GameState::getCamera()
 // no resources are available.
 void GameState::startSpawningLander()
 {
-	int worldX = getSafeLanderSpawn();
+	int worldX = getSafeSpawn();
 
 	Particles* pParticles = getParticles();
 
@@ -50,7 +50,7 @@ void GameState::startSpawningLander()
 #endif
 }
 
-int GameState::getSafeLanderSpawn()
+int GameState::getSafeSpawn()
 {
 	int worldX = rand() % 1024;
 	while (spawnPosTooCloseToPlayer(worldX))
@@ -198,6 +198,38 @@ void GameState::inPlayUpdate()
 		}
 	}
 
+	for (int i = 0; i < TOTAL_BOMBERS; i++)
+	{
+		if (bombers[i].isActive())
+		{
+			if (!freezeActors)
+			{
+				bombers[i].update(&playerShip);
+			}
+
+			bombers[i].render(camera.worldToScreenPos(bombers[i].worldPos));
+
+			if (!freezeActors)
+			{
+				bombers[i].collisionCheck(playerShots, &playerShip);
+			}
+		}
+	}
+
+
+	for (int i = 0; i < TOTAL_MINES; i++)
+	{
+		if (mines[i].isActive())
+		{
+			mines[i].render(camera.worldToScreenPos(bombers[i].worldPos));
+
+			if (!freezeActors)
+			{
+				mines[i].collisionCheck(&playerShip);
+			}
+		}
+	}
+
 	for (int i = 0; i < TOTAL_ENEMY_SHOTS; i++)
 	{
 		if (enemyShots[i].isActive())
@@ -309,51 +341,7 @@ void GameState::lostLife()
 
 	if (lives > 0)
 	{
-		playerShip.worldPos.x = playerShip.worldPos.y = 0;
-		playerShip.setActive(true);
-		camera.worldPos.x = 32;
-
-		// All remaining enemies should be moved
-		for (int i = 0; i < TOTAL_LANDERS; i++)
-		{
-			if (landers[i].isActive())
-			{
-				landers[i].worldPos.x = getSafeLanderSpawn();
-				landers[i].worldPos.y = LANDER_SPAWN_ALT;
-			}
-
-			if (!landers[i].isMutant())
-			{
-				landers[i].startSeeking();
-			}
-		}
-
-		// All remaining humanoids should be placed on the ground.
-		for (int i = 0; i < TOTAL_HUMANOIDS; i++)
-		{
-			if (humanoids[i].isActive())
-			{
-				humanoids[i].worldPos.y = HUMANOID_SPAWN_Y;
-				humanoids[i].startWalking();
-			}
-		}
-
-		// All shots should be removed
-		for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
-		{
-			if (playerShots[i].isActive())
-			{
-				playerShots[i].setActive(false);
-			}
-		}
-
-		for (int i = 0; i < TOTAL_ENEMY_SHOTS; i++)
-		{
-			if (enemyShots[i].isActive())
-			{
-				enemyShots[i].setActive(false);
-			}
-		}
+		onNewLife();
 	}
 	else
 	{
@@ -377,7 +365,7 @@ void GameState::completeSpawningLander(int xPos, int yPos)
 			landers[i].worldPos.x = xPos;
 			landers[i].worldPos.y = yPos;
 			spawnedLanders++;
-			liveEnemiesRemaining++;
+			liveEnemies++;
 			return;
 		}
 	}
@@ -436,7 +424,7 @@ void GameState::drawScanner()
 	scannerY++;
 	arduboy.fillRect(32, scannerY, 64, 10, BLACK);
 
-	// Draw lanscape on scanner
+	// Draw landscape on scanner
 	int landscapeIdx = camera.worldPos.x - 512;
 	if (landscapeIdx < 0)
 	{
@@ -469,6 +457,14 @@ void GameState::drawScanner()
 		if (humanoids[i].isActive())
 		{
 			plotOnScanner(scannerY, &humanoids[i]);
+		}
+	}
+
+	for (int i = 0; i < TOTAL_BOMBERS; i++)
+	{
+		if (bombers[i].isActive())
+		{
+			plotOnScanner(scannerY, &bombers[i]);
 		}
 	}
 
@@ -522,6 +518,13 @@ void GameState::onCountedEnemyDeath()
 void GameState::addToScore(uint16_t toAdd)
 {
 	score += toAdd;
+
+	if (score > nextBonus)
+	{
+		nextBonus += 10000;
+		lives++;
+		smartBombs++;
+	}
 }
 
 void GameState::onNewLevel()
@@ -548,7 +551,7 @@ void GameState::onNewLevel()
 		playerShip.worldPos.x = playerShip.worldPos.y = 0;
 		camera.worldPos.x = 32;
 
-		for (int i = 0; i < TOTAL_HUMANOIDS; i++)
+		for (uint8_t i = 0; i < TOTAL_HUMANOIDS; i++)
 		{
 			if (i < remainingHumanoids)
 			{
@@ -562,19 +565,142 @@ void GameState::onNewLevel()
 			}
 		}
 
-		for (int i = 0; i < TOTAL_PARTICLES; i++)
+		for (uint8_t i = 0; i < TOTAL_PARTICLES; i++)
 		{
 			particles[i].setActive(false);
 		}
 
-		for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
+		for (uint8_t i = 0; i < TOTAL_PLAYER_SHOTS; i++)
 		{
 			playerShots[i].setActive(false);
 		}
 
-		for (int i = 0; i < TOTAL_ENEMY_SHOTS; i++)
+		for (uint8_t i = 0; i < TOTAL_ENEMY_SHOTS; i++)
 		{
 			enemyShots[i].setActive(false);
+		}
+
+		for (uint8_t i = 0; i < TOTAL_MINES; i++)
+		{
+			mines[i].setActive(false);
+		}
+
+		uint8_t expectedBombers;
+		if (level == 1)
+		{
+			expectedBombers = 0;
+		}
+		else if (level == 2)
+		{
+			expectedBombers = 3;
+		}
+		else if (level == 3)
+		{
+			expectedBombers = 4;
+		}
+		else
+		{
+			expectedBombers = 5;
+		}
+
+		for (uint8_t i = 0; i < expectedBombers; i++)
+		{
+			bombers[i].setActive(true);
+		}
+		distributeActiveBombers();
+
+		liveEnemies += expectedBombers;
+	}
+}
+
+void GameState::onNewLife()
+{
+	playerShip.worldPos.x = playerShip.worldPos.y = 0;
+	playerShip.setActive(true);
+	camera.worldPos.x = 32;
+
+	// All remaining enemies should be moved
+	for (uint8_t i = 0; i < TOTAL_LANDERS; i++)
+	{
+		if (landers[i].isActive())
+		{
+			landers[i].worldPos.x = getSafeSpawn();
+			landers[i].worldPos.y = LANDER_SPAWN_ALT;
+		}
+
+		if (!landers[i].isMutant())
+		{
+			landers[i].startSeeking();
+		}
+	}
+
+	distributeActiveBombers();
+
+	// All remaining humanoids should be placed on the ground.
+	for (uint8_t i = 0; i < TOTAL_HUMANOIDS; i++)
+	{
+		if (humanoids[i].isActive())
+		{
+			humanoids[i].worldPos.y = HUMANOID_SPAWN_Y;
+			humanoids[i].startWalking();
+		}
+	}
+
+	// All shots should be removed
+	for (uint8_t i = 0; i < TOTAL_PLAYER_SHOTS; i++)
+	{
+		if (playerShots[i].isActive())
+		{
+			playerShots[i].setActive(false);
+		}
+	}
+
+	for (uint8_t i = 0; i < TOTAL_ENEMY_SHOTS; i++)
+	{
+		if (enemyShots[i].isActive())
+		{
+			enemyShots[i].setActive(false);
+		}
+	}
+
+	for (uint8_t i = 0; i < TOTAL_MINES; i++)
+	{
+		if (mines[i].isActive())
+		{
+			mines[i].setActive(false);
+		}
+	}
+}
+
+void GameState::distributeActiveBombers()
+{
+	uint8_t spawnedInGroup = 0;
+	Vector2 spawn;
+	bool goRight = rand() % 2 == 0;
+
+	for (int i = 0; i < TOTAL_BOMBERS; i++)
+	{
+		if (bombers[i].isActive())
+		{
+			if (spawnedInGroup == 0)
+			{
+				spawn.x = getSafeSpawn();
+				spawn.y = -24;
+			}
+
+			bombers[i].onSpawn(spawn, goRight);
+
+			spawnedInGroup++;
+			if (spawnedInGroup == 3)
+			{
+				spawnedInGroup = 0;
+				goRight = !goRight;
+			}
+			else
+			{
+				spawn.x += 32;
+				spawn.y += 24;
+			}
 		}
 	}
 }
@@ -591,6 +717,14 @@ void GameState::onSmartBomb()
 			if (landers[i].isActive() && landers[i].isVisible())
 			{
 				landers[i].destroy();
+			}
+		}
+
+		for (int i = 0; i < TOTAL_BOMBERS; i++)
+		{
+			if (bombers[i].isActive() && bombers[i].isVisible())
+			{
+				bombers[i].destroy();
 			}
 		}
 

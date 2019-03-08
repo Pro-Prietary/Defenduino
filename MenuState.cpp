@@ -5,17 +5,6 @@
 
 MenuState::MenuState() : State()
 {
-	pressStartObj.worldPos.x = 14;
-	pressStartObj.worldPos.y = 10;
-
-	pressStartObj.setText(F("Press A To Start"));
-		
-#ifdef _DEBUG
-	debugMsg.setText(F("Debug Build"));
-	debugMsg.worldPos.x = 25;
-	debugMsg.worldPos.y = 40;
-#endif
-
 }
 
 void MenuState::update() 
@@ -24,8 +13,12 @@ void MenuState::update()
 	{
 		setState(new GameState());
 	}
-	pressStartObj.render(camera.worldToScreenPos(pressStartObj.worldPos));
+
+	arduboy.setCursor(14, 10);
+	arduboy.print(F("Press A To Start"));
+
 #ifdef _DEBUG
-	debugMsg.render(camera.worldToScreenPos(debugMsg.worldPos));
+	arduboy.setCursor(25, 40);
+	arduboy.print(F("Debug Build"));
 #endif
 }

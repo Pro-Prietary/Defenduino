@@ -2,7 +2,6 @@
 #include <Arduboy2.h>
 #include "Renderer.h"
 #include "Vector2.h"
-#include "Flaggable.h"
 
 #define FLAG_ACTIVE 0x1
 #define FLAG_VISIBLE 0x2

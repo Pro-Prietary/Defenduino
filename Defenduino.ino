@@ -106,7 +106,7 @@ void setFlag(uint8_t* pFlags, uint8_t flagToSet, bool setValue)
 	}
 }
 
-bool renderSprite(const uint8_t* spriteData, Vector2Int screenPos)
+bool renderSprite(const uint8_t* spriteData, Vector2Int screenPos, uint8_t frame = 0)
 {
 	bool bIsVisible = false;
 	// If far from the camera, flip to the other side for wrapping
@@ -125,7 +125,7 @@ bool renderSprite(const uint8_t* spriteData, Vector2Int screenPos)
 	if ((leftEdge < SCREEN_WIDTH && leftEdge >= 0) ||
 		(rightEdge < SCREEN_WIDTH && rightEdge >= 0))
 	{
-		sprites.drawSelfMasked(screenPos.x, screenPos.y, (const uint8_t *)spriteData, 0);
+		sprites.drawSelfMasked(screenPos.x, screenPos.y, (const uint8_t *)spriteData, frame);
 		bIsVisible = true;
 	}
 

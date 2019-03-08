@@ -1,8 +1,6 @@
-#include "Camera.h"
+#pragma once
 #include <Arduboy2.h>
 
-#ifndef   STATE_H
-#define   STATE_H
 class State
 {
 
@@ -12,4 +10,3 @@ protected:
 	State();
 
 };
-#endif

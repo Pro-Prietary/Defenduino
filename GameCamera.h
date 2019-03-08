@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Camera.h"
+#include "MovingGameObject.h"
 #include "PlayerShip.h"
 
-class GameCamera : public Camera
+class GameCamera : public MovingGameObject
 {
 public:
 	GameCamera();

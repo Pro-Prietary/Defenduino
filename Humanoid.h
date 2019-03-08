@@ -1,6 +1,5 @@
 #pragma once
 #include "MovingGameObject.h"
-#include "Sprite.h"
 #include "Landscape.h"
 #include "PlayerShot.h"
 #include "PlayerShip.h"

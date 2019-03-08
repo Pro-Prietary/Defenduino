@@ -3,14 +3,14 @@
 
 #define MAX_CAMERA_SPEED 300
 
-GameCamera::GameCamera() : Camera()
+GameCamera::GameCamera() : MovingGameObject()
 {
 
 }
 
 void GameCamera::update(PlayerShip* pPlayerShip)
 {
-	Camera::update();
+	MovingGameObject::update();
 
 	float targetXPos = pPlayerShip->getCameraTarget();
 

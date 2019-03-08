@@ -11,8 +11,5 @@ public:
 	virtual void update();
 
 private:
-	Camera camera;
-	TextObject pressStartObj;
-	TextObject debugMsg;
 };
 

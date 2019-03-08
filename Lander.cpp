@@ -130,8 +130,8 @@ void Lander::escapingUpdate(PlayerShip* pPlayerShip)
 		Serial.print(F("Lander escaped"));
 #endif
 		// Escaped off the top of the screen with no humanoid
-		((GameState*)(getCurrentState()))->liveEnemiesRemaining--;
 		setActive(false);
+		((GameState*)(getCurrentState()))->onCountedEnemyDeath();
 	} 
 	else if (worldPos.y <= -32 && pHumanoid->isActive())
 	{
@@ -263,7 +263,6 @@ void Lander::destroy()
 		pExplosion->worldPos.x = worldPos.x;
 		pExplosion->worldPos.y = worldPos.y;
 		pExplosion->show(PARTICLES_EXPLOSION);
-		((GameState*)(getCurrentState()))->liveEnemiesRemaining--;
 	}
 
 	if (isFlagSet(flags, FLAG_ESCAPING) && humanoid != NO_HUMANOID_FOUND)

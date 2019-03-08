@@ -107,6 +107,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bomber.h" />
     <ClInclude Include="Camera.h">
       <FileType>CppCode</FileType>
     </ClInclude>
@@ -126,6 +127,7 @@
     <ClInclude Include="MenuState.h">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClInclude Include="Mine.h" />
     <ClInclude Include="MovingGameObject.h" />
     <ClInclude Include="Particles.h" />
     <ClInclude Include="PlayerShip.h" />
@@ -139,6 +141,7 @@
     <ClInclude Include="__vm\.Defenduino.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bomber.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="EnemyShot.cpp" />
     <ClCompile Include="Font3x5.cpp" />
@@ -151,6 +154,7 @@
     <ClCompile Include="Lander.cpp" />
     <ClCompile Include="Landscape.cpp" />
     <ClCompile Include="MenuState.cpp" />
+    <ClCompile Include="Mine.cpp" />
     <ClCompile Include="MovingGameObject.cpp" />
     <ClCompile Include="Particles.cpp" />
     <ClCompile Include="PlayerShip.cpp" />
