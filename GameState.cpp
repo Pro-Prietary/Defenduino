@@ -102,7 +102,7 @@ void GameState::interstitialUpdate()
 
 	uint8_t toDraw = ((remainingHumanoids * 10) - spawnCountdown) / 10;
 
-	for (int i = 0; i < toDraw; i++)
+	for (uint8_t i = 0; i < toDraw; i++)
 	{
 		uint8_t xPos = 31 + (i * 6);
 		arduboy.drawLine(xPos, 59, xPos, 61);
@@ -151,7 +151,7 @@ void GameState::inPlayUpdate()
 
 	landscape.render(camera.worldPos.x);
 
-	for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
+	for (uint8_t i = 0; i < TOTAL_PLAYER_SHOTS; i++)
 	{
 		if (playerShots[i].isActive())
 		{
@@ -163,7 +163,7 @@ void GameState::inPlayUpdate()
 		}
 	}
 
-	for (int i = 0; i < TOTAL_HUMANOIDS; i++)
+	for (uint8_t i = 0; i < TOTAL_HUMANOIDS; i++)
 	{
 		if (humanoids[i].isActive())
 		{
@@ -180,7 +180,7 @@ void GameState::inPlayUpdate()
 		}
 	}
 
-	for (int i = 0; i < TOTAL_LANDERS; i++)
+	for (uint8_t i = 0; i < TOTAL_LANDERS; i++)
 	{
 		if (landers[i].isActive())
 		{
@@ -198,7 +198,7 @@ void GameState::inPlayUpdate()
 		}
 	}
 
-	for (int i = 0; i < TOTAL_BOMBERS; i++)
+	for (uint8_t i = 0; i < TOTAL_BOMBERS; i++)
 	{
 		if (bombers[i].isActive())
 		{
@@ -217,11 +217,11 @@ void GameState::inPlayUpdate()
 	}
 
 
-	for (int i = 0; i < TOTAL_MINES; i++)
+	for (uint8_t i = 0; i < TOTAL_MINES; i++)
 	{
 		if (mines[i].isActive())
 		{
-			mines[i].render(camera.worldToScreenPos(bombers[i].worldPos));
+			mines[i].render(camera.worldToScreenPos(mines[i].worldPos));
 
 			if (!freezeActors)
 			{
@@ -230,7 +230,7 @@ void GameState::inPlayUpdate()
 		}
 	}
 
-	for (int i = 0; i < TOTAL_ENEMY_SHOTS; i++)
+	for (uint8_t i = 0; i < TOTAL_ENEMY_SHOTS; i++)
 	{
 		if (enemyShots[i].isActive())
 		{
@@ -248,7 +248,7 @@ void GameState::inPlayUpdate()
 		}
 	}
 
-	for (int i = 0; i < TOTAL_PARTICLES; i++)
+	for (uint8_t i = 0; i < TOTAL_PARTICLES; i++)
 	{
 		if (particles[i].isActive())
 		{
@@ -319,10 +319,25 @@ EnemyShot* GameState::getEnemyShot()
 	return pShot;
 }
 
+Mine* GameState::getMine()
+{
+	Mine* pMine = NULL;
+	for (uint8_t i = 0; i < TOTAL_MINES; i++)
+	{
+		if (!mines[i].isActive())
+		{
+			pMine = &mines[i];
+			break;
+		}
+	}
+
+	return pMine;
+}
+
 Particles* GameState::getParticles()
 {
 	Particles* pParticles = NULL;
-	for (int i = 0; i < TOTAL_PARTICLES; i++)
+	for (uint8_t i = 0; i < TOTAL_PARTICLES; i++)
 	{
 		if (!particles[i].isActive())
 		{
@@ -357,7 +372,7 @@ void GameState::freezeActors()
 void GameState::completeSpawningLander(int xPos, int yPos)
 {
 	// Find the first inactive lander in the list, activate and place it.
-	for (int i = 0; i < TOTAL_LANDERS; i++)
+	for (uint8_t i = 0; i < TOTAL_LANDERS; i++)
 	{
 		if (!landers[i].isActive())
 		{
@@ -369,11 +384,6 @@ void GameState::completeSpawningLander(int xPos, int yPos)
 			return;
 		}
 	}
-	
-#ifdef _DEBUG
-	Serial.println(F("Tried to get lander after spawn particles completed, but none was available."));
-#endif
-
 }
 
 // Get the index of a humanoid that can be captured, or NO_HUMANOID_FOUND if there is none.
@@ -418,7 +428,7 @@ void GameState::drawGui()
 
 void GameState::drawScanner()
 {
-	int scannerY = isFlagSet(flags, FLAG_UI_BOTTOM) ? SCANNER_BOTTOM_Y : 0;
+	uint8_t scannerY = isFlagSet(flags, FLAG_UI_BOTTOM) ? SCANNER_BOTTOM_Y : 0;
 
 	arduboy.drawRect(31, scannerY, 66, 12, WHITE);
 	scannerY++;
@@ -431,7 +441,10 @@ void GameState::drawScanner()
 		landscapeIdx += 1024;
 	}
 
-	for (int i = 0; i < 64; i++)
+	// Make sure we're on a four-position boundary which is quicker to uncompress
+	landscapeIdx -= landscapeIdx % 4;
+
+	for (uint8_t i = 0; i < 64; i++)
 	{
 		byte height = landscape.getHeight(landscapeIdx);
 
@@ -444,7 +457,7 @@ void GameState::drawScanner()
 		}
 	}
 
-	for (int i = 0; i < TOTAL_LANDERS; i++)
+	for (uint8_t i = 0; i < TOTAL_LANDERS; i++)
 	{
 		if (landers[i].isActive())
 		{
@@ -452,7 +465,7 @@ void GameState::drawScanner()
 		}
 	}
 
-	for (int i = 0; i < TOTAL_HUMANOIDS; i++)
+	for (uint8_t i = 0; i < TOTAL_HUMANOIDS; i++)
 	{
 		if (humanoids[i].isActive())
 		{
@@ -460,7 +473,7 @@ void GameState::drawScanner()
 		}
 	}
 
-	for (int i = 0; i < TOTAL_BOMBERS; i++)
+	for (uint8_t i = 0; i < TOTAL_BOMBERS; i++)
 	{
 		if (bombers[i].isActive())
 		{
@@ -469,17 +482,17 @@ void GameState::drawScanner()
 	}
 
 	// Playership
-	int yPos = scannerY + ((playerShip.worldPos.y + 32) / 6.4);
+	uint8_t yPos = scannerY + ((playerShip.worldPos.y + 32) / 6.4);
 
 	// Different xpos depending on left or right of cam.
-	int xPos = playerShip.facingRight() ? 62 : 65;
+	uint8_t xPos = playerShip.facingRight() ? 62 : 65;
 	arduboy.drawLine(xPos, yPos, xPos+1, yPos, WHITE);
 
 }
 
-void GameState::plotOnScanner(int scannerY, GameObject* pGameObject)
+void GameState::plotOnScanner(uint8_t scannerY, GameObject* pGameObject)
 {
-	int xPos = ((pGameObject->worldPos.x - camera.worldPos.x) / 16);
+	uint8_t xPos = ((pGameObject->worldPos.x - camera.worldPos.x) / 16);
 	if (xPos >= 32)
 	{
 		xPos -= 64;
@@ -731,6 +744,11 @@ void GameState::onSmartBomb()
 		for (int i = 0; i < TOTAL_ENEMY_SHOTS; i++)
 		{
 			enemyShots[i].setActive(false);
+		}
+
+		for (int i = 0; i < TOTAL_MINES; i++)
+		{
+			mines[i].setActive(false);
 		}
 	}
 }

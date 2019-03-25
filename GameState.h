@@ -32,6 +32,7 @@ public:
 	virtual void update();
 	PlayerShot* getPlayerShot();
 	EnemyShot* getEnemyShot();
+	Mine* getMine();
 
 	Particles* getParticles();
 	void lostLife();
@@ -66,7 +67,7 @@ private:
 	void spawnWave(uint8_t maxForLevel);
 	void drawGui();
 	void drawScanner();
-	void plotOnScanner(int scannerY, GameObject* pGameObject);
+	void plotOnScanner(uint8_t scannerY, GameObject* pGameObject);
 	void inPlayUpdate();
 	void interstitialUpdate();
 	uint8_t getExpectedLandersForLevel();
@@ -79,7 +80,7 @@ private:
 	uint8_t lives = 3;
 	uint8_t smartBombs = 3;
 	uint8_t remainingHumanoids = TOTAL_HUMANOIDS;
-	uint8_t level = 1;
+	uint8_t level = 0;
 	uint8_t liveEnemies = 0;
 	uint8_t smartbombCountdown = 0;
 

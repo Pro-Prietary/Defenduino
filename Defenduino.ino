@@ -11,10 +11,6 @@ Font3x5 smallFont;
 State* pCurrentState;
 State* pNextState;
 
-#ifdef _DEBUG
-int frameCount = 0;
-#endif
-
 void setup() {
     arduboy.begin();
 	setState(new MenuState());
@@ -32,14 +28,18 @@ void globalMethod()
 
 void loop() {
    // pause render until it's time for the next frame
-  if (!(arduboy.nextFrame()))
-    return;
 
 #ifdef _DEBUG
-  frameCount++;
-  if (frameCount == 60*5)
+  if (!(arduboy.nextFrameDEV()))
+    return;
+#else
+	if (!(arduboy.nextFrame()))
+		return;
+#endif
+
+#ifdef _DEBUG
+  if (arduboy.frameCount % 300 == 0)
   {
-	  frameCount = 0;
 	  Serial.print(F("Free memory: "));
 	  Serial.println(freeRam());
   }

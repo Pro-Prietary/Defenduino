@@ -25,6 +25,18 @@ void Bomber::update(PlayerShip* pPlayerShip)
 	{
 		worldPos.y = -40;
 	}
+
+	if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 64 == 0)
+	{
+		Mine* pMine = ((GameState*)(getCurrentState()))->getMine();
+		if (pMine != NULL)
+		{
+			pMine->setActive(true);
+			pMine->worldPos.x = worldPos.x;
+			pMine->worldPos.y = worldPos.y;
+			Serial.println(F("Mine dropped"));
+		}
+	}
 }
 
 bool Bomber::render(Vector2Int screenPos)
@@ -72,11 +84,11 @@ void Bomber::draw(Vector2Int screenPos)
 	{
 		if (velocity.y > 0)
 		{
-			frame = FRAME_LEFT_UP;
+			frame = FRAME_LEFT_DOWN;
 		}
 		else
 		{
-			frame = FRAME_LEFT_DOWN;
+			frame = FRAME_LEFT_UP;
 		}
 	}
 

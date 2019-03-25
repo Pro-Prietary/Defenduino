@@ -231,7 +231,7 @@ void Lander::startSeeking()
 void Lander::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 {
 	Rect thisRect = getCollisionRect();
-	for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
+	for (uint8_t i = 0; i < TOTAL_PLAYER_SHOTS; i++)
 	{
 		if (pPlayerShots[i].isActive() && pPlayerShots[i].tipOnScreen() && arduboy.collide(pPlayerShots[i].getCollisionRect(), thisRect))
 		{

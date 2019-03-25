@@ -225,7 +225,7 @@ void PlayerShip::explode()
 	}
 
 	// Destroy any carried humans
-	for (int i = 0; i < TOTAL_HUMANOIDS; i++)
+	for (uint8_t i = 0; i < TOTAL_HUMANOIDS; i++)
 	{
 		Humanoid* pHumanoid = pGameState->getHumanoid(i);
 		if (pHumanoid->isActive() && pHumanoid->isCarried())

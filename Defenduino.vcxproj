@@ -108,9 +108,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bomber.h" />
-    <ClInclude Include="Camera.h">
-      <FileType>CppCode</FileType>
-    </ClInclude>
     <ClInclude Include="EnemyShot.h" />
     <ClInclude Include="Font3x5.h" />
     <ClInclude Include="GameCamera.h" />
@@ -119,7 +116,6 @@
     </ClInclude>
     <ClInclude Include="GameOverState.h" />
     <ClInclude Include="GameState.h" />
-    <ClInclude Include="GameStatus.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Humanoid.h" />
     <ClInclude Include="Lander.h" />
@@ -142,14 +138,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bomber.cpp" />
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="EnemyShot.cpp" />
     <ClCompile Include="Font3x5.cpp" />
     <ClCompile Include="GameCamera.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameOverState.cpp" />
     <ClCompile Include="GameState.cpp" />
-    <ClCompile Include="GameStatus.cpp" />
     <ClCompile Include="Humanoid.cpp" />
     <ClCompile Include="Lander.cpp" />
     <ClCompile Include="Landscape.cpp" />

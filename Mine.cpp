@@ -25,11 +25,13 @@ bool Mine::render(Vector2Int screenPos)
 		renderSprite(spriteData, screenPos);
 		bIsVisible = true;
 	}
+	else
+	{
+		// Disappear once off the screen
+		setActive(false);
+	}
 
 	setFlag(&flags, FLAG_VISIBLE, bIsVisible);
-
-	// Disappear once off screen
-	setActive(false);
 
 	return bIsVisible;
 }
