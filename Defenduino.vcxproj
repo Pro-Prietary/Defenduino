@@ -128,6 +128,7 @@
     <ClInclude Include="Particles.h" />
     <ClInclude Include="PlayerShip.h" />
     <ClInclude Include="PlayerShot.h" />
+    <ClInclude Include="Pod.h" />
     <ClInclude Include="State.h">
       <FileType>CppCode</FileType>
     </ClInclude>
@@ -153,6 +154,7 @@
     <ClCompile Include="Particles.cpp" />
     <ClCompile Include="PlayerShip.cpp" />
     <ClCompile Include="PlayerShot.cpp" />
+    <ClCompile Include="Pod.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="TextObject.cpp" />
     <ClCompile Include="Vector2.cpp" />

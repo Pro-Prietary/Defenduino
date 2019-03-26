@@ -84,6 +84,9 @@
     <ClInclude Include="Mine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Pod.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -150,6 +153,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Mine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pod.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -12,6 +12,7 @@
 #include "EnemyShot.h"
 #include "Bomber.h"
 #include "Mine.h"
+#include "Pod.h"
 
 #include <Arduboy2.h>
 
@@ -22,6 +23,7 @@
 #define TOTAL_ENEMY_SHOTS 4
 #define TOTAL_BOMBERS 5
 #define TOTAL_MINES 6
+#define TOTAL_PODS 4
 
 #define NO_HUMANOID_FOUND 255
 
@@ -56,6 +58,7 @@ private:
 	EnemyShot enemyShots[TOTAL_ENEMY_SHOTS];
 	Bomber bombers[TOTAL_BOMBERS];
 	Mine mines[TOTAL_MINES];
+	Pod pods[TOTAL_PODS];
 
 	unsigned long score = 0;
 	unsigned long nextBonus = 10000;
@@ -73,7 +76,11 @@ private:
 	uint8_t getExpectedLandersForLevel();
 	void onNewLevel();
 	void onNewLife();
+	void spawnBombers();
+	void spawnPods();
 	void distributeActiveBombers();
+	void distributeActivePods();
+
 
 	uint8_t flags = 0;
 	uint8_t spawnedLanders = 0;

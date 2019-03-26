@@ -40,7 +40,6 @@ void GameState::startSpawningLander()
 		pParticles->worldPos.x = worldX;
 		pParticles->worldPos.y = LANDER_SPAWN_ALT;
 		pParticles->show(PARTICLES_SPAWN);
-		liveEnemies++;
 	}
 #ifdef _DEBUG
 	else
@@ -212,6 +211,24 @@ void GameState::inPlayUpdate()
 			if (!freezeActors)
 			{
 				bombers[i].collisionCheck(playerShots, &playerShip);
+			}
+		}
+	}
+
+	for (uint8_t i = 0; i < TOTAL_PODS; i++)
+	{
+		if (pods[i].isActive())
+		{
+			if (!freezeActors)
+			{
+				pods[i].update(&playerShip);
+			}
+
+			pods[i].render(camera.worldToScreenPos(pods[i].worldPos));
+
+			if (!freezeActors)
+			{
+				pods[i].collisionCheck(playerShots, &playerShip);
 			}
 		}
 	}
@@ -508,6 +525,10 @@ void GameState::onCountedEnemyDeath()
 {
 	liveEnemies--;
 
+	Serial.print(F("Enemy death.  liveEnemies="));
+	Serial.println(liveEnemies);
+
+
 	if (liveEnemies == 0 && spawnedLanders == getExpectedLandersForLevel())
 	{
 		// Start interstitial
@@ -597,33 +618,75 @@ void GameState::onNewLevel()
 		{
 			mines[i].setActive(false);
 		}
-
-		uint8_t expectedBombers;
-		if (level == 1)
+		
+		for (uint8_t i = 0; i < TOTAL_PODS; i++)
 		{
-			expectedBombers = 0;
-		}
-		else if (level == 2)
-		{
-			expectedBombers = 3;
-		}
-		else if (level == 3)
-		{
-			expectedBombers = 4;
-		}
-		else
-		{
-			expectedBombers = 5;
+			pods[i].setActive(false);
 		}
 
-		for (uint8_t i = 0; i < expectedBombers; i++)
-		{
-			bombers[i].setActive(true);
-		}
-		distributeActiveBombers();
-
-		liveEnemies += expectedBombers;
+		spawnBombers();
+		spawnPods();
 	}
+}
+
+void GameState::spawnBombers()
+{
+	uint8_t expectedBombers;
+	if (level == 1)
+	{
+		expectedBombers = 0;
+	}
+	else if (level == 2)
+	{
+		expectedBombers = 3;
+	}
+	else if (level == 3)
+	{
+		expectedBombers = 4;
+	}
+	else
+	{
+		expectedBombers = 5;
+	}
+
+	for (uint8_t i = 0; i < expectedBombers; i++)
+	{
+		bombers[i].setActive(true);
+	}
+	distributeActiveBombers();
+
+
+	liveEnemies += expectedBombers;
+}
+
+void GameState::spawnPods()
+{
+	uint8_t expectedPods;
+	if (level == 1)
+	{
+		expectedPods = 0;
+	}
+	else if (level == 2)
+	{
+		expectedPods = 1;
+	}
+	else if (level == 3)
+	{
+		expectedPods = 3;
+	}
+	else
+	{
+		expectedPods = 4;
+	}
+
+	for (uint8_t i = 0; i < expectedPods; i++)
+	{
+		pods[i].setActive(true);
+	}
+	distributeActivePods();
+
+
+	liveEnemies += expectedPods;
 }
 
 void GameState::onNewLife()
@@ -648,6 +711,7 @@ void GameState::onNewLife()
 	}
 
 	distributeActiveBombers();
+	distributeActivePods();
 
 	// All remaining humanoids should be placed on the ground.
 	for (uint8_t i = 0; i < TOTAL_HUMANOIDS; i++)
@@ -718,6 +782,21 @@ void GameState::distributeActiveBombers()
 	}
 }
 
+void GameState::distributeActivePods()
+{
+	Vector2 spawn;
+
+	for (int i = 0; i < TOTAL_PODS; i++)
+	{
+		if (pods[i].isActive())
+		{
+			spawn.x = getSafeSpawn();
+			spawn.y = 0;
+			pods[i].onSpawn(spawn, rand() % 2 == 0);
+		}
+	}
+}
+
 void GameState::onSmartBomb()
 {
 	if (smartBombs > 0 && smartbombCountdown == 0)
@@ -738,6 +817,14 @@ void GameState::onSmartBomb()
 			if (bombers[i].isActive() && bombers[i].isVisible())
 			{
 				bombers[i].destroy();
+			}
+		}
+
+		for (int i = 0; i < TOTAL_PODS; i++)
+		{
+			if (pods[i].isActive() && pods[i].isVisible())
+			{
+				pods[i].destroy(true);
 			}
 		}
 

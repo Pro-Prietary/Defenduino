@@ -8,8 +8,8 @@ GameOverState::GameOverState()
 
 void GameOverState::update()
 {
-	arduboy.setCursor(35, 10);
-	arduboy.print(F("GAME OVER"));
+	smallFont.setCursor(35, 10);
+	smallFont.print(F("GAME OVER"));
 
 	if (arduboy.justPressed(A_BUTTON) || arduboy.justPressed(B_BUTTON))
 	{
