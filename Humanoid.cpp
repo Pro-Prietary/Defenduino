@@ -57,7 +57,7 @@ void Humanoid::fallingUpdate(Landscape* pLandscape)
 		}
 		else
 		{
-			((GameState*)(getCurrentState()))->addToScore(LANDING_SCORE);
+			pGameState->addToScore(LANDING_SCORE);
 			startWalking();
 		}
 	}
@@ -72,7 +72,7 @@ void Humanoid::caughtUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 	if (worldPos.y >= landscapeHeight)
 	{
 		// Dropped off
-		((GameState*)(getCurrentState()))->addToScore(DROPPED_SCORE);
+		pGameState->addToScore(DROPPED_SCORE);
 		worldPos.y = landscapeHeight;
 
 		// Make sure we're not in the same place as another one.
@@ -87,10 +87,9 @@ void Humanoid::caughtUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 
 bool Humanoid::sameXAsAnotherHuman()
 {
-	GameState* pState = (GameState*)getCurrentState();
 	for (uint8_t i = 0; i < TOTAL_HUMANOIDS; i++)
 	{
-		Humanoid* pHumanoid = pState->getHumanoid(i);
+		Humanoid* pHumanoid = pGameState->getHumanoid(i);
 		if (pHumanoid != this && pHumanoid->isActive() && pHumanoid->worldPos.x == worldPos.x)
 		{
 			return true;
@@ -165,7 +164,7 @@ void Humanoid::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 		if (isFlagSet(flags, FLAG_FALLING) && arduboy.collide(pPlayerShip->getCollisionRect(), thisRect))
 		{
 			// Caught
-			((GameState*)(getCurrentState()))->addToScore(CAUGHT_SCORE);
+			pGameState->addToScore(CAUGHT_SCORE);
 			unsetFlag(&flags, FLAG_FALLING);
 			setFlag(&flags, FLAG_CAUGHT);
 			velocity.y = 0;
@@ -180,15 +179,7 @@ Rect Humanoid::getCollisionRect()
 
 void Humanoid::destroy()
 {
-	unsetFlag(&flags, FLAG_ACTIVE);
-
-	Particles* pExplosion = ((GameState*)(getCurrentState()))->getParticles();
-	if (pExplosion != NULL)
-	{
-		pExplosion->worldPos.x = worldPos.x;
-		pExplosion->worldPos.y = worldPos.y;
-		pExplosion->show(PARTICLES_EXPLOSION);
-	}
+	explodeObject(&flags, worldPos, PARTICLES_EXPLOSION);
 }
 
 bool Humanoid::isCapturable()

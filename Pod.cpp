@@ -75,15 +75,7 @@ Rect Pod::getCollisionRect()
 
 void Pod::destroy(bool smartBomb)
 {
-	GameState* pGameState = ((GameState*)(getCurrentState()));
-	unsetFlag(&flags, FLAG_ACTIVE);
-	Particles* pExplosion = pGameState->getParticles();
-	if (pExplosion != NULL)
-	{
-		pExplosion->worldPos.x = worldPos.x;
-		pExplosion->worldPos.y = worldPos.y;
-		pExplosion->show(PARTICLES_EXPLOSION);
-	}
+	explodeObject(&flags, worldPos, PARTICLES_EXPLOSION);
 
 	pGameState->addToScore(POD_SCORE);
 	pGameState->onCountedEnemyDeath();

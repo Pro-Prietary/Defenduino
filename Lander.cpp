@@ -72,7 +72,7 @@ void Lander::seekingUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 	// 1/20 chance we'll check for humanoids below
 	if (arduboy.frameCount % 20 == 0)
 	{
-		humanoid = ((GameState*)(getCurrentState()))->getCapturableHumanoidAtPosition(worldPos.x+3);
+		humanoid = pGameState->getCapturableHumanoidAtPosition(worldPos.x+3);
 
 		if (humanoid != NO_HUMANOID_FOUND)
 		{
@@ -93,7 +93,7 @@ void Lander::seekingUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 
 void Lander::landingUpdate(PlayerShip* pPlayerShip)
 {
-	Humanoid* pHumanoid = ((GameState*)(getCurrentState()))->getHumanoid(humanoid);
+	Humanoid* pHumanoid = pGameState->getHumanoid(humanoid);
 
 	if (!pHumanoid->isCapturable())
 	{
@@ -121,7 +121,7 @@ void Lander::landingUpdate(PlayerShip* pPlayerShip)
 
 void Lander::escapingUpdate(PlayerShip* pPlayerShip)
 {
-	Humanoid* pHumanoid = ((GameState*)(getCurrentState()))->getHumanoid(humanoid);
+	Humanoid* pHumanoid = pGameState->getHumanoid(humanoid);
 	pHumanoid->worldPos.y = worldPos.y + 8;
 	
 	if (worldPos.y <= -38)
@@ -131,7 +131,7 @@ void Lander::escapingUpdate(PlayerShip* pPlayerShip)
 #endif
 		// Escaped off the top of the screen with no humanoid
 		setActive(false);
-		((GameState*)(getCurrentState()))->onCountedEnemyDeath();
+		pGameState->onCountedEnemyDeath();
 	} 
 	else if (worldPos.y <= -32 && pHumanoid->isActive())
 	{
@@ -255,15 +255,7 @@ Rect Lander::getCollisionRect()
 
 void Lander::destroy()
 {
-	GameState* pGameState = ((GameState*)(getCurrentState()));
-	unsetFlag(&flags, FLAG_ACTIVE);
-	Particles* pExplosion = pGameState->getParticles();
-	if (pExplosion != NULL)
-	{
-		pExplosion->worldPos.x = worldPos.x;
-		pExplosion->worldPos.y = worldPos.y;
-		pExplosion->show(PARTICLES_EXPLOSION);
-	}
+	explodeObject(&flags, worldPos, PARTICLES_EXPLOSION);
 
 	if (isFlagSet(flags, FLAG_ESCAPING) && humanoid != NO_HUMANOID_FOUND)
 	{
@@ -286,7 +278,7 @@ bool Lander::isMutant()
 }
 
 void Lander::fire(PlayerShip* pPlayerShip) {
-	EnemyShot* pShot = ((GameState*)(getCurrentState()))->getEnemyShot();
+	EnemyShot* pShot = pGameState->getEnemyShot();
 
 	if (pShot != NULL)
 	{

@@ -8,7 +8,7 @@
 #define MAX_DISTANCE_SMALL 32
 #define MAX_DISTANCE_LARGE 128
 
-void Particles::show(byte type)
+void Particles::show(uint8_t type)
 {
 	GameObject::setActive(true);
 
@@ -37,7 +37,7 @@ void Particles::update()
 		if (distance <= 0)
 		{
 			unsetFlag(&flags, FLAG_ACTIVE);
-			((GameState*)(getCurrentState()))->completeSpawningLander(worldPos.x, worldPos.y);
+			pGameState->completeSpawningLander(worldPos.x, worldPos.y);
 		}
 	}
 	else
@@ -59,7 +59,7 @@ void Particles::update()
 
 			if (isFlagSet(flags, FLAG_PLAYER))
 			{
-				((GameState*)(getCurrentState()))->lostLife();
+				pGameState->lostLife();
 			}
 		}
 	}

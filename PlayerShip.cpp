@@ -2,7 +2,7 @@
 #include "Globals.h"
 
 const unsigned char spriteRight[] PROGMEM = { 0x8, 0x8, 0x2, 0x7, 0x7, 0x6, 0x6, 0x2, 0x2, 0x2, };
-const unsigned char spriteLeft[]  PROGMEM = { 0x8, 0x8, 0x2, 0x2, 0x2, 0x6, 0x6, 0x7, 0x7, 0x2, };
+//const unsigned char spriteLeft[]  PROGMEM = { 0x8, 0x8, 0x2, 0x2, 0x2, 0x6, 0x6, 0x7, 0x7, 0x2, };
 
 #define SHIP_HORIZ_ACCELERATION 25
 #define SHIP_MAX_SPEED 200
@@ -95,7 +95,7 @@ void PlayerShip::activeUpdate()
 
 	if (arduboy.justPressed(A_BUTTON) && !arduboy.pressed(B_BUTTON))
 	{
-		((GameState*)(getCurrentState()))->onSmartBomb();
+		pGameState->onSmartBomb();
 	}
 }
 
@@ -138,7 +138,7 @@ float PlayerShip::getCameraTarget()
 
 void PlayerShip::fire()
 {
-	PlayerShot* shot = ((GameState*)(getCurrentState()))->getPlayerShot();
+	PlayerShot* shot = pGameState->getPlayerShot();
 	if (shot != NULL)
 	{
 		shot->worldPos.y = worldPos.y+1;
@@ -171,7 +171,7 @@ void PlayerShip::render(Vector2Int screenPos)
 {
 	if (!isFlagSet(flags, FLAG_HIDDEN))
 	{
-		if (renderSprite(isFlagSet(flags, FLAG_FACING_RIGHT) ? spriteRight : spriteLeft, screenPos))
+		if (renderSprite(spriteRight, screenPos, isFlagSet(flags, FLAG_FACING_RIGHT) ? MIRROR_NONE : MIRROR_HORIZONTAL))
 		{
 			setFlag(&flags, FLAG_VISIBLE);
 		}
@@ -186,7 +186,7 @@ void PlayerShip::destroy()
 {
 	if (!isFlagSet(flags, FLAG_EXPLODING))
 	{
-		((GameState*)(getCurrentState()))->freezeActors();
+		pGameState->freezeActors();
 		setFlag(&flags, FLAG_EXPLODING);
 		explosionTimer = 30;
 	}
@@ -213,16 +213,8 @@ void PlayerShip::setActive(bool active)
 
 void PlayerShip::explode()
 {
-	unsetFlag(&flags, FLAG_ACTIVE);
-	GameState* pGameState = ((GameState*)(getCurrentState()));
+	explodeObject(&flags, worldPos, PARTICLES_PLAYER);
 	pGameState->addToScore(25);
-	Particles* pExplosion = pGameState->getParticles();
-	if (pExplosion != NULL)
-	{
-		pExplosion->worldPos.x = worldPos.x;
-		pExplosion->worldPos.y = worldPos.y;
-		pExplosion->show(PARTICLES_PLAYER);
-	}
 
 	// Destroy any carried humans
 	for (uint8_t i = 0; i < TOTAL_HUMANOIDS; i++)

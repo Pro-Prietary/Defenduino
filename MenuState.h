@@ -1,14 +1,13 @@
 #pragma once
 
-#include "State.h"
 #include "TextObject.h"
 #include <Arduboy2.h>
 
-class MenuState : public State
+class MenuState
 {
 public:
 	MenuState();
-	virtual void update();
+	void update();
 
 private:
 };

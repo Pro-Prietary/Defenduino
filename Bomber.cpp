@@ -1,12 +1,7 @@
 #include "Globals.h"
 #include "Bomber.h"
 
-const unsigned char spriteData[] PROGMEM = { 0x08, 0x08, 0xf8, 0xfe, 0xda, 0xfa, 0xfa, 0x42, 0x7e, 0x00, 0x1f, 0x7f, 0x5b, 0x5f, 0x5f, 0x42, 0x7e, 0x00, 0x00, 0x7e, 0x42, 0xfa, 0xfa, 0xda, 0xfe, 0xf8, 0x00, 0x7e, 0x42, 0x5f, 0x5f, 0x5b, 0x7f, 0x1f, };
-
-#define FRAME_LEFT_DOWN		0
-#define FRAME_LEFT_UP		1
-#define FRAME_RIGHT_DOWN	2
-#define FRAME_RIGHT_UP		3
+const unsigned char spriteData[] PROGMEM = { 0x08, 0x08, 0xf8, 0xfe, 0xda, 0xfa, 0xfa, 0x42, 0x7e, 0x00, };
 
 #define HORIZONTAL_VELOCITY 50
 #define DEFAULT_VERTICAL_VELOCITY 15
@@ -28,7 +23,7 @@ void Bomber::update(PlayerShip* pPlayerShip)
 
 	if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 64 == 0)
 	{
-		Mine* pMine = ((GameState*)(getCurrentState()))->getMine();
+		Mine* pMine = pGameState->getMine();
 		if (pMine != NULL)
 		{
 			pMine->setActive(true);
@@ -68,31 +63,31 @@ bool Bomber::render(Vector2Int screenPos)
 
 void Bomber::draw(Vector2Int screenPos)
 {
-	uint8_t frame;
+	uint8_t mirror;
 	if (velocity.x > 0)
 	{
 		if (velocity.y > 0)
 		{
-			frame = FRAME_RIGHT_UP;
+			mirror = MIRROR_HORIZONTAL;
 		}
 		else
 		{
-			frame = FRAME_RIGHT_DOWN;
+			mirror = MIRROR_HOR_VER;
 		}
 	}
 	else
 	{
 		if (velocity.y > 0)
 		{
-			frame = FRAME_LEFT_DOWN;
+			mirror = MIRROR_NONE;
 		}
 		else
 		{
-			frame = FRAME_LEFT_UP;
+			mirror = MIRROR_VERTICAL;
 		}
 	}
 
-	renderSprite(spriteData, screenPos, frame);
+	renderSprite(spriteData, screenPos, mirror);
 }
 
 void Bomber::onSpawn(Vector2 position, bool right)
@@ -131,16 +126,7 @@ Rect Bomber::getCollisionRect()
 
 void Bomber::destroy()
 {
-	GameState* pGameState = ((GameState*)(getCurrentState()));
-	unsetFlag(&flags, FLAG_ACTIVE);
-	Particles* pExplosion = pGameState->getParticles();
-	if (pExplosion != NULL)
-	{
-		pExplosion->worldPos.x = worldPos.x;
-		pExplosion->worldPos.y = worldPos.y;
-		pExplosion->show(PARTICLES_EXPLOSION);
-	}
-
+	explodeObject(&flags, worldPos, PARTICLES_EXPLOSION);
 	pGameState->addToScore(BOMBER_SCORE);
 	pGameState->onCountedEnemyDeath();
 }

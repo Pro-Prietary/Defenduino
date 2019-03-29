@@ -14,7 +14,7 @@
 #define SCORE_BOTTOM_Y 57
 #define SCANNER_BOTTOM_Y 52
 
-GameState::GameState() : State()
+GameState::GameState()
 {
 	//arduboy.initRandomSeed();
 	srand(arduboy.generateRandomSeed());
@@ -377,7 +377,7 @@ void GameState::lostLife()
 	}
 	else
 	{
-		setState(new GameOverState());
+		setState(STATE_GAME_OVER);
 	}
 }
 
@@ -565,7 +565,7 @@ void GameState::onNewLevel()
 {
 	if (lives == 0)
 	{
-		setState(new GameOverState());
+		setState(STATE_GAME_OVER);
 	}
 	else
 	{
@@ -726,26 +726,17 @@ void GameState::onNewLife()
 	// All shots should be removed
 	for (uint8_t i = 0; i < TOTAL_PLAYER_SHOTS; i++)
 	{
-		if (playerShots[i].isActive())
-		{
-			playerShots[i].setActive(false);
-		}
+		playerShots[i].setActive(false);
 	}
 
 	for (uint8_t i = 0; i < TOTAL_ENEMY_SHOTS; i++)
 	{
-		if (enemyShots[i].isActive())
-		{
-			enemyShots[i].setActive(false);
-		}
+		enemyShots[i].setActive(false);
 	}
 
 	for (uint8_t i = 0; i < TOTAL_MINES; i++)
 	{
-		if (mines[i].isActive())
-		{
-			mines[i].setActive(false);
-		}
+		mines[i].setActive(false);
 	}
 }
 

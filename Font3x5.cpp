@@ -1,6 +1,6 @@
 #include <Arduino.h>
-#include <Sprites.h>
 #include <Print.h>
+#include "Globals.h"
 #include "Font3x5.h"
 
 #define FONT3X5_WIDTH 3
@@ -155,12 +155,9 @@ void Font3x5::printChar(const char c, const int8_t x, int8_t y) {
 	if (idx > -1) {
 
 		if (_textColor == WHITE) {
-			Sprites::drawSelfMasked(x, y, font_images, idx);
+			//Sprites::drawSelfMasked(x, y, font_images, idx);
+			renderSprite(font_images, Vector2Int(x,y), MIRROR_NONE, idx);
 		}
-		else {
-			Sprites::drawErase(x, y, font_images, idx);
-		}
-
 	}
 
 }

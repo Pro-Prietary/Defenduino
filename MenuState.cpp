@@ -3,7 +3,7 @@
 #include "Globals.h"
 
 
-MenuState::MenuState() : State()
+MenuState::MenuState()
 {
 }
 
@@ -11,7 +11,7 @@ void MenuState::update()
 {
 	if (arduboy.justPressed(A_BUTTON) || arduboy.justPressed(B_BUTTON))
 	{
-		setState(new GameState());
+		setState(STATE_GAME);
 	}
 
 	arduboy.setCursor(14, 10);

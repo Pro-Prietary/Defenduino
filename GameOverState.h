@@ -1,9 +1,8 @@
 #pragma once
 
-#include "State.h"
 #include <Arduboy2.h>
 
-class GameOverState : public State
+class GameOverState
 {
 public:
 	GameOverState();

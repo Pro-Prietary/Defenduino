@@ -1,6 +1,5 @@
 #pragma once
 
-#include "State.h"
 #include "TextObject.h"
 #include "PlayerShip.h"
 #include "GameCamera.h"
@@ -27,11 +26,11 @@
 
 #define NO_HUMANOID_FOUND 255
 
-class GameState : public State
+class GameState
 {
 public:
 	GameState();
-	virtual void update();
+	void update();
 	PlayerShot* getPlayerShot();
 	EnemyShot* getEnemyShot();
 	Mine* getMine();

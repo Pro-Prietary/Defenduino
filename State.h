@@ -5,7 +5,7 @@ class State
 {
 
 public:
-	virtual void update();
+	void update();
 protected:
 	State();
 
