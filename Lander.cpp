@@ -126,18 +126,12 @@ void Lander::escapingUpdate(PlayerShip* pPlayerShip)
 	
 	if (worldPos.y <= -38)
 	{
-#ifdef _DEBUG
-		Serial.print(F("Lander escaped"));
-#endif
 		// Escaped off the top of the screen with no humanoid
 		setActive(false);
 		pGameState->onCountedEnemyDeath();
 	} 
 	else if (worldPos.y <= -32 && pHumanoid->isActive())
 	{
-#ifdef _DEBUG
-		Serial.println(F("Mutant time!"));
-#endif
 		// Mutant time!
 		pHumanoid->destroy();
 		unsetFlag(&flags, FLAG_ESCAPING);

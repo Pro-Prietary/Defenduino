@@ -159,12 +159,6 @@ void PlayerShip::fire()
 		shot->setActive(true);
 		shot->fire(shotVelocity);
 	}
-#ifdef _DEBUG
-	else
-	{
-		Serial.println(F("Laser pool exhausted. Not firing."));
-	}
-#endif
 }
 
 void PlayerShip::render(Vector2Int screenPos)

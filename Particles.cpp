@@ -90,14 +90,15 @@ void Particles::render(Vector2Int screenPos)
 	if ((leftEdge < SCREEN_WIDTH && leftEdge >= 0) ||
 		(rightEdge < SCREEN_WIDTH && rightEdge >= 0))
 	{
-		arduboy.drawPixel(screenPos.x - distance, screenPos.y);
-		arduboy.drawPixel(screenPos.x + distance, screenPos.y);
-		arduboy.drawPixel(screenPos.x, screenPos.y - distance);
-		arduboy.drawPixel(screenPos.x , screenPos.y + distance);
-
-		arduboy.drawPixel(screenPos.x - distance, screenPos.y - distance);
-		arduboy.drawPixel(screenPos.x + distance, screenPos.y - distance);
-		arduboy.drawPixel(screenPos.x + distance, screenPos.y + distance);
-		arduboy.drawPixel(screenPos.x - distance, screenPos.y + distance);
+		for (int x = -distance; x <= distance; x+=distance)
+		{
+			for (int y = -distance; y <= distance; y += distance)
+			{
+				if (x != 0 || y != 0)
+				{
+					arduboy.drawPixel(screenPos.x + x, screenPos.y + y);
+				}
+			}
+		}
 	}
 }

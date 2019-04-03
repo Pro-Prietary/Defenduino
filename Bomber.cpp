@@ -29,7 +29,6 @@ void Bomber::update(PlayerShip* pPlayerShip)
 			pMine->setActive(true);
 			pMine->worldPos.x = worldPos.x;
 			pMine->worldPos.y = worldPos.y;
-			Serial.println(F("Mine dropped"));
 		}
 	}
 }

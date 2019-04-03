@@ -41,12 +41,6 @@ void GameState::startSpawningLander()
 		pParticles->worldPos.y = LANDER_SPAWN_ALT;
 		pParticles->show(PARTICLES_SPAWN);
 	}
-#ifdef _DEBUG
-	else
-	{
-		Serial.println(F("Tried to spawn lander but no particles are available."));
-	}
-#endif
 }
 
 int GameState::getSafeSpawn()
@@ -294,11 +288,6 @@ void GameState::spawnWave(uint8_t maxForLevel)
 		toSpawn = 4;
 	}
 
-#ifdef _DEBUG
-		Serial.print(F("Attempting to spawn "));
-		Serial.println(toSpawn);
-#endif
-
 	for (uint8_t i = 0; i < toSpawn; i++)
 	{
 		startSpawningLander();
@@ -524,10 +513,6 @@ void GameState::plotOnScanner(uint8_t scannerY, GameObject* pGameObject)
 void GameState::onCountedEnemyDeath()
 {
 	liveEnemies--;
-
-	Serial.print(F("Enemy death.  liveEnemies="));
-	Serial.println(liveEnemies);
-
 
 	if (liveEnemies == 0 && spawnedLanders == getExpectedLandersForLevel())
 	{
