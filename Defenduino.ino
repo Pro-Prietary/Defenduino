@@ -132,15 +132,6 @@ void setFlag(uint8_t* pFlags, uint8_t flagToSet, bool setValue)
 bool renderSprite(const uint8_t* spriteData, Vector2Int screenPos, uint8_t mirror = 0, uint8_t frame = 0)
 {
 	bool bIsVisible = false;
-	// If far from the camera, flip to the other side for wrapping
-	if (screenPos.x < -HALF_WORLD_WIDTH)
-	{
-		screenPos.x += WORLD_WIDTH;
-	}
-	else if (screenPos.x > HALF_WORLD_WIDTH)
-	{
-		screenPos.x -= WORLD_WIDTH;
-	}
 
 	int leftEdge = screenPos.x;
 	int rightEdge = screenPos.x + pgm_read_byte(spriteData);

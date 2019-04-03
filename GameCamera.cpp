@@ -76,6 +76,17 @@ Vector2Int GameCamera::worldToScreenPos(Vector2 objPos)
 	Vector2Int screenPos;
 	screenPos.x = (int)objPos.x - (worldPos.x - HALF_SCREEN_WIDTH);
 	screenPos.y = (int)objPos.y + HALF_SCREEN_HEIGHT;
+
+	// If far from the camera, flip to the other side for wrapping
+	if (screenPos.x < -HALF_WORLD_WIDTH)
+	{
+		screenPos.x += WORLD_WIDTH;
+	}
+	else if (screenPos.x > HALF_WORLD_WIDTH)
+	{
+		screenPos.x -= WORLD_WIDTH;
+	}
+
 	return screenPos;
 }
 

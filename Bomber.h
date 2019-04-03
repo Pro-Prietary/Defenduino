@@ -1,9 +1,9 @@
 #pragma once
 
-#include "MovingGameObject.h"
+#include "Enemy.h"
 #include "PlayerShip.h"
 
-class Bomber : public MovingGameObject
+class Bomber : public Enemy
 {
 public:
 	void update(PlayerShip* pPlayerShip);
@@ -15,5 +15,4 @@ public:
 
 private:
 	void draw(Vector2Int screenPos);
-	Rect getCollisionRect();
 };

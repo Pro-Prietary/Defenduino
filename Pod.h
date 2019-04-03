@@ -3,7 +3,7 @@
 #include "MovingGameObject.h"
 #include "PlayerShip.h"
 
-class Pod : public MovingGameObject
+class Pod : public Enemy
 {
 public:
 	void update(PlayerShip* pPlayerShip);
@@ -12,7 +12,4 @@ public:
 	void collisionCheck(PlayerShot* playerShots, PlayerShip* pPlayerShip);
 	void destroy(bool smartBomb);
 
-
-private:
-	Rect getCollisionRect();
 };

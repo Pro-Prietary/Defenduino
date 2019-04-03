@@ -1,11 +1,11 @@
 #pragma once
 
-#include "MovingGameObject.h"
+#include "Enemy.h"
 #include "Landscape.h"
 #include "PlayerShot.h"
 #include "PlayerShip.h"
 
-class Lander : public MovingGameObject
+class Lander : public Enemy
 {
 public:
 	Lander();
@@ -24,8 +24,6 @@ private:
 	void escapingUpdate(PlayerShip* pPlayerShip);
 	void mutantUpdate(PlayerShip* pPlayerShip);
 	void fire(PlayerShip* pPlayerShip);
-
-	Rect getCollisionRect();
 
 	uint8_t humanoid;
 };

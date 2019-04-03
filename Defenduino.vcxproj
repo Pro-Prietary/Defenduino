@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bomber.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyShot.h" />
     <ClInclude Include="Font3x5.h" />
     <ClInclude Include="GameCamera.h" />
@@ -139,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bomber.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyShot.cpp" />
     <ClCompile Include="Font3x5.cpp" />
     <ClCompile Include="GameCamera.cpp" />

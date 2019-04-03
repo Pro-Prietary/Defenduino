@@ -16,7 +16,7 @@ const unsigned char mutantSprite[] PROGMEM = { 0x7, 0x8, 0x24, 0x16, 0x9, 0x31, 
 
 #define LANDER_SCORE 150
 
-Lander::Lander() : MovingGameObject()
+Lander::Lander()
 {
 
 }
@@ -224,32 +224,12 @@ void Lander::startSeeking()
 
 void Lander::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 {
-	Rect thisRect = getCollisionRect();
-	for (uint8_t i = 0; i < TOTAL_PLAYER_SHOTS; i++)
-	{
-		if (pPlayerShots[i].isActive() && pPlayerShots[i].tipOnScreen() && arduboy.collide(pPlayerShots[i].getCollisionRect(), thisRect))
-		{
-			pPlayerShots[i].setActive(false);
-			destroy();
-			return;
-		}
-	}
-
-	if (pPlayerShip->isActive() and !pPlayerShip->isExploding() && arduboy.collide(pPlayerShip->getCollisionRect(), thisRect))
-	{
-		destroy();
-		pPlayerShip->destroy();
-	}
-}
-
-Rect Lander::getCollisionRect()
-{
-	return Rect(worldPos.x, worldPos.y, 7, 6);
+	Enemy::collisionCheck(7, 6, LANDER_SCORE, pPlayerShots, pPlayerShip, true);
 }
 
 void Lander::destroy()
 {
-	explodeObject(&flags, worldPos, PARTICLES_EXPLOSION);
+	Enemy::destroy(LANDER_SCORE, true);
 
 	if (isFlagSet(flags, FLAG_ESCAPING) && humanoid != NO_HUMANOID_FOUND)
 	{
@@ -262,8 +242,6 @@ void Lander::destroy()
 		}
 	}
 
-	pGameState->addToScore(LANDER_SCORE);
-	pGameState->onCountedEnemyDeath();
 }
 
 bool Lander::isMutant()

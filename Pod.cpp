@@ -50,38 +50,17 @@ void Pod::onSpawn(Vector2 position, bool right)
 
 void Pod::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 {
-	Rect thisRect = getCollisionRect();
-	for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
-	{
-		if (pPlayerShots[i].isActive() && pPlayerShots[i].tipOnScreen() && arduboy.collide(pPlayerShots[i].getCollisionRect(), thisRect))
-		{
-			pPlayerShots[i].setActive(false);
-			destroy(false);
-			return;
-		}
-	}
-
-	if (pPlayerShip->isActive() and !pPlayerShip->isExploding() && arduboy.collide(pPlayerShip->getCollisionRect(), thisRect))
-	{
-		destroy(false);
-		pPlayerShip->destroy();
-	}
+	Enemy::collisionCheck(6, 6, POD_SCORE, pPlayerShots, pPlayerShip, true);
 }
 
-Rect Pod::getCollisionRect()
-{
-	return Rect(worldPos.x, worldPos.y, 7, 7);
-}
 
 void Pod::destroy(bool smartBomb)
 {
-	explodeObject(&flags, worldPos, PARTICLES_EXPLOSION);
-
-	pGameState->addToScore(POD_SCORE);
-	pGameState->onCountedEnemyDeath();
-
 	if (!smartBomb)
 	{
 		// Spawn swarmers
 	}
+
+	Enemy::destroy(POD_SCORE, true);
+
 }

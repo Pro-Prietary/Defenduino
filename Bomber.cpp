@@ -36,15 +36,6 @@ void Bomber::update(PlayerShip* pPlayerShip)
 bool Bomber::render(Vector2Int screenPos)
 {
 	bool bIsVisible = false;
-	// If far from the camera, flip to the other side for wrapping
-	if (screenPos.x < -HALF_WORLD_WIDTH)
-	{
-		screenPos.x += WORLD_WIDTH;
-	}
-	else if (screenPos.x > HALF_WORLD_WIDTH)
-	{
-		screenPos.x -= WORLD_WIDTH;
-	}
 
 	int leftEdge = screenPos.x;
 	int rightEdge = screenPos.x + 8;
@@ -100,32 +91,10 @@ void Bomber::onSpawn(Vector2 position, bool right)
 
 void Bomber::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 {
-	Rect thisRect = getCollisionRect();
-	for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
-	{
-		if (pPlayerShots[i].isActive() && pPlayerShots[i].tipOnScreen() && arduboy.collide(pPlayerShots[i].getCollisionRect(), thisRect))
-		{
-			pPlayerShots[i].setActive(false);
-			destroy();
-			return;
-		}
-	}
-
-	if (pPlayerShip->isActive() and !pPlayerShip->isExploding() && arduboy.collide(pPlayerShip->getCollisionRect(), thisRect))
-	{
-		destroy();
-		pPlayerShip->destroy();
-	}
-}
-
-Rect Bomber::getCollisionRect()
-{
-	return Rect(worldPos.x, worldPos.y, 8, 8);
+	Enemy::collisionCheck(8, 8, BOMBER_SCORE, pPlayerShots, pPlayerShip, true);
 }
 
 void Bomber::destroy()
 {
-	explodeObject(&flags, worldPos, PARTICLES_EXPLOSION);
-	pGameState->addToScore(BOMBER_SCORE);
-	pGameState->onCountedEnemyDeath();
+	Enemy::destroy(BOMBER_SCORE, true);
 }

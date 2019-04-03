@@ -6,15 +6,6 @@ const unsigned char spriteData[] PROGMEM = { 0x3, 0x8, 0x5, 0x2, 0x5, };
 bool Mine::render(Vector2Int screenPos)
 {
 	bool bIsVisible = false;
-	// If far from the camera, flip to the other side for wrapping
-	if (screenPos.x < -HALF_WORLD_WIDTH)
-	{
-		screenPos.x += WORLD_WIDTH;
-	}
-	else if (screenPos.x > HALF_WORLD_WIDTH)
-	{
-		screenPos.x -= WORLD_WIDTH;
-	}
 
 	int leftEdge = screenPos.x;
 	int rightEdge = screenPos.x + 8;

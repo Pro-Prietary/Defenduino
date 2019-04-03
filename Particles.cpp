@@ -73,16 +73,6 @@ void Particles::update()
 
 void Particles::render(Vector2Int screenPos)
 {
-	// If far from the camera, flip to the other side for wrapping
-	if (screenPos.x < -HALF_WORLD_WIDTH)
-	{
-		screenPos.x += WORLD_WIDTH;
-	}
-	else if (screenPos.x > HALF_WORLD_WIDTH)
-	{
-		screenPos.x -= WORLD_WIDTH;
-	}
-
 	int halfDist = distance / 2;
 	int leftEdge = screenPos.x - halfDist;
 	int rightEdge = screenPos.x + halfDist;

@@ -8,16 +8,6 @@ const unsigned char spriteRight[] PROGMEM = { 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x00
 
 void PlayerShot::render(Vector2Int screenPos)
 {
-	// If far from the camera, flip to the other side for wrapping
-	if (screenPos.x < -HALF_WORLD_WIDTH)
-	{
-		screenPos.x += WORLD_WIDTH;
-	}
-	else if (screenPos.x > HALF_WORLD_WIDTH)
-	{
-		screenPos.x -= WORLD_WIDTH;
-	}
-
 	if (screenPos.x < 0 || screenPos.x >= SCREEN_WIDTH)
 	{
 		setFlag(&flags, FLAG_SHRINKING);

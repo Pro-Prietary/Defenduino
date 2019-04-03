@@ -165,14 +165,7 @@ void PlayerShip::render(Vector2Int screenPos)
 {
 	if (!isFlagSet(flags, FLAG_HIDDEN))
 	{
-		if (renderSprite(spriteRight, screenPos, isFlagSet(flags, FLAG_FACING_RIGHT) ? MIRROR_NONE : MIRROR_HORIZONTAL))
-		{
-			setFlag(&flags, FLAG_VISIBLE);
-		}
-		else
-		{
-			unsetFlag(&flags, FLAG_VISIBLE);
-		}
+		renderSprite(spriteRight, screenPos, isFlagSet(flags, FLAG_FACING_RIGHT) ? MIRROR_NONE : MIRROR_HORIZONTAL);
 	}
 }
 
