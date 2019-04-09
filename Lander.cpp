@@ -25,21 +25,31 @@ void Lander::update(Landscape* pLandscape, PlayerShip* pPlayerShip)
 {
 	MovingGameObject::update();
 
+	uint8_t fireChance;
 	if (isFlagSet(flags, FLAG_SEEKING))
 	{
 		seekingUpdate(pLandscape, pPlayerShip);
+		fireChance = 128;	// 1/128
 	} 
 	else if (isFlagSet(flags, FLAG_LANDING))
 	{
 		landingUpdate(pPlayerShip);
+		fireChance = 100;	// 1/100
 	}
 	else if (isFlagSet(flags, FLAG_ESCAPING))
 	{
 		escapingUpdate(pPlayerShip);
+		fireChance = 100;  // 1/100
 	}
 	else if (isFlagSet(flags, FLAG_MUTANT))
 	{
 		mutantUpdate(pPlayerShip);
+		fireChance = 64;	// 1/64
+	}
+
+	if (isFlagSet(flags, FLAG_VISIBLE) && rand() % fireChance == 0)
+	{
+		fireAtPlayer(pPlayerShip, worldPos);
 	}
 }
 
@@ -83,12 +93,6 @@ void Lander::seekingUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 			velocity.y = 50;
 		}
 	}
-
-	// 1/128 chance we'll fire
-	if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 128 == 0)
-	{
-		fire(pPlayerShip);
-	}
 }
 
 void Lander::landingUpdate(PlayerShip* pPlayerShip)
@@ -110,19 +114,13 @@ void Lander::landingUpdate(PlayerShip* pPlayerShip)
 
 			velocity.y = -50;
 		}
-
-		// 1/100 chance we'll fire
-		if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 100 == 0)
-		{
-			fire(pPlayerShip);
-		}
 	}
 }
 
 void Lander::escapingUpdate(PlayerShip* pPlayerShip)
 {
 	Humanoid* pHumanoid = pGameState->getHumanoid(humanoid);
-	pHumanoid->worldPos.y = worldPos.y + 8;
+	pHumanoid->worldPos.y = worldPos.y + 6;
 	
 	if (worldPos.y <= -38)
 	{
@@ -136,12 +134,6 @@ void Lander::escapingUpdate(PlayerShip* pPlayerShip)
 		pHumanoid->destroy();
 		unsetFlag(&flags, FLAG_ESCAPING);
 		setFlag(&flags, FLAG_MUTANT);
-	}
-
-	// 1/100 chance we'll fire
-	if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 100 == 0)
-	{
-		fire(pPlayerShip);
 	}
 }
 
@@ -170,28 +162,11 @@ void Lander::mutantUpdate(PlayerShip* pPlayerShip)
 	{
 		velocity.y *= -1;
 	}
-
-	// 1/64 chance we'll fire
-	if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 64 == 0)
-	{
-		fire(pPlayerShip);
-	}
 }
 
 bool Lander::render(Vector2Int screenPos)
 {
-	bool isVisible;
-	if (renderSprite(isFlagSet(flags, FLAG_MUTANT) ? mutantSprite : landerSprite, screenPos))
-	{
-		isVisible = true;
-		setFlag(&flags, FLAG_VISIBLE);
-	}
-	else
-	{
-		isVisible = false;
-		unsetFlag(&flags, FLAG_VISIBLE);
-	}
-	return isVisible;
+	return renderSpriteIfVisible(isFlagSet(flags, FLAG_MUTANT) ? mutantSprite : landerSprite, &flags, screenPos);
 }
 
 void Lander::setActive(bool active)
@@ -249,11 +224,4 @@ bool Lander::isMutant()
 	return isFlagSet(flags, FLAG_MUTANT);
 }
 
-void Lander::fire(PlayerShip* pPlayerShip) {
-	EnemyShot* pShot = pGameState->getEnemyShot();
 
-	if (pShot != NULL)
-	{
-		pShot->fire(pPlayerShip, worldPos);
-	}
-}

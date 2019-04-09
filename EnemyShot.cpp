@@ -3,7 +3,7 @@
 
 const unsigned char shotSprite[] PROGMEM = { 0x3, 0x8, 0x2, 0x7, 0x2, };
 
-#define SHOT_VELOCITY 150
+#define SHOT_VELOCITY 100
 
 #define FLAG_CHASER 0x4
 
@@ -26,17 +26,10 @@ void EnemyShot::update(PlayerShip* pPlayerShip)
 
 bool EnemyShot::render(Vector2Int screenPos)
 {
-	bool isVisible;
-	if(renderSprite(shotSprite, screenPos))
+	bool isVisible = renderSpriteIfVisible(shotSprite, &flags, screenPos);
+	
+	if(!isVisible)
 	{
-		isVisible = true;
-		setFlag(&flags, FLAG_VISIBLE);
-	}
-	else
-	{
-		isVisible = false;
-		unsetFlag(&flags, FLAG_VISIBLE);
-
 		// Turn it off if it goes off the screen
 		unsetFlag(&flags, FLAG_ACTIVE);
 	}

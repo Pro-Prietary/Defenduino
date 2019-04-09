@@ -129,6 +129,22 @@ void setFlag(uint8_t* pFlags, uint8_t flagToSet, bool setValue)
 	}
 }
 
+bool renderSpriteIfVisible(const uint8_t* spriteData, uint8_t* pFlags, Vector2Int screenPos, uint8_t mirror = 0, uint8_t frame = 0)
+{
+	bool isVisible;
+	if (renderSprite(spriteData, screenPos, mirror, frame))
+	{
+		isVisible = true;
+		setFlag(pFlags, FLAG_VISIBLE);
+	}
+	else
+	{
+		isVisible = false;
+		unsetFlag(pFlags, FLAG_VISIBLE);
+	}
+	return isVisible;
+}
+
 bool renderSprite(const uint8_t* spriteData, Vector2Int screenPos, uint8_t mirror = 0, uint8_t frame = 0)
 {
 	bool bIsVisible = false;
@@ -163,6 +179,16 @@ void explodeObject(uint8_t* pFlags, Vector2 worldPos, uint8_t type)
 		pExplosion->worldPos.x = worldPos.x;
 		pExplosion->worldPos.y = worldPos.y;
 		pExplosion->show(type);
+	}
+}
+
+void fireAtPlayer(PlayerShip* pPlayerShip, Vector2 startPos)
+{
+	EnemyShot* pShot = pGameState->getEnemyShot();
+
+	if (pShot != NULL)
+	{
+		pShot->fire(pPlayerShip, startPos);
 	}
 }
 

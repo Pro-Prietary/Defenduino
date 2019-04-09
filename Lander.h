@@ -23,7 +23,6 @@ private:
 	void landingUpdate(PlayerShip* pPlayerShip);
 	void escapingUpdate(PlayerShip* pPlayerShip);
 	void mutantUpdate(PlayerShip* pPlayerShip);
-	void fire(PlayerShip* pPlayerShip);
 
 	uint8_t humanoid;
 };

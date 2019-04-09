@@ -227,6 +227,23 @@ void GameState::inPlayUpdate()
 		}
 	}
 
+	for (uint8_t i = 0; i < TOTAL_SWARMERS; i++)
+	{
+		if (swarmers[i].isActive())
+		{
+			if (!freezeActors)
+			{
+				swarmers[i].update(&playerShip);
+			}
+
+			swarmers[i].render(camera.worldToScreenPos(pods[i].worldPos));
+
+			if (!freezeActors)
+			{
+				swarmers[i].collisionCheck(playerShots, &playerShip);
+			}
+		}
+	}
 
 	for (uint8_t i = 0; i < TOTAL_MINES; i++)
 	{
@@ -353,6 +370,21 @@ Particles* GameState::getParticles()
 	}
 
 	return pParticles;
+}
+
+Swarmer* GameState::getSwarmer()
+{
+	Swarmer* pSwarmer = NULL;
+	for (uint8_t i = 0; i < TOTAL_SWARMERS; i++)
+	{
+		if (!swarmers[i].isActive())
+		{
+			pSwarmer = &swarmers[i];
+			break;
+		}
+	}
+
+	return pSwarmer;
 }
 
 void GameState::lostLife()
@@ -510,9 +542,9 @@ void GameState::plotOnScanner(uint8_t scannerY, GameObject* pGameObject)
 	arduboy.drawPixel(xPos + 64, scannerY + ((pGameObject->worldPos.y + 32) / 6.4), WHITE);
 }
 
-void GameState::onCountedEnemyDeath()
+void GameState::onCountedEnemyDeath(uint8_t total = 1)
 {
-	liveEnemies--;
+	liveEnemies-=total;
 
 	if (liveEnemies == 0 && spawnedLanders == getExpectedLandersForLevel())
 	{
@@ -671,7 +703,7 @@ void GameState::spawnPods()
 	distributeActivePods();
 
 
-	liveEnemies += expectedPods;
+	liveEnemies += expectedPods * 5; // * 5 to account for spawned swarmers
 }
 
 void GameState::onNewLife()

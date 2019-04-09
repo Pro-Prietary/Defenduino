@@ -12,6 +12,7 @@
 #include "Bomber.h"
 #include "Mine.h"
 #include "Pod.h"
+#include "Swarmer.h"
 
 #include <Arduboy2.h>
 
@@ -23,6 +24,7 @@
 #define TOTAL_BOMBERS 5
 #define TOTAL_MINES 6
 #define TOTAL_PODS 4
+#define TOTAL_SWARMERS 16
 
 #define NO_HUMANOID_FOUND 255
 
@@ -34,6 +36,7 @@ public:
 	PlayerShot* getPlayerShot();
 	EnemyShot* getEnemyShot();
 	Mine* getMine();
+	Swarmer* getSwarmer();
 
 	Particles* getParticles();
 	void lostLife();
@@ -42,7 +45,7 @@ public:
 	void completeSpawningLander(int xPos, int yPos);
 	uint8_t getCapturableHumanoidAtPosition(uint16_t xPos);
 	Humanoid* getHumanoid(uint8_t index);
-	void onCountedEnemyDeath();
+	void onCountedEnemyDeath(uint8_t total = 1);
 	void addToScore(uint16_t toAdd);
 	void onSmartBomb();
 
@@ -58,6 +61,7 @@ private:
 	Bomber bombers[TOTAL_BOMBERS];
 	Mine mines[TOTAL_MINES];
 	Pod pods[TOTAL_PODS];
+	Swarmer swarmers[TOTAL_SWARMERS];
 
 	unsigned long score = 0;
 	unsigned long nextBonus = 10000;

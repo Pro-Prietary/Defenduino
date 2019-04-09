@@ -35,24 +35,6 @@ void Bomber::update(PlayerShip* pPlayerShip)
 
 bool Bomber::render(Vector2Int screenPos)
 {
-	bool bIsVisible = false;
-
-	int leftEdge = screenPos.x;
-	int rightEdge = screenPos.x + 8;
-
-	if ((leftEdge < SCREEN_WIDTH && leftEdge >= 0) ||
-		(rightEdge < SCREEN_WIDTH && rightEdge >= 0))
-	{
-		draw(screenPos);
-		bIsVisible = true;
-	}
-
-	setFlag(&flags, FLAG_VISIBLE, bIsVisible);
-	return bIsVisible;
-}
-
-void Bomber::draw(Vector2Int screenPos)
-{
 	uint8_t mirror;
 	if (velocity.x > 0)
 	{
@@ -77,7 +59,7 @@ void Bomber::draw(Vector2Int screenPos)
 		}
 	}
 
-	renderSprite(spriteData, screenPos, mirror);
+	return renderSpriteIfVisible(spriteData, &flags, screenPos, mirror);
 }
 
 void Bomber::onSpawn(Vector2 position, bool right)

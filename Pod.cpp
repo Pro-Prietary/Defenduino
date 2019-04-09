@@ -24,18 +24,7 @@ void Pod::update(PlayerShip* pPlayerShip)
 
 bool Pod::render(Vector2Int screenPos)
 {
-	bool isVisible;
-	if (renderSprite(spriteData, screenPos))
-	{
-		isVisible = true;
-		setFlag(&flags, FLAG_VISIBLE);
-	}
-	else
-	{
-		isVisible = false;
-		unsetFlag(&flags, FLAG_VISIBLE);
-	}
-	return isVisible;
+	return renderSpriteIfVisible(spriteData, &flags, screenPos);
 }
 
 
@@ -58,7 +47,20 @@ void Pod::destroy(bool smartBomb)
 {
 	if (!smartBomb)
 	{
-		// Spawn swarmers
+		for (int i = 0; i < 4; i++)
+		{
+			Swarmer* pSwarmer = pGameState->getSwarmer();
+			if (pSwarmer != NULL)
+			{
+				pSwarmer->setActive(true);
+				Vector2 spawnPos(worldPos.x - (4 * i) + 8, worldPos.y - (4 * i) + 8);
+				pSwarmer->onSpawn(spawnPos);
+			}
+		}
+	}
+	else
+	{
+		pGameState->onCountedEnemyDeath(4);	// Account for the swarmers dying too
 	}
 
 	Enemy::destroy(POD_SCORE, true);
