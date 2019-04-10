@@ -39,12 +39,16 @@ void Pod::onSpawn(Vector2 position, bool right)
 
 void Pod::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 {
-	Enemy::collisionCheck(6, 6, POD_SCORE, pPlayerShots, pPlayerShip, true);
+	if (Enemy::collisionCheck(6, 6, pPlayerShots, pPlayerShip))
+	{
+		destroy(false);
+	}
 }
 
 
 void Pod::destroy(bool smartBomb)
 {
+	Enemy::destroy(POD_SCORE, true);
 	if (!smartBomb)
 	{
 		for (int i = 0; i < 4; i++)

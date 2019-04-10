@@ -73,7 +73,10 @@ void Bomber::onSpawn(Vector2 position, bool right)
 
 void Bomber::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 {
-	Enemy::collisionCheck(8, 8, BOMBER_SCORE, pPlayerShots, pPlayerShip, true);
+	if (Enemy::collisionCheck(8, 8, pPlayerShots, pPlayerShip))
+	{
+		destroy();
+	}
 }
 
 void Bomber::destroy()

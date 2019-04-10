@@ -27,7 +27,10 @@ bool Swarmer::render(Vector2Int screenPos)
 
 void Swarmer::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 {
-	Enemy::collisionCheck(5, 4, SWARMER_SCORE, pPlayerShots, pPlayerShip, true);
+	if (Enemy::collisionCheck(5, 4, pPlayerShots, pPlayerShip))
+	{
+		destroy(false);
+	}
 }
 
 

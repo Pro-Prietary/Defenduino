@@ -9,5 +9,5 @@ class Enemy : public MovingGameObject
 
 protected:
 	void destroy(uint16_t score, boolean isCounted);
-	void collisionCheck(uint8_t width, uint8_t height, uint16_t score, PlayerShot* pPlayerShots, PlayerShip* pPlayerShip, bool isCounted);
+	bool collisionCheck(uint8_t width, uint8_t height, PlayerShot* pPlayerShots, PlayerShip* pPlayerShip);
 };

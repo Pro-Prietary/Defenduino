@@ -1,35 +1,30 @@
 #include "Globals.h"
 #include "Enemy.h"
 
-void Enemy::collisionCheck(uint8_t width, uint8_t height, uint16_t score, PlayerShot* pPlayerShots, PlayerShip* pPlayerShip, bool isCounted)
+bool Enemy::collisionCheck(uint8_t width, uint8_t height, PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 {
-	Rect thisRect = Rect(worldPos.x, worldPos.y, width, height);
-	if (pPlayerShip->isActive() and !pPlayerShip->isExploding() && arduboy.collide(pPlayerShip->getCollisionRect(), thisRect))
-	{
-		unsetFlag(&flags, FLAG_ACTIVE);
-		pPlayerShip->destroy();
-	}
-
-	
+	Rect thisRect = Rect(worldPos.x, worldPos.y, width, height);	
 	for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
 	{
 		if (pPlayerShots[i].isActive() && pPlayerShots[i].tipOnScreen() && arduboy.collide(pPlayerShots[i].getCollisionRect(), thisRect))
 		{
 			pPlayerShots[i].setActive(false);
-			destroy(score, isCounted);
-			return;
+			return true;
 		}
 	}
 	
 	if (pPlayerShip->isActive() and !pPlayerShip->isExploding() && arduboy.collide(pPlayerShip->getCollisionRect(), thisRect))
 	{
-		destroy(score, isCounted);
 		pPlayerShip->destroy();
+		return true;
 	}
+
+	return false;
 }
 
 void Enemy::destroy(uint16_t score, bool isCounted)
 {
+	unsetFlag(&flags, FLAG_ACTIVE);
 	explodeObject(&flags, worldPos, PARTICLES_EXPLOSION);
 	pGameState->addToScore(score);
 

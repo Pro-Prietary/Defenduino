@@ -236,7 +236,7 @@ void GameState::inPlayUpdate()
 				swarmers[i].update(&playerShip);
 			}
 
-			swarmers[i].render(camera.worldToScreenPos(pods[i].worldPos));
+			swarmers[i].render(camera.worldToScreenPos(swarmers[i].worldPos));
 
 			if (!freezeActors)
 			{
@@ -516,6 +516,23 @@ void GameState::drawScanner()
 		if (bombers[i].isActive())
 		{
 			plotOnScanner(scannerY, &bombers[i]);
+		}
+	}
+
+
+	for (uint8_t i = 0; i < TOTAL_PODS; i++)
+	{
+		if (pods[i].isActive())
+		{
+			plotOnScanner(scannerY, &pods[i]);
+		}
+	}
+
+	for (uint8_t i = 0; i < TOTAL_SWARMERS; i++)
+	{
+		if (swarmers[i].isActive())
+		{
+			plotOnScanner(scannerY, &swarmers[i]);
 		}
 	}
 
@@ -833,6 +850,15 @@ void GameState::onSmartBomb()
 			if (pods[i].isActive() && pods[i].isVisible())
 			{
 				pods[i].destroy(true);
+			}
+		}
+
+
+		for (int i = 0; i < TOTAL_SWARMERS; i++)
+		{
+			if (swarmers[i].isActive() && swarmers[i].isVisible())
+			{
+				swarmers[i].destroy(true);
 			}
 		}
 

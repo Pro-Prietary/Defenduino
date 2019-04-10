@@ -199,13 +199,14 @@ void Lander::startSeeking()
 
 void Lander::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 {
-	Enemy::collisionCheck(7, 6, LANDER_SCORE, pPlayerShots, pPlayerShip, true);
+	if (Enemy::collisionCheck(7, 6, pPlayerShots, pPlayerShip)) {
+		destroy();
+	}
 }
 
 void Lander::destroy()
 {
 	Enemy::destroy(LANDER_SCORE, true);
-
 	if (isFlagSet(flags, FLAG_ESCAPING) && humanoid != NO_HUMANOID_FOUND)
 	{
 		Humanoid* pHumanoid = pGameState->getHumanoid(humanoid);
