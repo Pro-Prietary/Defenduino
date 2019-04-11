@@ -12,14 +12,7 @@ void Bomber::update(PlayerShip* pPlayerShip)
 {
 	MovingGameObject::update();
 
-	if (worldPos.y < -40)
-	{
-		worldPos.y = 31;
-	}
-	else if (worldPos.y > 31)
-	{
-		worldPos.y = -40;
-	}
+	verticalWrap(&worldPos);
 
 	if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 64 == 0)
 	{

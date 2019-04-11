@@ -849,7 +849,7 @@ void GameState::onSmartBomb()
 		{
 			if (pods[i].isActive() && pods[i].isVisible())
 			{
-				pods[i].destroy(true);
+				pods[i].destroy(true, &playerShip);
 			}
 		}
 

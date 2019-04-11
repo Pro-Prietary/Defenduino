@@ -33,5 +33,5 @@ extern bool renderSprite(const uint8_t* spriteData, Vector2Int screenPos, uint8_
 bool renderSpriteIfVisible(const uint8_t* spriteData, uint8_t* pFlags, Vector2Int screenPos, uint8_t mirror = 0, uint8_t frame = 0);
 extern void explodeObject(uint8_t* pFlags, Vector2 worldPos, uint8_t type);
 extern void fireAtPlayer(PlayerShip* pPlayerShip, Vector2 startPos);
-
+extern void verticalWrap(Vector2* pos);
 

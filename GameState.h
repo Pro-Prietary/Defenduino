@@ -90,7 +90,7 @@ private:
 	uint8_t lives = 3;
 	uint8_t smartBombs = 3;
 	uint8_t remainingHumanoids = TOTAL_HUMANOIDS;
-	uint8_t level = 0;
+	uint8_t level = 1;
 	uint8_t liveEnemies = 0;
 	uint8_t smartbombCountdown = 0;
 

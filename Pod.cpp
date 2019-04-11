@@ -12,14 +12,8 @@ void Pod::update(PlayerShip* pPlayerShip)
 {
 	MovingGameObject::update();
 
-	if (worldPos.y < -40)
-	{
-		worldPos.y = 31;
-	}
-	else if (worldPos.y > 31)
-	{
-		worldPos.y = -40;
-	}
+	verticalWrap(&worldPos);
+
 }
 
 bool Pod::render(Vector2Int screenPos)
@@ -41,12 +35,12 @@ void Pod::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 {
 	if (Enemy::collisionCheck(6, 6, pPlayerShots, pPlayerShip))
 	{
-		destroy(false);
+		destroy(false, pPlayerShip);
 	}
 }
 
 
-void Pod::destroy(bool smartBomb)
+void Pod::destroy(bool smartBomb, PlayerShip* pPlayerShip)
 {
 	Enemy::destroy(POD_SCORE, true);
 	if (!smartBomb)
@@ -58,7 +52,7 @@ void Pod::destroy(bool smartBomb)
 			{
 				pSwarmer->setActive(true);
 				Vector2 spawnPos(worldPos.x - (4 * i) + 8, worldPos.y - (4 * i) + 8);
-				pSwarmer->onSpawn(spawnPos);
+				pSwarmer->onSpawn(spawnPos, pPlayerShip);
 			}
 		}
 	}

@@ -10,8 +10,6 @@ const unsigned char mutantSprite[] PROGMEM = { 0x7, 0x8, 0x24, 0x16, 0x9, 0x31, 
 #define FLAG_MUTANT 0x20
 
 #define LANDER_HORIZ_SPEED 35
-#define MUTANT_HORIZ_SPEED 65
-
 #define CRUISING_ALTITUDE 10
 
 #define LANDER_SCORE 150

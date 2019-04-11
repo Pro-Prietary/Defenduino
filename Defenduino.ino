@@ -64,9 +64,9 @@ void update()
 	case STATE_GAME:
 		if (pGameState == NULL)
 		{
-			pGameState = new GameState();
 			delete pMenuState;
 			pMenuState = NULL;
+			pGameState = new GameState();
 		}
 		pGameState->update();
 		break;
@@ -74,13 +74,13 @@ void update()
 	case STATE_MENU:
 		if (pMenuState == NULL)
 		{
-			pMenuState = new MenuState();
-
 			if (pGameOverState != NULL)
 			{
 				delete pGameOverState;
 				pGameOverState = NULL;
 			}
+
+			pMenuState = new MenuState();
 		}
 		pMenuState->update();
 		break;
@@ -88,9 +88,9 @@ void update()
 	case STATE_GAME_OVER:
 		if (pGameOverState == NULL)
 		{
-			pGameOverState = new GameOverState();
 			delete pGameState;
 			pGameState = NULL;
+			pGameOverState = new GameOverState();
 		}
 		pGameOverState->update();
 		break;
@@ -189,6 +189,18 @@ void fireAtPlayer(PlayerShip* pPlayerShip, Vector2 startPos)
 	if (pShot != NULL)
 	{
 		pShot->fire(pPlayerShip, startPos);
+	}
+}
+
+void verticalWrap(Vector2* pos)
+{
+	if (pos->y < -40)
+	{
+		pos->y = 31;
+	}
+	else if (pos->y > 31)
+	{
+		pos->y = -40;
 	}
 }
 

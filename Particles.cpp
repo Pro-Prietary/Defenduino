@@ -33,7 +33,8 @@ void Particles::update()
 {
 	if (isFlagSet(flags, FLAG_SPAWNING))
 	{
-		distance-=2;
+		distance--;
+
 		if (distance <= 0)
 		{
 			unsetFlag(&flags, FLAG_ACTIVE);
@@ -73,20 +74,23 @@ void Particles::update()
 
 void Particles::render(Vector2Int screenPos)
 {
-	int halfDist = distance / 2;
-	int leftEdge = screenPos.x - halfDist;
-	int rightEdge = screenPos.x + halfDist;
-
-	if ((leftEdge < SCREEN_WIDTH && leftEdge >= 0) ||
-		(rightEdge < SCREEN_WIDTH && rightEdge >= 0))
+	if (distance > 0)
 	{
-		for (int x = -distance; x <= distance; x+=distance)
+		int halfDist = distance / 2;
+		int leftEdge = screenPos.x - halfDist;
+		int rightEdge = screenPos.x + halfDist;
+
+		if ((leftEdge < SCREEN_WIDTH && leftEdge >= 0) ||
+			(rightEdge < SCREEN_WIDTH && rightEdge >= 0))
 		{
-			for (int y = -distance; y <= distance; y += distance)
+			for (int x = -distance; x <= distance; x += distance)
 			{
-				if (x != 0 || y != 0)
+				for (int y = -distance; y <= distance; y += distance)
 				{
-					arduboy.drawPixel(screenPos.x + x, screenPos.y + y);
+					if (x != 0 || y != 0)
+					{
+						arduboy.drawPixel(screenPos.x + x, screenPos.y + y);
+					}
 				}
 			}
 		}

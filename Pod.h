@@ -10,6 +10,6 @@ public:
 	bool render(Vector2Int cameraPos);
 	void onSpawn(Vector2 position, bool right);
 	void collisionCheck(PlayerShot* playerShots, PlayerShip* pPlayerShip);
-	void destroy(bool smartBomb);
+	void destroy(bool smartBomb, PlayerShip* pPlayerShip);
 
 };
