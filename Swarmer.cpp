@@ -4,7 +4,7 @@
 const unsigned char spriteData[] PROGMEM = { 0x05, 0x08,0xc, 0xa, 0xf, 0xa, 0xc, };
 
 #define HORIZONTAL_VELOCITY 50
-#define DEFAULT_VERTICAL_VELOCITY 15
+#define VERTICAL_VELOCITY 25
 
 #define SWARMER_SCORE 150
 
@@ -13,15 +13,29 @@ void Swarmer::update(PlayerShip* pPlayerShip)
 	MovingGameObject::update();
 	verticalWrap(&worldPos);
 
-	// 1/100 chance we'll fire
-	if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 100 == 0)
+	if (arduboy.frameCount % 10 == 0) 
 	{
-		fireAtPlayer(pPlayerShip, worldPos);
-	}
+		if (abs(pPlayerShip->worldPos.x - worldPos.x) > HALF_SCREEN_WIDTH)
+		{
+			setHorizontalVelocity(pPlayerShip);
+		}
 
-	if (arduboy.frameCount % 100 == 0)
-	{
-		setHorizontalVelocity(pPlayerShip);
+		if (arduboy.frameCount % 30 == 0)
+		{
+			setVerticalVelocity(pPlayerShip);
+		}
+		else
+		{
+			// 1/100 chance we'll fire
+			if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 100 == 0)
+			{
+				uint16_t xDiff = pPlayerShip->worldPos.x - worldPos.x;
+				if ((xDiff > 0 && velocity.x > 0) || (xDiff < 0 && velocity.x < 0))
+				{
+					fireAtPlayer(pPlayerShip, worldPos);
+				}
+			}
+		}
 	}
 }
 
@@ -48,7 +62,7 @@ void Swarmer::destroy(bool smartBomb)
 void Swarmer::onSpawn(Vector2 position, PlayerShip* pPlayerShip)
 {
 	worldPos = position;
-	velocity.y = rand() % 2 == 0 ? DEFAULT_VERTICAL_VELOCITY : -DEFAULT_VERTICAL_VELOCITY;
+	velocity.y = rand() % 2 == 0 ? VERTICAL_VELOCITY : -VERTICAL_VELOCITY;
 	setHorizontalVelocity(pPlayerShip);
 }
 
@@ -61,5 +75,17 @@ void Swarmer::setHorizontalVelocity(PlayerShip* pPlayerShip)
 	else
 	{
 		velocity.x = -HORIZONTAL_VELOCITY;
+	}
+}
+
+void Swarmer::setVerticalVelocity(PlayerShip* pPlayerShip)
+{
+	if (pPlayerShip->worldPos.y > worldPos.y)
+	{
+		velocity.y = VERTICAL_VELOCITY;
+	}
+	else
+	{
+		velocity.y = -VERTICAL_VELOCITY;
 	}
 }

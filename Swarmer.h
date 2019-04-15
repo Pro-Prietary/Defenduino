@@ -14,4 +14,6 @@ public:
 
 private:
 	void setHorizontalVelocity(PlayerShip* pPlayerShip);
+	void setVerticalVelocity(PlayerShip* pPlayerShip);
+
 };
