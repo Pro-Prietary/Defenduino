@@ -13,6 +13,7 @@
 #include "Mine.h"
 #include "Pod.h"
 #include "Swarmer.h"
+#include "Baiter.h"
 
 #include <Arduboy2.h>
 
@@ -25,6 +26,7 @@
 #define TOTAL_MINES 6
 #define TOTAL_PODS 4
 #define TOTAL_SWARMERS 16
+#define TOTAL_BAITERS 3
 
 #define NO_HUMANOID_FOUND 255
 
@@ -62,6 +64,7 @@ private:
 	Mine mines[TOTAL_MINES];
 	Pod pods[TOTAL_PODS];
 	Swarmer swarmers[TOTAL_SWARMERS];
+	Baiter baiters[TOTAL_BAITERS];
 
 	unsigned long score = 0;
 	unsigned long nextBonus = 10000;

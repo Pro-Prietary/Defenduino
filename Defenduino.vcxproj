@@ -107,6 +107,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Baiter.h" />
     <ClInclude Include="Bomber.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyShot.h" />
@@ -140,6 +141,7 @@
     <ClInclude Include="__vm\.Defenduino.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Baiter.cpp" />
     <ClCompile Include="Bomber.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyShot.cpp" />
