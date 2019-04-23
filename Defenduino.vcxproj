@@ -136,7 +136,7 @@
     </ClInclude>
     <ClInclude Include="Swarmer.h" />
     <ClInclude Include="TextObject.h" />
-    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="WorldPos.h" />
     <ClInclude Include="Vector2Byte.h" />
     <ClInclude Include="__vm\.Defenduino.vsarduino.h" />
   </ItemGroup>
@@ -162,7 +162,7 @@
     <ClCompile Include="Pod.cpp" />
     <ClCompile Include="Swarmer.cpp" />
     <ClCompile Include="TextObject.cpp" />
-    <ClCompile Include="Vector2.cpp" />
+    <ClCompile Include="WorldPos.cpp" />
     <ClCompile Include="Vector2Byte.cpp" />
     <ClCompile Include="Vector2Int.cpp" />
     <ClCompile Include="Vector2Int.h" />

@@ -10,7 +10,7 @@ void MovingGameObject::update()
 
 	if (velocity.y != 0)
 	{
-		worldPos.y += velocity.y / 100.0;
+		worldPos.setY(worldPos.getY() + velocity.y / 100.0);
 	}
 
 	if (worldPos.x >= WORLD_WIDTH)

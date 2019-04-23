@@ -36,14 +36,14 @@ bool EnemyShot::render(Vector2Int screenPos)
 	return isVisible;
 }
 
-void EnemyShot::fire(PlayerShip* pPlayerShip, Vector2 startPos)
+void EnemyShot::fire(PlayerShip* pPlayerShip, WorldPos startPos)
 {
 	worldPos = startPos;
 
-	Vector2 dir = pPlayerShip->worldPos - startPos;
-	Vector2 normalized = dir.normalize();
+	WorldPos dir = pPlayerShip->worldPos - startPos;
+	WorldPos normalized = dir.normalize();
 
-	velocity = Vector2Int(SHOT_VELOCITY * normalized.x, SHOT_VELOCITY * normalized.y);
+	velocity = Vector2Int(SHOT_VELOCITY * normalized.x, SHOT_VELOCITY * normalized.getY());
 
 	// Now add some randomness
 	int8_t miss = (rand() % 20) - 10;
@@ -72,5 +72,5 @@ void EnemyShot::collisionCheck(PlayerShip* pPlayerShip)
 
 Rect EnemyShot::getCollisionRect()
 {
-	return Rect(worldPos.x, worldPos.y, 3, 3);
+	return Rect(worldPos.x, worldPos.getY(), 3, 3);
 }

@@ -40,7 +40,7 @@ bool Baiter::render(Vector2Int screenPos)
 	return renderSpriteIfVisible(spriteData, &flags, screenPos);
 }
 
-void Baiter::onSpawn(Vector2 position, PlayerShip* pPlayerShip)
+void Baiter::onSpawn(WorldPos position, PlayerShip* pPlayerShip)
 {
 	worldPos = position;
 
@@ -73,7 +73,7 @@ void Baiter::setVelocity(PlayerShip* pPlayerShip)
 
 	velocity.x += pPlayerShip->velocity.x;
 
-	if (pPlayerShip->worldPos.y > worldPos.y)
+	if (pPlayerShip->worldPos.getY() > worldPos.getY())
 	{
 		velocity.y = VERTICAL_VELOCITY;
 	}

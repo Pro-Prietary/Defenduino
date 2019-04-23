@@ -22,7 +22,7 @@ bool Pod::render(Vector2Int screenPos)
 }
 
 
-void Pod::onSpawn(Vector2 position, bool right)
+void Pod::onSpawn(WorldPos position, bool right)
 {
 	worldPos = position;
 
@@ -51,7 +51,7 @@ void Pod::destroy(bool smartBomb, PlayerShip* pPlayerShip)
 			if (pSwarmer != NULL)
 			{
 				pSwarmer->setActive(true);
-				Vector2 spawnPos(worldPos.x - (4 * i) + 8, worldPos.y - (4 * i) + 8);
+				WorldPos spawnPos(worldPos.x - (4 * i) + 8, worldPos.getY() - (4 * i) + 8);
 				pSwarmer->onSpawn(spawnPos, pPlayerShip);
 			}
 		}

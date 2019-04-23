@@ -32,13 +32,13 @@ void Humanoid::update(Landscape* pLandscape, PlayerShip* pPlayerShip)
 	{
 		byte landscapeHeight = pLandscape->getHeight(worldPos.x) - 29;
 
-		if (isFlagSet(flags, FLAG_CLIMBER) && landscapeHeight < worldPos.y)
+		if (isFlagSet(flags, FLAG_CLIMBER) && landscapeHeight < worldPos.getY())
 		{
-			worldPos.y--;
+			worldPos.setY(worldPos.getY()-1);
 		}
-		else if (landscapeHeight > worldPos.y && worldPos.y < FLOOR)
+		else if (landscapeHeight > worldPos.getY() && worldPos.getY() < FLOOR)
 		{
-			worldPos.y++;
+			worldPos.setY(worldPos.getY()+1);
 		}
 	}
 }
@@ -48,7 +48,7 @@ void Humanoid::fallingUpdate(Landscape* pLandscape)
 {
 	velocity.y++;
 	byte landscapeHeight = pLandscape->getHeight(worldPos.x) - 29;
-	if (worldPos.y >= landscapeHeight)
+	if (worldPos.getY() >= landscapeHeight)
 	{
 		// Hit the ground
 		if (velocity.y >= 100)
@@ -66,14 +66,14 @@ void Humanoid::fallingUpdate(Landscape* pLandscape)
 void Humanoid::caughtUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 {
 	worldPos.x = pPlayerShip->worldPos.x + 3;
-	worldPos.y = pPlayerShip->worldPos.y + 4;
+	worldPos.setY(pPlayerShip->worldPos.getY() + 4);
 
 	byte landscapeHeight = pLandscape->getHeight(worldPos.x) - 29;
-	if (worldPos.y >= landscapeHeight)
+	if (worldPos.getY() >= landscapeHeight)
 	{
 		// Dropped off
 		pGameState->addToScore(DROPPED_SCORE);
-		worldPos.y = landscapeHeight;
+		worldPos.setY(landscapeHeight);
 
 		// Make sure we're not in the same place as another one.
 		while (sameXAsAnotherHuman())
@@ -174,7 +174,7 @@ void Humanoid::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 
 Rect Humanoid::getCollisionRect()
 {
-	return Rect(worldPos.x, worldPos.y, 1, 3);
+	return Rect(worldPos.x, worldPos.getY(), 1, 3);
 }
 
 void Humanoid::destroy()

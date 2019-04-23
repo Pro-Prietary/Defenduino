@@ -10,7 +10,7 @@ public:
 	bool render(Vector2Int cameraPos);
 	void collisionCheck(PlayerShot* playerShots, PlayerShip* pPlayerShip);
 	void destroy(bool smartBomb);
-	void onSpawn(Vector2 position, PlayerShip* pPlayerShip);
+	void onSpawn(WorldPos position, PlayerShip* pPlayerShip);
 
 private:
 	void setHorizontalVelocity(PlayerShip* pPlayerShip);

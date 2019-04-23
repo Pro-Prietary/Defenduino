@@ -38,7 +38,7 @@ void GameState::startSpawningLander()
 	if (pParticles != NULL)
 	{
 		pParticles->worldPos.x = worldX;
-		pParticles->worldPos.y = LANDER_SPAWN_ALT;
+		pParticles->worldPos.setY(LANDER_SPAWN_ALT);
 		pParticles->show(PARTICLES_SPAWN);
 	}
 }
@@ -139,7 +139,7 @@ void GameState::inPlayUpdate()
 		camera.update(&playerShip);
 		playerShip.render(camera.worldToScreenPos(playerShip.worldPos));
 
-		setFlag(&flags, FLAG_UI_BOTTOM, playerShip.worldPos.y < -16);
+		setFlag(&flags, FLAG_UI_BOTTOM, playerShip.worldPos.getY() < -16);
 	}
 
 	landscape.render(camera.worldPos.x);
@@ -416,7 +416,7 @@ void GameState::completeSpawningLander(int xPos, int yPos)
 		{
 			landers[i].setActive(true);
 			landers[i].worldPos.x = xPos;
-			landers[i].worldPos.y = yPos;
+			landers[i].worldPos.setY(yPos);
 			spawnedLanders++;
 			liveEnemies++;
 			return;
@@ -537,7 +537,7 @@ void GameState::drawScanner()
 	}
 
 	// Playership
-	uint8_t yPos = scannerY + ((playerShip.worldPos.y + 32) / 6.4);
+	uint8_t yPos = scannerY + ((playerShip.worldPos.getY() + 32) / 6.4);
 
 	// Different xpos depending on left or right of cam.
 	uint8_t xPos = playerShip.facingRight() ? 62 : 65;
@@ -556,7 +556,7 @@ void GameState::plotOnScanner(uint8_t scannerY, GameObject* pGameObject)
 	{
 		xPos += 64;
 	}
-	arduboy.drawPixel(xPos + 64, scannerY + ((pGameObject->worldPos.y + 32) / 6.4), WHITE);
+	arduboy.drawPixel(xPos + 64, scannerY + ((pGameObject->worldPos.getY() + 32) / 6.4), WHITE);
 }
 
 void GameState::onCountedEnemyDeath(uint8_t total = 1)
@@ -616,7 +616,8 @@ void GameState::onNewLevel()
 		liveEnemies = 0;
 
 		playerShip.setActive(true);
-		playerShip.worldPos.x = playerShip.worldPos.y = 0;
+		playerShip.worldPos.x = 0;
+		playerShip.worldPos.setY(0);
 		camera.worldPos.x = 32;
 
 		for (uint8_t i = 0; i < TOTAL_HUMANOIDS; i++)
@@ -624,7 +625,7 @@ void GameState::onNewLevel()
 			if (i < remainingHumanoids)
 			{
 				humanoids[i].worldPos.x = rand() % 1024;
-				humanoids[i].worldPos.y = HUMANOID_SPAWN_Y;
+				humanoids[i].worldPos.setY(HUMANOID_SPAWN_Y);
 				humanoids[i].setActive(true);
 			}
 			else
@@ -725,7 +726,8 @@ void GameState::spawnPods()
 
 void GameState::onNewLife()
 {
-	playerShip.worldPos.x = playerShip.worldPos.y = 0;
+	playerShip.worldPos.x = 0;
+	playerShip.worldPos.setY(0);
 	playerShip.setActive(true);
 	camera.worldPos.x = 32;
 
@@ -735,7 +737,7 @@ void GameState::onNewLife()
 		if (landers[i].isActive())
 		{
 			landers[i].worldPos.x = getSafeSpawn();
-			landers[i].worldPos.y = LANDER_SPAWN_ALT;
+			landers[i].worldPos.setY(LANDER_SPAWN_ALT);
 		}
 
 		if (!landers[i].isMutant())
@@ -752,7 +754,7 @@ void GameState::onNewLife()
 	{
 		if (humanoids[i].isActive())
 		{
-			humanoids[i].worldPos.y = HUMANOID_SPAWN_Y;
+			humanoids[i].worldPos.setY(HUMANOID_SPAWN_Y);
 			humanoids[i].startWalking();
 		}
 	}
@@ -777,7 +779,7 @@ void GameState::onNewLife()
 void GameState::distributeActiveBombers()
 {
 	uint8_t spawnedInGroup = 0;
-	Vector2 spawn;
+	WorldPos spawn;
 	bool goRight = rand() % 2 == 0;
 
 	for (int i = 0; i < TOTAL_BOMBERS; i++)
@@ -787,7 +789,7 @@ void GameState::distributeActiveBombers()
 			if (spawnedInGroup == 0)
 			{
 				spawn.x = getSafeSpawn();
-				spawn.y = -24;
+				spawn.setY(-24);
 			}
 
 			bombers[i].onSpawn(spawn, goRight);
@@ -801,7 +803,7 @@ void GameState::distributeActiveBombers()
 			else
 			{
 				spawn.x += 32;
-				spawn.y += 24;
+				spawn.setY(spawn.getY()+24);
 			}
 		}
 	}
@@ -809,14 +811,14 @@ void GameState::distributeActiveBombers()
 
 void GameState::distributeActivePods()
 {
-	Vector2 spawn;
+	WorldPos spawn;
 
 	for (int i = 0; i < TOTAL_PODS; i++)
 	{
 		if (pods[i].isActive())
 		{
 			spawn.x = getSafeSpawn();
-			spawn.y = 0;
+			spawn.setY(0);
 			pods[i].onSpawn(spawn, rand() % 2 == 0);
 		}
 	}

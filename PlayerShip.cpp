@@ -14,7 +14,8 @@ const unsigned char spriteRight[] PROGMEM = { 0x8, 0x8, 0x2, 0x7, 0x7, 0x6, 0x6,
 
 PlayerShip::PlayerShip() : MovingGameObject()
 {
-	worldPos.x = worldPos.y = 0;
+	worldPos.x = 0;
+	worldPos.setY(0);
 	setFlag(&flags, FLAG_FACING_RIGHT);
 }
 
@@ -35,13 +36,13 @@ void PlayerShip::activeUpdate()
 {
 	MovingGameObject::update();
 
-	if (arduboy.pressed(UP_BUTTON) && worldPos.y > -HALF_SCREEN_HEIGHT)
+	if (arduboy.pressed(UP_BUTTON) && worldPos.getY() > -HALF_SCREEN_HEIGHT)
 	{
-		worldPos.y--;
+		worldPos.setY(worldPos.getY()-1);
 	}
-	else if (arduboy.pressed(DOWN_BUTTON) && worldPos.y < HALF_SCREEN_HEIGHT - 3)
+	else if (arduboy.pressed(DOWN_BUTTON) && worldPos.getY() < HALF_SCREEN_HEIGHT - 3)
 	{
-		worldPos.y++;
+		worldPos.setY(worldPos.getY() + 1);
 	}
 
 	if (arduboy.pressed(RIGHT_BUTTON))
@@ -141,7 +142,7 @@ void PlayerShip::fire()
 	PlayerShot* shot = pGameState->getPlayerShot();
 	if (shot != NULL)
 	{
-		shot->worldPos.y = worldPos.y+1;
+		shot->worldPos.setY(worldPos.getY()+1);
 
 		float shotVelocity;
 		if (isFlagSet(flags, FLAG_FACING_RIGHT))
@@ -181,7 +182,7 @@ void PlayerShip::destroy()
 
 Rect PlayerShip::getCollisionRect()
 {
-	return Rect(worldPos.x, worldPos.y, 8, 3);
+	return Rect(worldPos.x, worldPos.getY(), 8, 3);
 }
 
 

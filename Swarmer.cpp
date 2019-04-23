@@ -59,7 +59,7 @@ void Swarmer::destroy(bool smartBomb)
 	Enemy::destroy(SWARMER_SCORE, true);
 }
 
-void Swarmer::onSpawn(Vector2 position, PlayerShip* pPlayerShip)
+void Swarmer::onSpawn(WorldPos position, PlayerShip* pPlayerShip)
 {
 	worldPos = position;
 	velocity.y = rand() % 2 == 0 ? VERTICAL_VELOCITY : -VERTICAL_VELOCITY;
@@ -80,7 +80,7 @@ void Swarmer::setHorizontalVelocity(PlayerShip* pPlayerShip)
 
 void Swarmer::setVerticalVelocity(PlayerShip* pPlayerShip)
 {
-	if (pPlayerShip->worldPos.y > worldPos.y)
+	if (pPlayerShip->worldPos.getY() > worldPos.getY())
 	{
 		velocity.y = VERTICAL_VELOCITY;
 	}

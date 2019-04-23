@@ -170,19 +170,19 @@ bool renderSprite(const uint8_t* spriteData, Vector2Int screenPos, uint8_t mirro
 	return bIsVisible;
 }
 
-void explodeObject(uint8_t* pFlags, Vector2 worldPos, uint8_t type)
+void explodeObject(uint8_t* pFlags, WorldPos worldPos, uint8_t type)
 {
 	unsetFlag(pFlags, FLAG_ACTIVE);
 	Particles* pExplosion = pGameState->getParticles();
 	if (pExplosion != NULL)
 	{
 		pExplosion->worldPos.x = worldPos.x;
-		pExplosion->worldPos.y = worldPos.y;
+		pExplosion->worldPos.setY(worldPos.getY());
 		pExplosion->show(type);
 	}
 }
 
-void fireAtPlayer(PlayerShip* pPlayerShip, Vector2 startPos)
+void fireAtPlayer(PlayerShip* pPlayerShip, WorldPos startPos)
 {
 	EnemyShot* pShot = pGameState->getEnemyShot();
 
@@ -192,15 +192,15 @@ void fireAtPlayer(PlayerShip* pPlayerShip, Vector2 startPos)
 	}
 }
 
-void verticalWrap(Vector2* pos)
+void verticalWrap(WorldPos* pos)
 {
-	if (pos->y < -40)
+	if (pos->getY() < -40)
 	{
-		pos->y = 31;
+		pos->setY(31);
 	}
-	else if (pos->y > 31)
+	else if (pos->getY() > 31)
 	{
-		pos->y = -40;
+		pos->setY(-40);
 	}
 }
 

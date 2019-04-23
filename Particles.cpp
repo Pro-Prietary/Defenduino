@@ -38,7 +38,7 @@ void Particles::update()
 		if (distance <= 0)
 		{
 			unsetFlag(&flags, FLAG_ACTIVE);
-			pGameState->completeSpawningLander(worldPos.x, worldPos.y);
+			pGameState->completeSpawningLander(worldPos.x, worldPos.getY());
 		}
 	}
 	else
