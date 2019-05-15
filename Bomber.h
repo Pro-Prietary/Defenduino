@@ -8,7 +8,7 @@ class Bomber : public Enemy
 public:
 	void update(PlayerShip* pPlayerShip);
 	bool render(Vector2Int cameraPos);
-	void onSpawn(WorldPos position, bool right);
+	void onSpawn(Vector2Int position, bool right);
 	void collisionCheck(PlayerShot* playerShots, PlayerShip* pPlayerShip);
 	void destroy();
 

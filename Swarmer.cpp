@@ -15,7 +15,7 @@ void Swarmer::update(PlayerShip* pPlayerShip)
 
 	if (arduboy.frameCount % 10 == 0) 
 	{
-		if (abs(pPlayerShip->worldPos.x - worldPos.x) > HALF_SCREEN_WIDTH)
+		if (abs(pPlayerShip->worldPos.getPixelX() - worldPos.getPixelX()) > HALF_SCREEN_WIDTH)
 		{
 			setHorizontalVelocity(pPlayerShip);
 		}
@@ -59,7 +59,7 @@ void Swarmer::destroy(bool smartBomb)
 	Enemy::destroy(SWARMER_SCORE, true);
 }
 
-void Swarmer::onSpawn(WorldPos position, PlayerShip* pPlayerShip)
+void Swarmer::onSpawn(Vector2Int position, PlayerShip* pPlayerShip)
 {
 	worldPos = position;
 	velocity.y = rand() % 2 == 0 ? VERTICAL_VELOCITY : -VERTICAL_VELOCITY;
@@ -80,7 +80,7 @@ void Swarmer::setHorizontalVelocity(PlayerShip* pPlayerShip)
 
 void Swarmer::setVerticalVelocity(PlayerShip* pPlayerShip)
 {
-	if (pPlayerShip->worldPos.getY() > worldPos.getY())
+	if (pPlayerShip->worldPos.y > worldPos.y)
 	{
 		velocity.y = VERTICAL_VELOCITY;
 	}

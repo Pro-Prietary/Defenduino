@@ -30,15 +30,15 @@ void Humanoid::update(Landscape* pLandscape, PlayerShip* pPlayerShip)
 	}
 	else if (!isFlagSet(flags, FLAG_CAPTURED))
 	{
-		byte landscapeHeight = pLandscape->getHeight(worldPos.x) - 29;
+		byte landscapeHeight = pLandscape->getHeight(worldPos.getPixelX()) - 29;
 
-		if (isFlagSet(flags, FLAG_CLIMBER) && landscapeHeight < worldPos.getY())
+		if (isFlagSet(flags, FLAG_CLIMBER) && landscapeHeight < worldPos.getPixelY())
 		{
-			worldPos.setY(worldPos.getY()-1);
+			worldPos.y -= 10;
 		}
-		else if (landscapeHeight > worldPos.getY() && worldPos.getY() < FLOOR)
+		else if (landscapeHeight > worldPos.getPixelY() && worldPos.getPixelY() < FLOOR)
 		{
-			worldPos.setY(worldPos.getY()+1);
+			worldPos.y += 100;
 		}
 	}
 }
@@ -47,8 +47,8 @@ void Humanoid::update(Landscape* pLandscape, PlayerShip* pPlayerShip)
 void Humanoid::fallingUpdate(Landscape* pLandscape)
 {
 	velocity.y++;
-	byte landscapeHeight = pLandscape->getHeight(worldPos.x) - 29;
-	if (worldPos.getY() >= landscapeHeight)
+	byte landscapeHeight = pLandscape->getHeight(worldPos.getPixelX()) - 29;
+	if (worldPos.getPixelY() >= landscapeHeight)
 	{
 		// Hit the ground
 		if (velocity.y >= 100)
@@ -65,20 +65,20 @@ void Humanoid::fallingUpdate(Landscape* pLandscape)
 
 void Humanoid::caughtUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 {
-	worldPos.x = pPlayerShip->worldPos.x + 3;
-	worldPos.setY(pPlayerShip->worldPos.getY() + 4);
+	worldPos.x = pPlayerShip->worldPos.x + 30;
+	worldPos.y = pPlayerShip->worldPos.y + 40;
 
-	byte landscapeHeight = pLandscape->getHeight(worldPos.x) - 29;
-	if (worldPos.getY() >= landscapeHeight)
+	byte landscapeHeight = pLandscape->getHeight(worldPos.getPixelX()) - 29;
+	if (worldPos.getPixelY() >= landscapeHeight)
 	{
 		// Dropped off
 		pGameState->addToScore(DROPPED_SCORE);
-		worldPos.setY(landscapeHeight);
+		worldPos.y = landscapeHeight * 10;
 
 		// Make sure we're not in the same place as another one.
 		while (sameXAsAnotherHuman())
 		{
-			worldPos.x -= 2;
+			worldPos.x -= 20;
 		}
 
 		startWalking();
@@ -90,7 +90,7 @@ bool Humanoid::sameXAsAnotherHuman()
 	for (uint8_t i = 0; i < TOTAL_HUMANOIDS; i++)
 	{
 		Humanoid* pHumanoid = pGameState->getHumanoid(i);
-		if (pHumanoid != this && pHumanoid->isActive() && pHumanoid->worldPos.x == worldPos.x)
+		if (pHumanoid != this && pHumanoid->isActive() && pHumanoid->worldPos.getPixelX() == worldPos.getPixelX())
 		{
 			return true;
 		}
@@ -174,7 +174,7 @@ void Humanoid::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 
 Rect Humanoid::getCollisionRect()
 {
-	return Rect(worldPos.x, worldPos.getY(), 1, 3);
+	return Rect(worldPos.getPixelX(), worldPos.getPixelY(), 1, 3);
 }
 
 void Humanoid::destroy()

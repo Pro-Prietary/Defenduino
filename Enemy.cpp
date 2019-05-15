@@ -3,7 +3,7 @@
 
 bool Enemy::collisionCheck(uint8_t width, uint8_t height, PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 {
-	Rect thisRect = Rect(worldPos.x, worldPos.getY(), width, height);	
+	Rect thisRect = Rect(worldPos.getPixelX(), worldPos.getPixelY(), width, height);	
 	for (int i = 0; i < TOTAL_PLAYER_SHOTS; i++)
 	{
 		if (pPlayerShots[i].isActive() && pPlayerShots[i].tipOnScreen() && arduboy.collide(pPlayerShots[i].getCollisionRect(), thisRect))

@@ -7,7 +7,7 @@ class GameCamera : public MovingGameObject
 {
 public:
 	GameCamera();
-	Vector2Int worldToScreenPos(WorldPos worldPos);
+	Vector2Int worldToScreenPos(Vector2Int worldPos);
 	void update(PlayerShip* pPlayerShip);
 
 private:

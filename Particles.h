@@ -4,7 +4,9 @@
 
 #define PARTICLES_EXPLOSION 0
 #define PARTICLES_SPAWN 1
-#define PARTICLES_PLAYER 2
+#define PARTICLES_SPAWN_BAITER 2
+#define PARTICLES_PLAYER 3
+
 
 class Particles : public GameObject
 {

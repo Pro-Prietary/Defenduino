@@ -3,7 +3,7 @@
 
 const unsigned char shotSprite[] PROGMEM = { 0x3, 0x8, 0x2, 0x7, 0x2, };
 
-#define SHOT_VELOCITY 100
+#define SHOT_VELOCITY 10
 
 #define FLAG_CHASER 0x4
 
@@ -36,14 +36,14 @@ bool EnemyShot::render(Vector2Int screenPos)
 	return isVisible;
 }
 
-void EnemyShot::fire(PlayerShip* pPlayerShip, WorldPos startPos)
+void EnemyShot::fire(PlayerShip* pPlayerShip, Vector2Int startPos)
 {
 	worldPos = startPos;
 
-	WorldPos dir = pPlayerShip->worldPos - startPos;
-	WorldPos normalized = dir.normalize();
+	Vector2Int dir = pPlayerShip->worldPos - startPos;
+	Vector2Int normalized = dir.normalize();
 
-	velocity = Vector2Int(SHOT_VELOCITY * normalized.x, SHOT_VELOCITY * normalized.getY());
+	velocity = Vector2Int(SHOT_VELOCITY * normalized.x, SHOT_VELOCITY * normalized.y);
 
 	// Now add some randomness
 	int8_t miss = (rand() % 20) - 10;
@@ -72,5 +72,5 @@ void EnemyShot::collisionCheck(PlayerShip* pPlayerShip)
 
 Rect EnemyShot::getCollisionRect()
 {
-	return Rect(worldPos.x, worldPos.getY(), 3, 3);
+	return Rect(worldPos.getPixelX(), worldPos.getPixelY(), 3, 3);
 }

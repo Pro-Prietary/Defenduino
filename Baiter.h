@@ -8,7 +8,7 @@ class Baiter : public Enemy
 public:
 	void update(PlayerShip* pPlayerShip);
 	bool render(Vector2Int cameraPos);
-	void onSpawn(WorldPos position, PlayerShip* pPlayerShip);
+	void onSpawn(Vector2Int position, PlayerShip* pPlayerShip);
 	void collisionCheck(PlayerShot* playerShots, PlayerShip* pPlayerShip);
 	void destroy();
 

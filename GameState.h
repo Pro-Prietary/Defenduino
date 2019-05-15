@@ -45,7 +45,8 @@ public:
 	GameCamera* getCamera();
 	void freezeActors();
 	void completeSpawningLander(int xPos, int yPos);
-	uint8_t getCapturableHumanoidAtPosition(uint16_t xPos);
+	void completeSpawningBaiter(int xPos, int yPos);
+	uint8_t getCapturableHumanoidAtPosition(int xPos);
 	Humanoid* getHumanoid(uint8_t index);
 	void onCountedEnemyDeath(uint8_t total = 1);
 	void addToScore(uint16_t toAdd);
@@ -71,6 +72,7 @@ private:
 
 
 	void startSpawningLander();
+	void startSpawningBaiter();
 	bool spawnPosTooCloseToPlayer(int xPos);
 	int getSafeSpawn();
 	void spawnWave(uint8_t maxForLevel);

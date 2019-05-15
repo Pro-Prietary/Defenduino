@@ -8,7 +8,7 @@ class EnemyShot : public MovingGameObject
 public:
 	EnemyShot();
 	bool render(Vector2Int screenPos);
-	void fire(PlayerShip* pPlayerShip, WorldPos startPos);
+	void fire(PlayerShip* pPlayerShip, Vector2Int startPos);
 	void collisionCheck(PlayerShip* pPlayerShip);
 	void update(PlayerShip* pPlayerShip);
 

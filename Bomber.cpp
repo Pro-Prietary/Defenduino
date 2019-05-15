@@ -20,8 +20,7 @@ void Bomber::update(PlayerShip* pPlayerShip)
 		if (pMine != NULL)
 		{
 			pMine->setActive(true);
-			pMine->worldPos.x = worldPos.x;
-			pMine->worldPos.setY(worldPos.getY());
+			pMine->worldPos = worldPos;
 		}
 	}
 }
@@ -55,7 +54,7 @@ bool Bomber::render(Vector2Int screenPos)
 	return renderSpriteIfVisible(spriteData, &flags, screenPos, mirror);
 }
 
-void Bomber::onSpawn(WorldPos position, bool right)
+void Bomber::onSpawn(Vector2Int position, bool right)
 {
 	worldPos = position;
 

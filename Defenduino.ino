@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include "Font3x5.h"
 #include "Particles.h"
+#include <EEPROM.h>
 
 Arduboy2 arduboy;
 Sprites sprites;
@@ -19,12 +20,18 @@ MenuState* pMenuState = NULL;
 GameState* pGameState = NULL;
 GameOverState* pGameOverState = NULL;
 
+const uint8_t landscapeData[128] PROGMEM = {
+	170,170,232,169,169,138,2,0,255,255,42,128,255,170,10,175,170,2,248,175,170,10,0,192,255,255,170,42,240,171,240,170,170,3,224,191,170,10,159,0,248,227,175,170,86,85,85,41,149,170,42,240,113,88,1,248,255,135,136,121,219,56,36,218,157,16,227,47,126,2,146,193,192,161,57,16,65,223,251,253,251,120,15,174,169,86,85,85,85,165,170,82,85,85,85,85,170,170,96,121,122,149,33,9,66,247,121,244,23,136,2,215,228,207,95,85,85,81,165,151,107,84,85,21,240,79,85,85,
+};
+
 void setup() {
     arduboy.begin();
 
 #ifdef _DEBUG
 	Serial.begin(9600);
 #endif
+
+	initEEPROMIfNecessary();
 }
 
 void loop() {
@@ -170,19 +177,18 @@ bool renderSprite(const uint8_t* spriteData, Vector2Int screenPos, uint8_t mirro
 	return bIsVisible;
 }
 
-void explodeObject(uint8_t* pFlags, WorldPos worldPos, uint8_t type)
+void explodeObject(uint8_t* pFlags, Vector2Int worldPos, uint8_t type)
 {
 	unsetFlag(pFlags, FLAG_ACTIVE);
 	Particles* pExplosion = pGameState->getParticles();
 	if (pExplosion != NULL)
 	{
-		pExplosion->worldPos.x = worldPos.x;
-		pExplosion->worldPos.setY(worldPos.getY());
+		pExplosion->worldPos = worldPos;
 		pExplosion->show(type);
 	}
 }
 
-void fireAtPlayer(PlayerShip* pPlayerShip, WorldPos startPos)
+void fireAtPlayer(PlayerShip* pPlayerShip, Vector2Int startPos)
 {
 	EnemyShot* pShot = pGameState->getEnemyShot();
 
@@ -192,15 +198,59 @@ void fireAtPlayer(PlayerShip* pPlayerShip, WorldPos startPos)
 	}
 }
 
-void verticalWrap(WorldPos* pos)
+void verticalWrap(Vector2Int* pos)
 {
-	if (pos->getY() < -40)
+	if (pos->y < -400)
 	{
-		pos->setY(31);
+		pos->y  = 310;
 	}
-	else if (pos->getY() > 31)
+	else if (pos->y > 310)
 	{
-		pos->setY(-40);
+		pos->y = -400;
+	}
+}
+
+bool EEPROMInitialized()
+{
+	return (EEPROM.read(EEPROM_STORAGE_SPACE_START) == 'd' && EEPROM.read(EEPROM_STORAGE_SPACE_START + 1) == 'f'
+		&& EEPROM.read(EEPROM_STORAGE_SPACE_START + 2) == 'n' && EEPROM.read(EEPROM_STORAGE_SPACE_START + 3) == 'd');
+}
+
+void initEEPROMIfNecessary()
+{
+	if (!EEPROMInitialized())
+	{
+		writeEEProm(EEPROM_STORAGE_SPACE_START, new char[4]{ 'd', 'f', 'n', 'd' }, 4);
+
+		// Decompress landscape data into eeprom
+		uint16_t address = EEPROM_STORAGE_SPACE_START + 4;
+		uint8_t height = 60;
+		EEPROM.update(address++, height);
+
+		for (uint8_t i = 0; i < 128; i++)
+		{
+			uint8_t byte = pgm_read_byte(landscapeData + i);
+			for (uint8_t bit = 0; bit < 8; bit++)
+			{
+				if (byte & (1 << bit))
+				{
+					height++;
+				}
+				else
+				{
+					height--;
+				}
+				EEPROM.update(address++, height);
+			}
+		}
+	}
+}
+
+void writeEEProm(uint16_t address, byte* data, uint8_t length)
+{
+	for (int i = 0; i > length; i++)
+	{
+		EEPROM.update(address + i, data[i]);
 	}
 }
 

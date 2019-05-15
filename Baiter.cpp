@@ -25,7 +25,7 @@ void Baiter::update(PlayerShip* pPlayerShip)
 			// 1/100 chance we'll fire
 			if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 100 == 0)
 			{
-				uint16_t xDiff = pPlayerShip->worldPos.x - worldPos.x;
+				int xDiff = pPlayerShip->worldPos.x - worldPos.x;
 				if ((xDiff > 0 && velocity.x > 0) || (xDiff < 0 && velocity.x < 0))
 				{
 					fireAtPlayer(pPlayerShip, worldPos);
@@ -40,7 +40,7 @@ bool Baiter::render(Vector2Int screenPos)
 	return renderSpriteIfVisible(spriteData, &flags, screenPos);
 }
 
-void Baiter::onSpawn(WorldPos position, PlayerShip* pPlayerShip)
+void Baiter::onSpawn(Vector2Int position, PlayerShip* pPlayerShip)
 {
 	worldPos = position;
 
@@ -73,7 +73,7 @@ void Baiter::setVelocity(PlayerShip* pPlayerShip)
 
 	velocity.x += pPlayerShip->velocity.x;
 
-	if (pPlayerShip->worldPos.getY() > worldPos.getY())
+	if (pPlayerShip->worldPos.y > worldPos.y)
 	{
 		velocity.y = VERTICAL_VELOCITY;
 	}

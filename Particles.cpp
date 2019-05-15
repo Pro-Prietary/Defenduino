@@ -2,8 +2,9 @@
 #include "Globals.h"
 
 #define FLAG_SPAWNING 0x4
-#define FLAG_INVERTED 0x8
-#define FLAG_PLAYER 0x10
+#define FLAG_SPAWNING_BAITER 0x8
+#define FLAG_INVERTED 0x10
+#define FLAG_PLAYER 0x20
 
 #define MAX_DISTANCE_SMALL 32
 #define MAX_DISTANCE_LARGE 128
@@ -16,9 +17,15 @@ void Particles::show(uint8_t type)
 	unsetFlag(&flags, FLAG_SPAWNING);
 	distance = 0;
 
-	if (type == PARTICLES_SPAWN)
+	if (type == PARTICLES_SPAWN || type == PARTICLES_SPAWN_BAITER)
 	{
 		setFlag(&flags, FLAG_SPAWNING);
+
+		if (type == PARTICLES_SPAWN_BAITER)
+		{
+			setFlag(&flags, FLAG_SPAWNING_BAITER);
+		}
+
 		distance = MAX_DISTANCE_SMALL;
 	}
 	else if(type == PARTICLES_PLAYER)
@@ -38,7 +45,15 @@ void Particles::update()
 		if (distance <= 0)
 		{
 			unsetFlag(&flags, FLAG_ACTIVE);
-			pGameState->completeSpawningLander(worldPos.x, worldPos.getY());
+
+			if (isFlagSet(flags, FLAG_SPAWNING_BAITER))
+			{
+				pGameState->completeSpawningBaiter(worldPos.x, worldPos.y);
+			}
+			else
+			{
+				pGameState->completeSpawningLander(worldPos.x, worldPos.y);
+			}
 		}
 	}
 	else

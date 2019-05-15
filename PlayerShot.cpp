@@ -69,11 +69,11 @@ Rect PlayerShot::getCollisionRect()
 
 	if (velocity.x < 0)
 	{
-		return Rect(worldPos.x, worldPos.getY(), iVel, 1);
+		return Rect(worldPos.getPixelX(), worldPos.getPixelY(), iVel, 1);
 	}
 	else
 	{
-		return Rect(worldPos.x - iVel, worldPos.getY(), iVel, 1);
+		return Rect(worldPos.getPixelX() - iVel, worldPos.getPixelY(), iVel, 1);
 	}
 }
 

@@ -53,8 +53,7 @@ void Lander::update(Landscape* pLandscape, PlayerShip* pPlayerShip)
 
 void Lander::seekingUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 {
-
-	uint8_t landscapeHeight = pLandscape->getHeight(worldPos.x);
+	uint8_t landscapeHeight = pLandscape->getHeight(worldPos.getPixelX());
 	int preferredHeight;
 	// Convert to camera space and sub 11  so we keep above it
 	int convertedLandscapeHeight = landscapeHeight - 43;
@@ -68,19 +67,20 @@ void Lander::seekingUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 		preferredHeight = CRUISING_ALTITUDE;
 	}
 
-	if (worldPos.getY() < preferredHeight)
+	int pixelY = worldPos.getPixelY();
+	if (pixelY < preferredHeight)
 	{
-		worldPos.setY(worldPos.getY()+0.5f);
+		worldPos.y += 5;
 	}
-	else if(worldPos.getY() > preferredHeight)
+	else if(pixelY > preferredHeight)
 	{
-		worldPos.setY(worldPos.getY()-1);
+		worldPos.y -= 10;
 	}
 
 	// 1/20 chance we'll check for humanoids below
 	if (arduboy.frameCount % 20 == 0)
 	{
-		humanoid = pGameState->getCapturableHumanoidAtPosition(worldPos.x+3);
+		humanoid = pGameState->getCapturableHumanoidAtPosition(worldPos.getPixelX()+3);
 
 		if (humanoid != NO_HUMANOID_FOUND)
 		{
@@ -103,8 +103,8 @@ void Lander::landingUpdate(PlayerShip* pPlayerShip)
 	}
 	else
 	{
-		worldPos.x = pHumanoid->worldPos.x - 3;
-		if (worldPos.getY() >= pHumanoid->worldPos.getY() - 6)
+		worldPos.x = pHumanoid->worldPos.x - 30;
+		if (worldPos.y >= pHumanoid->worldPos.y - 60)
 		{
 			pHumanoid->setCaptured(true);
 			unsetFlag(&flags, FLAG_LANDING);
@@ -118,15 +118,15 @@ void Lander::landingUpdate(PlayerShip* pPlayerShip)
 void Lander::escapingUpdate(PlayerShip* pPlayerShip)
 {
 	Humanoid* pHumanoid = pGameState->getHumanoid(humanoid);
-	pHumanoid->worldPos.setY(worldPos.getY() + 6);
+	pHumanoid->worldPos.y = worldPos.y + 60;
 	
-	if (worldPos.getY() <= -38)
+	if (worldPos.getPixelY() <= -38)
 	{
 		// Escaped off the top of the screen with no humanoid
 		setActive(false);
 		pGameState->onCountedEnemyDeath();
 	} 
-	else if (worldPos.getY() <= -32 && pHumanoid->isActive())
+	else if (worldPos.getPixelY() <= -32 && pHumanoid->isActive())
 	{
 		// Mutant time!
 		pHumanoid->destroy();
@@ -146,7 +146,7 @@ void Lander::mutantUpdate(PlayerShip* pPlayerShip)
 		velocity.x = LANDER_HORIZ_SPEED;
 	}
 
-	if (pPlayerShip->worldPos.getY() < worldPos.getY())
+	if (pPlayerShip->worldPos.y < worldPos.y)
 	{
 		velocity.y = -100;
 	}

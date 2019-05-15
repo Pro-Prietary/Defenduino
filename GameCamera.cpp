@@ -1,7 +1,7 @@
 #include "GameCamera.h"
 #include "Globals.h"
 
-#define MAX_CAMERA_SPEED 300
+#define MAX_CAMERA_SPEED 30
 
 GameCamera::GameCamera() : MovingGameObject()
 {
@@ -12,26 +12,24 @@ void GameCamera::update(PlayerShip* pPlayerShip)
 {
 	MovingGameObject::update();
 
-	float targetXPos = pPlayerShip->getCameraTarget();
+	int targetXPos = pPlayerShip->getCameraTarget();
 
 	if (worldPos.x != targetXPos)
 	{
-		int distance =  targetXPos - worldPos.x;
+		int pixelDistance =  (targetXPos - worldPos.x)/10;
 		// TODO: Handle if target is wrapped around but less than camera speed, to avoid "jump" when crossing the border
-		float fMaxCameraSpeed = MAX_CAMERA_SPEED / 100.0; 
-
-		if (distance < 0)
+		if (pixelDistance < 0)
 		{
-			if (distance < -fMaxCameraSpeed)
+			if (pixelDistance < -MAX_CAMERA_SPEED)
 			{
-				if (distance < -HALF_WORLD_WIDTH)
+				if (pixelDistance < -HALF_WORLD_WIDTH_PIXELS)
 				{
 					// Go the other way if it's quicker to just wrap around
-					worldPos.x += fMaxCameraSpeed;
+					worldPos.x += MAX_CAMERA_SPEED;
 				}
 				else
 				{
-					worldPos.x -= fMaxCameraSpeed;
+					worldPos.x -= MAX_CAMERA_SPEED;
 				}
 			}
 			else
@@ -41,16 +39,16 @@ void GameCamera::update(PlayerShip* pPlayerShip)
 		}
 		else
 		{
-			if (distance > fMaxCameraSpeed)
+			if (pixelDistance > MAX_CAMERA_SPEED)
 			{
-				if (distance > HALF_WORLD_WIDTH)
+				if (pixelDistance > HALF_WORLD_WIDTH_PIXELS)
 				{
 					// Go the other way if it's quicker to just wrap around
-					worldPos.x -= fMaxCameraSpeed;
+					worldPos.x -= MAX_CAMERA_SPEED;
 				}
 				else
 				{
-					worldPos.x += fMaxCameraSpeed;
+					worldPos.x += MAX_CAMERA_SPEED;
 
 				}
 			}
@@ -60,31 +58,31 @@ void GameCamera::update(PlayerShip* pPlayerShip)
 			}
 		}
 
-		if (worldPos.x >= WORLD_WIDTH)
+		if (worldPos.x >= WORLD_WIDTH_UNITS)
 		{
-			worldPos.x -= WORLD_WIDTH;
+			worldPos.x -= WORLD_WIDTH_UNITS;
 		}
 		else if (worldPos.x < 0)
 		{
-			worldPos.x += WORLD_WIDTH;
+			worldPos.x += WORLD_WIDTH_UNITS;
 		}
 	}
 }
 
-Vector2Int GameCamera::worldToScreenPos(WorldPos objPos)
+Vector2Int GameCamera::worldToScreenPos(Vector2Int objPos)
 {
 	Vector2Int screenPos;
-	screenPos.x = (int)objPos.x - (worldPos.x - HALF_SCREEN_WIDTH);
-	screenPos.y = (int)objPos.getY() + HALF_SCREEN_HEIGHT;
+	screenPos.x = objPos.getPixelX() - (worldPos.getPixelX() - HALF_SCREEN_WIDTH);
+	screenPos.y = objPos.getPixelY() + HALF_SCREEN_HEIGHT;
 
 	// If far from the camera, flip to the other side for wrapping
-	if (screenPos.x < -HALF_WORLD_WIDTH)
+	if (screenPos.x < -HALF_WORLD_WIDTH_UNITS)
 	{
-		screenPos.x += WORLD_WIDTH;
+		screenPos.x += WORLD_WIDTH_UNITS;
 	}
-	else if (screenPos.x > HALF_WORLD_WIDTH)
+	else if (screenPos.x > HALF_WORLD_WIDTH_UNITS)
 	{
-		screenPos.x -= WORLD_WIDTH;
+		screenPos.x -= WORLD_WIDTH_UNITS;
 	}
 
 	return screenPos;

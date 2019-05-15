@@ -93,7 +93,10 @@
     <ClInclude Include="Baiter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WorldPos.h">
+    <ClInclude Include="ArdBitmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2Int.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -114,12 +117,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PlayerShip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector2Int.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector2Int.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Vector2Byte.cpp">
@@ -170,7 +167,7 @@
     <ClCompile Include="Baiter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WorldPos.cpp">
+    <ClCompile Include="Vector2Int.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

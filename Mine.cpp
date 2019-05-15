@@ -28,5 +28,5 @@ void Mine::collisionCheck(PlayerShip* pPlayerShip)
 
 Rect Mine::getCollisionRect()
 {
-	return Rect(worldPos.x, worldPos.getY(), 3, 3);
+	return Rect(worldPos.getPixelX(), worldPos.getPixelY(), 3, 3);
 }

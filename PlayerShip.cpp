@@ -14,8 +14,7 @@ const unsigned char spriteRight[] PROGMEM = { 0x8, 0x8, 0x2, 0x7, 0x7, 0x6, 0x6,
 
 PlayerShip::PlayerShip() : MovingGameObject()
 {
-	worldPos.x = 0;
-	worldPos.setY(0);
+	worldPos.x = worldPos.y = 0;
 	setFlag(&flags, FLAG_FACING_RIGHT);
 }
 
@@ -36,13 +35,14 @@ void PlayerShip::activeUpdate()
 {
 	MovingGameObject::update();
 
-	if (arduboy.pressed(UP_BUTTON) && worldPos.getY() > -HALF_SCREEN_HEIGHT)
+	int pixelY = worldPos.getPixelY();
+	if (arduboy.pressed(UP_BUTTON) && pixelY > -HALF_SCREEN_HEIGHT)
 	{
-		worldPos.setY(worldPos.getY()-1);
+		worldPos.y -= 10;
 	}
-	else if (arduboy.pressed(DOWN_BUTTON) && worldPos.getY() < HALF_SCREEN_HEIGHT - 3)
+	else if (arduboy.pressed(DOWN_BUTTON) && pixelY < HALF_SCREEN_HEIGHT - 3)
 	{
-		worldPos.setY(worldPos.getY() + 1);
+		worldPos.y += 10;
 	}
 
 	if (arduboy.pressed(RIGHT_BUTTON))
@@ -113,27 +113,32 @@ void PlayerShip::explodingUpdate()
 	}
 }
 
-float PlayerShip::getCameraTarget()
+int PlayerShip::getCameraTarget()
 {
-	float cameraTarget;
+	Serial.print(F("Player x: "));
+	Serial.println(worldPos.x);
+
+	int cameraTarget;
 	if (isFlagSet(flags, FLAG_FACING_RIGHT))
 	{
-		cameraTarget = (worldPos.x + 32) - (5 * (velocity.x/100.0));
-		if (cameraTarget >= WORLD_WIDTH)
+		cameraTarget = (worldPos.x + 320) - (5 * (velocity.x/10.0));
+		if (cameraTarget >= WORLD_WIDTH_UNITS)
 		{
-			cameraTarget -= WORLD_WIDTH;
+			cameraTarget -= WORLD_WIDTH_UNITS;
 		}
 	}
 	else
 	{
-		cameraTarget = (worldPos.x - 32) - (5 * (velocity.x/100.0));
+		cameraTarget = (worldPos.x - 320) - (5 * (velocity.x/10.0));
 
 		if (cameraTarget < 0)
 		{
-			cameraTarget += WORLD_WIDTH;
+			cameraTarget += WORLD_WIDTH_UNITS;
 		}
 	}
 
+	Serial.print(F("Camera target: "));
+	Serial.println(cameraTarget);
 	return cameraTarget;
 }
 
@@ -142,17 +147,17 @@ void PlayerShip::fire()
 	PlayerShot* shot = pGameState->getPlayerShot();
 	if (shot != NULL)
 	{
-		shot->worldPos.setY(worldPos.getY()+1);
+		shot->worldPos.y = worldPos.y + 10;
 
 		float shotVelocity;
 		if (isFlagSet(flags, FLAG_FACING_RIGHT))
 		{
-			shot->worldPos.x = worldPos.x + 8;
+			shot->worldPos.x = worldPos.x + 80;
 			shotVelocity = velocity.x + 300;
 		}
 		else
 		{
-			shot->worldPos.x = worldPos.x - 1;
+			shot->worldPos.x = worldPos.x - 10;
 			shotVelocity = velocity.x - 300;
 
 		}
@@ -182,7 +187,7 @@ void PlayerShip::destroy()
 
 Rect PlayerShip::getCollisionRect()
 {
-	return Rect(worldPos.x, worldPos.getY(), 8, 3);
+	return Rect(worldPos.getPixelX(), worldPos.getPixelY(), 8, 3);
 }
 
 

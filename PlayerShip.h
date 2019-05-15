@@ -7,7 +7,7 @@ public:
 	PlayerShip();
 	void update();
 	void render(Vector2Int cameraPos);
-	float getCameraTarget();
+	int getCameraTarget();
 	void destroy();
 	Rect getCollisionRect();
 	byte explosionTimer = 0;
