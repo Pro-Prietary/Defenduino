@@ -10,7 +10,7 @@ public:
 	Vector2Int(int x, int y);
 	Vector2Int operator-(const Vector2Int& in);
 
-	int magnitude();
+	float magnitude();
 	Vector2Int normalize();
 
 	int getPixelX();

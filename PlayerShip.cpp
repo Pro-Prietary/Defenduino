@@ -115,9 +115,6 @@ void PlayerShip::explodingUpdate()
 
 int PlayerShip::getCameraTarget()
 {
-	Serial.print(F("Player x: "));
-	Serial.println(worldPos.x);
-
 	int cameraTarget;
 	if (isFlagSet(flags, FLAG_FACING_RIGHT))
 	{
@@ -137,8 +134,6 @@ int PlayerShip::getCameraTarget()
 		}
 	}
 
-	Serial.print(F("Camera target: "));
-	Serial.println(cameraTarget);
 	return cameraTarget;
 }
 

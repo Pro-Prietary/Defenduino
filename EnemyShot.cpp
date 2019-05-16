@@ -3,7 +3,7 @@
 
 const unsigned char shotSprite[] PROGMEM = { 0x3, 0x8, 0x2, 0x7, 0x2, };
 
-#define SHOT_VELOCITY 10
+#define SHOT_VELOCITY 0.1
 
 #define FLAG_CHASER 0x4
 

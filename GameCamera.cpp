@@ -2,6 +2,7 @@
 #include "Globals.h"
 
 #define MAX_CAMERA_SPEED 30
+#define MAX_CAMERA_SPEED_PIXELS 3
 
 GameCamera::GameCamera() : MovingGameObject()
 {
@@ -20,7 +21,7 @@ void GameCamera::update(PlayerShip* pPlayerShip)
 		// TODO: Handle if target is wrapped around but less than camera speed, to avoid "jump" when crossing the border
 		if (pixelDistance < 0)
 		{
-			if (pixelDistance < -MAX_CAMERA_SPEED)
+			if (pixelDistance < -MAX_CAMERA_SPEED_PIXELS)
 			{
 				if (pixelDistance < -HALF_WORLD_WIDTH_PIXELS)
 				{
@@ -39,7 +40,7 @@ void GameCamera::update(PlayerShip* pPlayerShip)
 		}
 		else
 		{
-			if (pixelDistance > MAX_CAMERA_SPEED)
+			if (pixelDistance > MAX_CAMERA_SPEED_PIXELS)
 			{
 				if (pixelDistance > HALF_WORLD_WIDTH_PIXELS)
 				{
@@ -76,13 +77,13 @@ Vector2Int GameCamera::worldToScreenPos(Vector2Int objPos)
 	screenPos.y = objPos.getPixelY() + HALF_SCREEN_HEIGHT;
 
 	// If far from the camera, flip to the other side for wrapping
-	if (screenPos.x < -HALF_WORLD_WIDTH_UNITS)
+	if (screenPos.x < -HALF_WORLD_WIDTH_PIXELS)
 	{
-		screenPos.x += WORLD_WIDTH_UNITS;
+		screenPos.x += WORLD_WIDTH_PIXELS;
 	}
-	else if (screenPos.x > HALF_WORLD_WIDTH_UNITS)
+	else if (screenPos.x > HALF_WORLD_WIDTH_PIXELS)
 	{
-		screenPos.x -= WORLD_WIDTH_UNITS;
+		screenPos.x -= WORLD_WIDTH_PIXELS;
 	}
 
 	return screenPos;
