@@ -3,7 +3,7 @@
 
 const unsigned char shotSprite[] PROGMEM = { 0x3, 0x8, 0x2, 0x7, 0x2, };
 
-#define SHOT_VELOCITY 0.1
+#define SHOT_VELOCITY 10
 
 #define FLAG_CHASER 0x4
 
@@ -43,8 +43,10 @@ void EnemyShot::fire(PlayerShip* pPlayerShip, Vector2Int startPos)
 	Vector2Int dir = pPlayerShip->worldPos - startPos;
 	Vector2Int normalized = dir.normalize();
 
-	velocity = Vector2Int(SHOT_VELOCITY * normalized.x, SHOT_VELOCITY * normalized.y);
-
+	velocity = Vector2Int(SHOT_VELOCITY * (normalized.x), SHOT_VELOCITY * (normalized.y));
+	Serial.print(normalized.x);
+	Serial.print(" ");
+	Serial.println(normalized.y);
 	// Now add some randomness
 	int8_t miss = (rand() % 20) - 10;
 

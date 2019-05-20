@@ -15,18 +15,24 @@ Vector2Int Vector2Int::operator-(const Vector2Int& in)
 	return Vector2Int(x - in.x, y - in.y);
 }
 
-float Vector2Int::magnitude()
-{
-	return sqrt((x*x) + (y*y));
-}
-
 Vector2Int Vector2Int::normalize()
 {
-	int m = magnitude();
-
-	if (m != 0) 
+	float scale;
+	int absX = abs(x);
+	int absY = abs(y);
+	if (absX > absY)
 	{
-		return Vector2Int(x / m, y / m);
+		scale = absX / 10;
+	}
+	else
+	{
+		scale = absY / 10;
+	}
+
+
+	if (scale != 0)
+	{
+		return Vector2Int(x / scale, y / scale);
 	}
 	else
 	{
