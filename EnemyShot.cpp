@@ -44,9 +44,7 @@ void EnemyShot::fire(PlayerShip* pPlayerShip, Vector2Int startPos)
 	Vector2Int normalized = dir.normalize();
 
 	velocity = Vector2Int(SHOT_VELOCITY * (normalized.x), SHOT_VELOCITY * (normalized.y));
-	Serial.print(normalized.x);
-	Serial.print(" ");
-	Serial.println(normalized.y);
+
 	// Now add some randomness
 	int8_t miss = (rand() % 20) - 10;
 
