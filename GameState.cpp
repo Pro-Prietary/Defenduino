@@ -710,7 +710,7 @@ void GameState::onNewLevel()
 		spawnCountdown = SPAWN_INTERVAL;
 		liveEnemies = 0;
 
-		playerShip.setActive(true);
+		playerShip.setActive(true, true);
 		playerShip.worldPos.x = 0;
 		playerShip.worldPos.y = 0;
 		camera.worldPos.x = 320;
@@ -828,7 +828,7 @@ void GameState::onNewLife()
 {
 	playerShip.worldPos.x = 0;
 	playerShip.worldPos.y = 0;
-	playerShip.setActive(true);
+	playerShip.setActive(true, true);
 	camera.worldPos.x = 320;
 
 	// All remaining enemies should be moved

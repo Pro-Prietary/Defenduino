@@ -51,10 +51,10 @@ public:
 	void onCountedEnemyDeath(uint8_t total = 1);
 	void addToScore(uint16_t toAdd);
 	void onSmartBomb();
+	PlayerShip playerShip;
 
 private:
 	GameCamera camera;
-	PlayerShip playerShip;
 	PlayerShot playerShots[TOTAL_PLAYER_SHOTS];
 	Lander landers[TOTAL_LANDERS];
 	Landscape landscape;

@@ -11,7 +11,7 @@ public:
 	void destroy();
 	Rect getCollisionRect();
 	byte explosionTimer = 0;
-	void setActive(bool active);
+	void setActive(bool active, bool forceFaceRight);
 	bool isExploding();
 	bool facingRight();
 	void cancelExplosion();
@@ -21,5 +21,5 @@ private:
 	void activeUpdate();
 	void explodingUpdate();
 	void explode();
-
+	void hyperspace();
 };

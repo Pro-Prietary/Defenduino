@@ -94,9 +94,16 @@ void PlayerShip::activeUpdate()
 		fire();
 	}
 
-	if (arduboy.justPressed(A_BUTTON) && !arduboy.pressed(B_BUTTON))
+	if (arduboy.justPressed(A_BUTTON))
 	{
-		pGameState->onSmartBomb();
+		if (!arduboy.pressed(B_BUTTON))
+		{
+			pGameState->onSmartBomb();
+		}
+		else
+		{
+			hyperspace();
+		}
 	}
 }
 
@@ -186,7 +193,7 @@ Rect PlayerShip::getCollisionRect()
 }
 
 
-void PlayerShip::setActive(bool active)
+void PlayerShip::setActive(bool active, bool forceFaceRight)
 {
 	GameObject::setActive(active);
 
@@ -194,7 +201,11 @@ void PlayerShip::setActive(bool active)
 	{
 		unsetFlag(&flags, FLAG_EXPLODING);
 		unsetFlag(&flags, FLAG_HIDDEN);
-		setFlag(&flags, FLAG_FACING_RIGHT);
+
+		if (forceFaceRight)
+		{
+			setFlag(&flags, FLAG_FACING_RIGHT);
+		}
 		velocity.x = velocity.y = 0;
 	}
 }
@@ -228,4 +239,23 @@ bool PlayerShip::facingRight()
 void PlayerShip::cancelExplosion()
 {
 	unsetFlag(&flags, FLAG_EXPLODING);
+}
+
+void PlayerShip::hyperspace()
+{
+	velocity.x = velocity.y = 0;
+	worldPos.x = rand() % WORLD_WIDTH_UNITS;
+	worldPos.y = (rand() % (SCREEN_HEIGHT_UNITS-50)) - (HALF_SCREEN_HEIGHT_UNITS-25);
+	setFlag(&flags, FLAG_FACING_RIGHT, (rand() % 2 == 0) ? true : false);
+	pGameState->getCamera()->worldPos.x = getCameraTarget();
+
+	Particles* pParticles = pGameState->getParticles();
+
+	if (pParticles != NULL)
+	{
+		setActive(false, false);
+		pParticles->worldPos.x = worldPos.x;
+		pParticles->worldPos.y = worldPos.y;
+		pParticles->show(PARTICLES_SPAWN_PLAYER);
+	}
 }
