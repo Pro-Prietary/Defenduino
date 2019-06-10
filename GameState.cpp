@@ -31,34 +31,40 @@ GameCamera* GameState::getCamera()
 // no resources are available.
 void GameState::startSpawningLander()
 {
-	int worldX = getSafeSpawn();
-
-	Particles* pParticles = getParticles();
-
-	if (pParticles != NULL)
+	if (getInactiveLander() != NULL)
 	{
-		pParticles->worldPos.x = worldX;
-		pParticles->worldPos.y = LANDER_SPAWN_ALT;
-		pParticles->show(PARTICLES_SPAWN);
+		int worldX = getSafeSpawn();
+
+		Particles* pParticles = getParticles();
+
+		if (pParticles != NULL)
+		{
+			pParticles->worldPos.x = worldX;
+			pParticles->worldPos.y = LANDER_SPAWN_ALT;
+			pParticles->show(PARTICLES_SPAWN);
+		}
 	}
 }
 
-// Tries to start spawning a lander, but no guaranteed to do so if
+// Tries to start spawning a baiter, but not guaranteed to do so if
 // no resources are available.
 void GameState::startSpawningBaiter()
 {
-	int worldX = getSafeSpawn();
-
-	Particles* pParticles = getParticles();
-
-	if (pParticles != NULL)
+	if (getInactiveBaiter() != NULL)
 	{
-		pParticles->worldPos.x = worldX;
-		pParticles->worldPos.y = LANDER_SPAWN_ALT;
-		pParticles->show(PARTICLES_SPAWN_BAITER);
-	}
+		int worldX = getSafeSpawn();
 
-	spawnCountdown = SPAWN_INTERVAL;
+		Particles* pParticles = getParticles();
+
+		if (pParticles != NULL)
+		{
+			pParticles->worldPos.x = worldX;
+			pParticles->worldPos.y = 0;
+			pParticles->show(PARTICLES_SPAWN_BAITER);
+		}
+
+		spawnCountdown = SPAWN_INTERVAL;
+	}
 }
 
 int GameState::getSafeSpawn()
@@ -230,6 +236,24 @@ void GameState::inPlayUpdate()
 			if (!freezeActors)
 			{
 				bombers[i].collisionCheck(playerShots, &playerShip);
+			}
+		}
+	}
+
+	for (uint8_t i = 0; i < TOTAL_BAITERS; i++)
+	{
+		if (baiters[i].isActive())
+		{
+			if (!freezeActors)
+			{
+				baiters[i].update(&playerShip);
+			}
+
+			baiters[i].render(camera.worldToScreenPos(baiters[i].worldPos));
+
+			if (!freezeActors)
+			{
+				baiters[i].collisionCheck(playerShots, &playerShip);
 			}
 		}
 	}
@@ -433,35 +457,57 @@ void GameState::freezeActors()
 	setFlag(&flags, FLAG_FREEZE_ACTORS);
 }
 
-void GameState::completeSpawningLander(int xPos, int yPos)
+Lander* GameState::getInactiveLander()
 {
-	// Find the first inactive lander in the list, activate and place it.
+	Lander* pLander = NULL;
 	for (uint8_t i = 0; i < TOTAL_LANDERS; i++)
 	{
 		if (!landers[i].isActive())
 		{
-			landers[i].setActive(true);
-			landers[i].worldPos.x = xPos;
-			landers[i].worldPos.y = yPos;
-			spawnedLanders++;
-			liveEnemies++;
-			return;
+			pLander = &landers[i];
+			break;
 		}
+	}
+	return pLander;
+}
+
+Baiter* GameState::getInactiveBaiter()
+{
+	Baiter* pBaiter = NULL;
+	for (uint8_t i = 0; i < TOTAL_BAITERS; i++)
+	{
+		if (!baiters[i].isActive())
+		{
+			pBaiter = &baiters[i];
+			break;
+		}
+	}
+	return pBaiter;
+}
+
+void GameState::completeSpawningLander(int xPos, int yPos)
+{
+	// Find the first inactive lander in the list, activate and place it.
+	Lander* pLander = getInactiveLander();
+	if (pLander != NULL)
+	{
+		pLander->setActive(true);
+		pLander->worldPos.x = xPos;
+		pLander->worldPos.y = yPos;
+		spawnedLanders++;
+		liveEnemies++;
 	}
 }
 
 void GameState::completeSpawningBaiter(int xPos, int yPos)
 {
 	// Find the first inactive baiter in the list, activate and place it.
-	for (uint8_t i = 0; i < TOTAL_BAITERS; i++)
+	Baiter* pBaiter = getInactiveBaiter();
+	if(pBaiter != NULL)
 	{
-		if (!baiters[i].isActive())
-		{
-			baiters[i].setActive(true);
-			baiters[i].worldPos.x = xPos;
-			baiters[i].worldPos.y = yPos;
-			return;
-		}
+		pBaiter->setActive(true);
+		pBaiter->worldPos.x = xPos;
+		pBaiter->worldPos.y = yPos;
 	}
 }
 
@@ -577,6 +623,14 @@ void GameState::drawScanner()
 		}
 	}
 
+	for (uint8_t i = 0; i < TOTAL_BAITERS; i++)
+	{
+		if (baiters[i].isActive())
+		{
+			plotOnScanner(scannerY, &baiters[i]);
+		}
+	}
+
 	// Playership
 	uint8_t yPos = scannerY + ((playerShip.worldPos.getPixelY() + 32) / 6.4);
 
@@ -588,7 +642,7 @@ void GameState::drawScanner()
 
 void GameState::plotOnScanner(uint8_t scannerY, GameObject* pGameObject)
 {
-	uint8_t xPos = ((pGameObject->worldPos.getPixelX() - camera.worldPos.getPixelY()) / 16);
+	uint8_t xPos = ((pGameObject->worldPos.getPixelX() - camera.worldPos.getPixelX()) / 16);
 	if (xPos >= 32)
 	{
 		xPos -= 64;
@@ -653,7 +707,7 @@ void GameState::onNewLevel()
 
 		flags = 0;
 		spawnedLanders = 0;
-		remainingHumanoids = TOTAL_HUMANOIDS;
+		spawnCountdown = SPAWN_INTERVAL;
 		liveEnemies = 0;
 
 		playerShip.setActive(true);
@@ -698,6 +752,11 @@ void GameState::onNewLevel()
 		for (uint8_t i = 0; i < TOTAL_PODS; i++)
 		{
 			pods[i].setActive(false);
+		}
+
+		for (uint8_t i = 0; i < TOTAL_BAITERS; i++)
+		{
+			baiters[i].setActive(false);
 		}
 
 		spawnBombers();
@@ -902,6 +961,14 @@ void GameState::onSmartBomb()
 			if (swarmers[i].isActive() && swarmers[i].isVisible())
 			{
 				swarmers[i].destroy(true);
+			}
+		}
+
+		for (int i = 0; i < TOTAL_BAITERS; i++)
+		{
+			if (baiters[i].isActive() && baiters[i].isVisible())
+			{
+				baiters[i].destroy();
 			}
 		}
 

@@ -4,9 +4,9 @@
 const unsigned char spriteRight[] PROGMEM = { 0x8, 0x8, 0x2, 0x7, 0x7, 0x6, 0x6, 0x2, 0x2, 0x2, };
 //const unsigned char spriteLeft[]  PROGMEM = { 0x8, 0x8, 0x2, 0x2, 0x2, 0x6, 0x6, 0x7, 0x7, 0x2, };
 
-#define SHIP_HORIZ_ACCELERATION 25
-#define SHIP_MAX_SPEED 200
-#define SHIP_HORIZ_DECELERATION 5
+#define SHIP_HORIZ_ACCELERATION 2
+#define SHIP_MAX_SPEED 20
+#define SHIP_HORIZ_DECELERATION 1
 
 #define FLAG_FACING_RIGHT 0x4
 #define FLAG_EXPLODING 0x8
@@ -118,7 +118,7 @@ int PlayerShip::getCameraTarget()
 	int cameraTarget;
 	if (isFlagSet(flags, FLAG_FACING_RIGHT))
 	{
-		cameraTarget = (worldPos.x + 320) - (5 * (velocity.x/10.0));
+		cameraTarget = (worldPos.x + 320) - (5 * (velocity.x));
 		if (cameraTarget >= WORLD_WIDTH_UNITS)
 		{
 			cameraTarget -= WORLD_WIDTH_UNITS;
@@ -126,7 +126,7 @@ int PlayerShip::getCameraTarget()
 	}
 	else
 	{
-		cameraTarget = (worldPos.x - 320) - (5 * (velocity.x/10.0));
+		cameraTarget = (worldPos.x - 320) - (5 * (velocity.x));
 
 		if (cameraTarget < 0)
 		{
@@ -148,12 +148,12 @@ void PlayerShip::fire()
 		if (isFlagSet(flags, FLAG_FACING_RIGHT))
 		{
 			shot->worldPos.x = worldPos.x + 80;
-			shotVelocity = velocity.x + 300;
+			shotVelocity = velocity.x + 30;
 		}
 		else
 		{
 			shot->worldPos.x = worldPos.x - 10;
-			shotVelocity = velocity.x - 300;
+			shotVelocity = velocity.x - 30;
 
 		}
 

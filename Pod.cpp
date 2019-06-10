@@ -3,8 +3,8 @@
 
 const unsigned char spriteData[] PROGMEM = { 0x07, 0x08, 0x8, 0x2a, 0x1c, 0x7f, 0x1c, 0x2a, 0x8, };
 
-#define HORIZONTAL_VELOCITY 30
-#define DEFAULT_VERTICAL_VELOCITY 10
+#define HORIZONTAL_VELOCITY 3
+#define DEFAULT_VERTICAL_VELOCITY 1
 
 #define POD_SCORE 1000
 

@@ -45,7 +45,6 @@ void Particles::update()
 		if (distance <= 0)
 		{
 			unsetFlag(&flags, FLAG_ACTIVE);
-
 			if (isFlagSet(flags, FLAG_SPAWNING_BAITER))
 			{
 				pGameState->completeSpawningBaiter(worldPos.x, worldPos.y);

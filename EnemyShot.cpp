@@ -3,7 +3,7 @@
 
 const unsigned char shotSprite[] PROGMEM = { 0x3, 0x8, 0x2, 0x7, 0x2, };
 
-#define SHOT_VELOCITY 10
+#define SHOT_VELOCITY 1
 
 #define FLAG_CHASER 0x4
 
@@ -55,8 +55,8 @@ void EnemyShot::fire(PlayerShip* pPlayerShip, Vector2Int startPos)
 
 	baseVelX = velocity.x;
 
-	// 50% chance this will be a chaser
-	setFlag(&flags, FLAG_CHASER, arduboy.frameCount % 2 == 0);
+	// 20% chance this will be a chaser
+	setFlag(&flags, FLAG_CHASER, (rand() % 5) == 0);
 	
 }
 

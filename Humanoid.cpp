@@ -1,7 +1,7 @@
 #include "Humanoid.h"
 #include "Globals.h"
 
-#define FLOOR 29
+#define FLOOR 290
 
 #define CAUGHT_SCORE 500
 #define DROPPED_SCORE 500
@@ -32,13 +32,17 @@ void Humanoid::update(Landscape* pLandscape, PlayerShip* pPlayerShip)
 	{
 		byte landscapeHeight = pLandscape->getHeight(worldPos.getPixelX()) - 29;
 
-		if (isFlagSet(flags, FLAG_CLIMBER) && landscapeHeight < worldPos.getPixelY())
+		if (isFlagSet(flags, FLAG_CLIMBER))
 		{
-			worldPos.y -= 10;
+			worldPos.y = landscapeHeight * 10;
+			if (worldPos.y > FLOOR)
+			{
+				worldPos.y = FLOOR;
+			}
 		}
-		else if (landscapeHeight > worldPos.getPixelY() && worldPos.getPixelY() < FLOOR)
+		else
 		{
-			worldPos.y += 100;
+			worldPos.y = FLOOR;
 		}
 	}
 }
@@ -46,12 +50,15 @@ void Humanoid::update(Landscape* pLandscape, PlayerShip* pPlayerShip)
 
 void Humanoid::fallingUpdate(Landscape* pLandscape)
 {
-	velocity.y++;
+	if (arduboy.frameCount % 4 == 0)
+	{
+		velocity.y++;
+	}
 	byte landscapeHeight = pLandscape->getHeight(worldPos.getPixelX()) - 29;
 	if (worldPos.getPixelY() >= landscapeHeight)
 	{
 		// Hit the ground
-		if (velocity.y >= 100)
+		if (velocity.y >= 10)
 		{
 			destroy();
 		}
@@ -133,11 +140,11 @@ void Humanoid::startWalking()
 {
 	if (rand() % 2 == 0)
 	{
-		velocity.x = 5;
+		velocity.x = 1;
 	}
 	else
 	{
-		velocity.x = -5;
+		velocity.x = -1;
 	}
 	velocity.y = 0;
 
@@ -196,6 +203,7 @@ void Humanoid::setCaptured(bool captured)
 
 void Humanoid::startFalling()
 {
+	velocity.y = 1;
 	unsetFlag(&flags, FLAG_CAPTURED);
 	setFlag(&flags, FLAG_FALLING);
 }

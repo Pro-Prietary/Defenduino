@@ -5,12 +5,12 @@ void MovingGameObject::update()
 {
 	if (velocity.x != 0)
 	{
-		worldPos.x += velocity.x / 10.0;
+		worldPos.x += velocity.x;
 	}
 
 	if (velocity.y != 0)
 	{
-		worldPos.y += velocity.y / 10.0;
+		worldPos.y += velocity.y;
 	}
 
 	if (worldPos.x >= WORLD_WIDTH_UNITS)

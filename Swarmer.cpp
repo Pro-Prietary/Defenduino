@@ -3,8 +3,8 @@
 
 const unsigned char spriteData[] PROGMEM = { 0x05, 0x08,0xc, 0xa, 0xf, 0xa, 0xc, };
 
-#define HORIZONTAL_VELOCITY 50
-#define VERTICAL_VELOCITY 25
+#define HORIZONTAL_VELOCITY 5
+#define VERTICAL_VELOCITY 2
 
 #define SWARMER_SCORE 150
 

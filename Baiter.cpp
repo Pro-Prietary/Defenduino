@@ -3,10 +3,12 @@
 
 const unsigned char spriteData[] PROGMEM = { 0x08, 0x08, 0x2, 0x5, 0x7, 0x5, 0x5, 0x7, 0x5, 0x2, };
 
-#define HORIZONTAL_VELOCITY 50
-#define VERTICAL_VELOCITY 15
+#define HORIZONTAL_VELOCITY 6
+#define VERTICAL_VELOCITY 2
 
 #define BAITER_SCORE 200
+
+#define PAUSE_DISTANCE 300
 
 void Baiter::update(PlayerShip* pPlayerShip)
 {
@@ -16,14 +18,14 @@ void Baiter::update(PlayerShip* pPlayerShip)
 
 	if (arduboy.frameCount % 10 == 0)
 	{
-		if (arduboy.frameCount % 20 == 0)
+		if (arduboy.frameCount % 30 == 0 && abs(pPlayerShip->worldPos.x - worldPos.x) > PAUSE_DISTANCE && rand() % 4 != 0)
 		{
 			setVelocity(pPlayerShip);
 		}
 		else
 		{
-			// 1/100 chance we'll fire
-			if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 100 == 0)
+			// 1/4 chance we'll fire
+			if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 4 == 0)
 			{
 				int xDiff = pPlayerShip->worldPos.x - worldPos.x;
 				if ((xDiff > 0 && velocity.x > 0) || (xDiff < 0 && velocity.x < 0))
@@ -33,6 +35,9 @@ void Baiter::update(PlayerShip* pPlayerShip)
 			}
 		}
 	}
+
+	velocity = baseVelocity;
+	velocity.x += pPlayerShip->velocity.x;
 }
 
 bool Baiter::render(Vector2Int screenPos)
@@ -64,21 +69,21 @@ void Baiter::setVelocity(PlayerShip* pPlayerShip)
 {
 	if (pPlayerShip->worldPos.x > worldPos.x)
 	{
-		velocity.x = HORIZONTAL_VELOCITY;
+		baseVelocity.x = HORIZONTAL_VELOCITY;
 	}
 	else
 	{
-		velocity.x = -HORIZONTAL_VELOCITY;
+		baseVelocity.x = -HORIZONTAL_VELOCITY;
 	}
+	
 
-	velocity.x += pPlayerShip->velocity.x;
 
 	if (pPlayerShip->worldPos.y > worldPos.y)
 	{
-		velocity.y = VERTICAL_VELOCITY;
+		baseVelocity.y = VERTICAL_VELOCITY;
 	}
 	else
 	{
-		velocity.y = -VERTICAL_VELOCITY;
+		baseVelocity.y = -VERTICAL_VELOCITY;
 	}
 }

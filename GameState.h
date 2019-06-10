@@ -67,10 +67,12 @@ private:
 	Swarmer swarmers[TOTAL_SWARMERS];
 	Baiter baiters[TOTAL_BAITERS];
 
+
 	unsigned long score = 0;
 	unsigned long nextBonus = 10000;
 
-
+	Lander* getInactiveLander();
+	Baiter* getInactiveBaiter();
 	void startSpawningLander();
 	void startSpawningBaiter();
 	bool spawnPosTooCloseToPlayer(int xPos);

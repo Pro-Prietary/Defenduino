@@ -14,4 +14,5 @@ public:
 
 private:
 	void setVelocity(PlayerShip* pPlayerShip);
+	Vector2Int baseVelocity;
 };

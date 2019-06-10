@@ -61,7 +61,7 @@ void PlayerShot::update()
 
 Rect PlayerShot::getCollisionRect()
 {
-	uint8_t iVel = abs(velocity.x) / 100.0;
+	uint8_t iVel = abs(velocity.x) / 10.0;
 	if (iVel < 1)
 	{
 		iVel = 1;
