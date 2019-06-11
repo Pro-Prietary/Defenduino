@@ -22,4 +22,5 @@ private:
 	void explodingUpdate();
 	void explode();
 	void hyperspace();
+	void renderThruster(Vector2Int shipScreenPos);
 };

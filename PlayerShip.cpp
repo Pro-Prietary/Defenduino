@@ -2,7 +2,8 @@
 #include "Globals.h"
 
 const unsigned char spriteRight[] PROGMEM = { 0x8, 0x8, 0x2, 0x7, 0x7, 0x6, 0x6, 0x2, 0x2, 0x2, };
-//const unsigned char spriteLeft[]  PROGMEM = { 0x8, 0x8, 0x2, 0x2, 0x2, 0x6, 0x6, 0x7, 0x7, 0x2, };
+const unsigned char thrusterSprite[] PROGMEM = { 0x2, 0x8, 0x2, 0x7, };
+
 
 #define SHIP_HORIZ_ACCELERATION 2
 #define SHIP_MAX_SPEED 20
@@ -174,7 +175,22 @@ void PlayerShip::render(Vector2Int screenPos)
 	if (!isFlagSet(flags, FLAG_HIDDEN))
 	{
 		renderSprite(spriteRight, screenPos, isFlagSet(flags, FLAG_FACING_RIGHT) ? MIRROR_NONE : MIRROR_HORIZONTAL);
+
+		if ((arduboy.pressed(RIGHT_BUTTON) || arduboy.pressed(LEFT_BUTTON)) && arduboy.frameCount % 2 == 0)
+		{
+			renderThruster(screenPos);
+		}
 	}
+}
+
+void PlayerShip::renderThruster(Vector2Int shipScreenPos)
+{
+	uint8_t col1 = rand() % 256;
+	uint8_t col2 = rand() % 256;
+
+	bool right = isFlagSet(flags, FLAG_FACING_RIGHT);
+
+	renderSprite(thrusterSprite, Vector2Int(shipScreenPos.x + (right ? -3 : 9), shipScreenPos.y), right ? MIRROR_NONE : MIRROR_HORIZONTAL);
 }
 
 void PlayerShip::destroy()
