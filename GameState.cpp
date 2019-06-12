@@ -649,7 +649,7 @@ void GameState::drawScanner()
 
 void GameState::plotOnScanner(uint8_t scannerY, GameObject* pGameObject)
 {
-	uint8_t xPos = ((pGameObject->worldPos.getPixelX() - camera.worldPos.getPixelX()) / 16);
+	int8_t xPos = ((pGameObject->worldPos.getPixelX() - camera.worldPos.getPixelX()) / 16);
 	if (xPos >= 32)
 	{
 		xPos -= 64;

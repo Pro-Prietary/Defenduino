@@ -71,10 +71,18 @@ void Lander::seekingUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 	if (pixelY < preferredHeight)
 	{
 		worldPos.y += 5;
+		if (worldPos.y > preferredHeight)
+		{
+			worldPos.y = preferredHeight;
+		}
 	}
 	else if(pixelY > preferredHeight)
 	{
 		worldPos.y -= 10;
+		if (worldPos.y < preferredHeight)
+		{
+			worldPos.y = preferredHeight;
+		}
 	}
 
 	// 1/20 chance we'll check for humanoids below
@@ -194,7 +202,10 @@ void Lander::setActive(bool active)
 
 void Lander::startSeeking()
 {
-
+	unsetFlag(&flags, FLAG_LANDING);
+	unsetFlag(&flags, FLAG_MUTANT);
+	unsetFlag(&flags, FLAG_ESCAPING);
+	setFlag(&flags, FLAG_SEEKING);
 
 	velocity.y = 0;
 	if (rand() % 3 == 0)
