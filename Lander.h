@@ -16,7 +16,7 @@ public:
 	void startSeeking();
 	bool isMutant();
 	void destroy();
-
+	void becomeMutant();
 
 private:
 	void seekingUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip);

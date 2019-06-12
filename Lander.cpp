@@ -130,9 +130,16 @@ void Lander::escapingUpdate(PlayerShip* pPlayerShip)
 	{
 		// Mutant time!
 		pHumanoid->destroy();
-		unsetFlag(&flags, FLAG_ESCAPING);
-		setFlag(&flags, FLAG_MUTANT);
+		becomeMutant();
 	}
+}
+
+void Lander::becomeMutant()
+{
+	unsetFlag(&flags, FLAG_LANDING);
+	unsetFlag(&flags, FLAG_SEEKING);
+	unsetFlag(&flags, FLAG_ESCAPING);
+	setFlag(&flags, FLAG_MUTANT);
 }
 
 void Lander::mutantUpdate(PlayerShip* pPlayerShip)
@@ -173,16 +180,21 @@ void Lander::setActive(bool active)
 
 	if (active)
 	{
-		startSeeking();
+		if (pGameState->remainingHumanoids > 0)
+		{
+			startSeeking();
+		}
+		else
+		{
+			// No humans left, so start as a mutant.
+			becomeMutant();
+		}
 	}
 }
 
 void Lander::startSeeking()
 {
-	unsetFlag(&flags, FLAG_LANDING);
-	unsetFlag(&flags, FLAG_ESCAPING);
-	unsetFlag(&flags, FLAG_MUTANT);
-	setFlag(&flags, FLAG_SEEKING);
+
 
 	velocity.y = 0;
 	if (rand() % 3 == 0)

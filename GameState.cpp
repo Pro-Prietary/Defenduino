@@ -9,6 +9,7 @@
 #define FLAG_INTERSTITIAL 0x4
 
 #define SPAWN_INTERVAL 600
+#define INITIAL_SPAWN_INTERVAL 120
 #define HUMANOID_SPAWN_Y 290
 
 #define SCORE_BOTTOM_Y 57
@@ -69,10 +70,10 @@ void GameState::startSpawningBaiter()
 
 int GameState::getSafeSpawn()
 {
-	int worldX = rand() % 1024;
+	int worldX = rand() % WORLD_WIDTH_UNITS;
 	while (spawnPosTooCloseToPlayer(worldX))
 	{
-		worldX = rand() % 1024;
+		worldX = rand() % WORLD_WIDTH_UNITS;
 	}
 	return worldX;
 }
@@ -173,8 +174,6 @@ void GameState::inPlayUpdate()
 		setFlag(&flags, FLAG_UI_BOTTOM, playerShip.worldPos.y < -160);
 	}
 
-	landscape.render(camera.worldPos.getPixelX());
-
 	for (uint8_t i = 0; i < TOTAL_PLAYER_SHOTS; i++)
 	{
 		if (playerShots[i].isActive())
@@ -187,19 +186,24 @@ void GameState::inPlayUpdate()
 		}
 	}
 
-	for (uint8_t i = 0; i < TOTAL_HUMANOIDS; i++)
+	if (remainingHumanoids > 0)
 	{
-		if (humanoids[i].isActive())
-		{
-			if (!freezeActors)
-			{
-				humanoids[i].update(&landscape, &playerShip);
-			}
-			humanoids[i].render(camera.worldToScreenPos(humanoids[i].worldPos));
+		landscape.render(camera.worldPos.getPixelX());
 
-			if (!freezeActors)
+		for (uint8_t i = 0; i < TOTAL_HUMANOIDS; i++)
+		{
+			if (humanoids[i].isActive())
 			{
-				humanoids[i].collisionCheck(playerShots, &playerShip);
+				if (!freezeActors)
+				{
+					humanoids[i].update(&landscape, &playerShip);
+				}
+				humanoids[i].render(camera.worldToScreenPos(humanoids[i].worldPos));
+
+				if (!freezeActors)
+				{
+					humanoids[i].collisionCheck(playerShots, &playerShip);
+				}
 			}
 		}
 	}
@@ -334,10 +338,10 @@ void GameState::inPlayUpdate()
 		}
 	}
 
-	if (smartbombCountdown > 0)
+	if (invertCountdown > 0)
 	{
-		smartbombCountdown--;
-		arduboy.invert(smartbombCountdown % 2 != 0);
+		invertCountdown--;
+		arduboy.invert(invertCountdown % 2 != 0);
 	}
 }
 
@@ -560,25 +564,36 @@ void GameState::drawScanner()
 	arduboy.fillRect(32, scannerY, 64, 10, BLACK);
 
 	// Draw landscape on scanner
-	int landscapeIdx = camera.worldPos.getPixelX() - 512;
-	if (landscapeIdx < 0)
+	if (remainingHumanoids > 0)
 	{
-		landscapeIdx += 1024;
-	}
-
-	// Make sure we're on a four-position boundary which is quicker to uncompress
-	landscapeIdx -= landscapeIdx % 4;
-
-	for (uint8_t i = 0; i < 64; i++)
-	{
-		byte height = landscape.getHeight(landscapeIdx);
-
-		arduboy.drawPixel(32 + i, scannerY + (height / 6.4));
-
-		landscapeIdx += 16;
-		if (landscapeIdx >= 1024)
+		int landscapeIdx = camera.worldPos.getPixelX() - 512;
+		if (landscapeIdx < 0)
 		{
-			landscapeIdx = 0;
+			landscapeIdx += 1024;
+		}
+
+		// Make sure we're on a four-position boundary which is quicker to uncompress
+		landscapeIdx -= landscapeIdx % 4;
+
+		for (uint8_t i = 0; i < 64; i++)
+		{
+			byte height = landscape.getHeight(landscapeIdx);
+
+			arduboy.drawPixel(32 + i, scannerY + (height / 6.4));
+
+			landscapeIdx += 16;
+			if (landscapeIdx >= 1024)
+			{
+				landscapeIdx = 0;
+			}
+		}
+
+		for (uint8_t i = 0; i < TOTAL_HUMANOIDS; i++)
+		{
+			if (humanoids[i].isActive())
+			{
+				plotOnScanner(scannerY, &humanoids[i]);
+			}
 		}
 	}
 
@@ -587,14 +602,6 @@ void GameState::drawScanner()
 		if (landers[i].isActive())
 		{
 			plotOnScanner(scannerY, &landers[i]);
-		}
-	}
-
-	for (uint8_t i = 0; i < TOTAL_HUMANOIDS; i++)
-	{
-		if (humanoids[i].isActive())
-		{
-			plotOnScanner(scannerY, &humanoids[i]);
 		}
 	}
 
@@ -665,7 +672,7 @@ void GameState::onCountedEnemyDeath(uint8_t total = 1)
 		unsetFlag(&flags, FLAG_UI_BOTTOM);
 		unsetFlag(&flags, FLAG_FREEZE_ACTORS);
 		spawnCountdown = remainingHumanoids * 10;
-		smartbombCountdown = 0;
+		invertCountdown = 0;
 		arduboy.invert(false);
 
 		// If the last enemy was killed by the player crashing into it, cancel the explosion but still take away a life.
@@ -707,7 +714,7 @@ void GameState::onNewLevel()
 
 		flags = 0;
 		spawnedLanders = 0;
-		spawnCountdown = SPAWN_INTERVAL;
+		spawnCountdown = INITIAL_SPAWN_INTERVAL;
 		liveEnemies = 0;
 
 		playerShip.setActive(true, true);
@@ -926,9 +933,9 @@ void GameState::distributeActivePods()
 
 void GameState::onSmartBomb()
 {
-	if (smartBombs > 0 && smartbombCountdown == 0)
+	if (smartBombs > 0 && invertCountdown == 0)
 	{
-		smartbombCountdown = 10;
+		invertCountdown = 10;
 		smartBombs--;
 
 		for (int i = 0; i < TOTAL_LANDERS; i++)
@@ -980,6 +987,24 @@ void GameState::onSmartBomb()
 		for (int i = 0; i < TOTAL_MINES; i++)
 		{
 			mines[i].setActive(false);
+		}
+	}
+}
+
+void GameState::onHumanoidDestroyed()
+{
+	remainingHumanoids--;
+
+	if (remainingHumanoids == 0)
+	{
+		invertCountdown = 10;
+
+		for (int i = 0; i < TOTAL_LANDERS; i++)
+		{
+			if (landers[i].isActive())
+			{
+				landers[i].becomeMutant();
+			}
 		}
 	}
 }

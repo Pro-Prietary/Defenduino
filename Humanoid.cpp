@@ -187,6 +187,7 @@ Rect Humanoid::getCollisionRect()
 void Humanoid::destroy()
 {
 	explodeObject(&flags, worldPos, PARTICLES_EXPLOSION);
+	pGameState->onHumanoidDestroyed();
 }
 
 bool Humanoid::isCapturable()

@@ -52,6 +52,9 @@ public:
 	void addToScore(uint16_t toAdd);
 	void onSmartBomb();
 	PlayerShip playerShip;
+	void onHumanoidDestroyed();
+
+	uint8_t remainingHumanoids = TOTAL_HUMANOIDS;
 
 private:
 	GameCamera camera;
@@ -96,12 +99,10 @@ private:
 	uint8_t spawnedLanders = 0;
 	uint8_t lives = 3;
 	uint8_t smartBombs = 3;
-	uint8_t remainingHumanoids = TOTAL_HUMANOIDS;
 	uint8_t level = 0;
 	uint8_t liveEnemies = 0;
-	uint8_t smartbombCountdown = 0;
-
 	uint16_t spawnCountdown = 0;
+	uint8_t invertCountdown = 0;
 
 };
 
