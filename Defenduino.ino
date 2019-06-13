@@ -6,10 +6,12 @@
 #include "Font3x5.h"
 #include "Particles.h"
 #include <EEPROM.h>
+#include <ArduboyTones.h>
 
 Arduboy2 arduboy;
 Sprites sprites;
 Font3x5 smallFont;
+ArduboyTones sound(arduboy.audio.enabled);
 
 // make an ArdBitmap instance that will use the given the screen buffer and dimensions
 ArdBitmap<WIDTH, HEIGHT> ardbitmap;
@@ -227,6 +229,7 @@ void writeEEProm(uint16_t address, byte* data, uint8_t length)
 		EEPROM.update(address + i, data[i]);
 	}
 }
+
 
 #ifdef _DEBUG
 int freeRam() {

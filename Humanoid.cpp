@@ -50,7 +50,7 @@ void Humanoid::update(Landscape* pLandscape, PlayerShip* pPlayerShip)
 
 void Humanoid::fallingUpdate(Landscape* pLandscape)
 {
-	if (arduboy.frameCount % 4 == 0)
+	if (arduboy.frameCount % 8 == 0)
 	{
 		velocity.y++;
 	}
@@ -58,7 +58,7 @@ void Humanoid::fallingUpdate(Landscape* pLandscape)
 	if (worldPos.getPixelY() >= landscapeHeight)
 	{
 		// Hit the ground
-		if (velocity.y >= 10)
+		if (velocity.y >= 8)
 		{
 			destroy();
 		}

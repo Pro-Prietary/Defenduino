@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Arduboy2.h>
+#include <ArduboyTones.h>
 #include "MenuState.h"
 #include "GameState.h"
 #include "Font3x5.h"
@@ -23,7 +24,7 @@
 
 extern Arduboy2 arduboy;
 extern GameState* pGameState;
-
+extern ArduboyTones sound;
 #define ARDBITMAP_SBUF arduboy.getBuffer()
 #include "ArdBitmap.h"
 

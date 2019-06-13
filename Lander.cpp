@@ -67,21 +67,28 @@ void Lander::seekingUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 		preferredHeight = CRUISING_ALTITUDE;
 	}
 
+	Serial.print("Lander y = ");
+	Serial.print(worldPos.getPixelY());
+	Serial.print(" Landscape = ");
+	Serial.print(convertedLandscapeHeight);
+	Serial.print(" Preferred = ");
+	Serial.println(preferredHeight);
+
 	int pixelY = worldPos.getPixelY();
 	if (pixelY < preferredHeight)
 	{
 		worldPos.y += 5;
-		if (worldPos.y > preferredHeight)
+		if (worldPos.getPixelY() > preferredHeight)
 		{
-			worldPos.y = preferredHeight;
+			worldPos.y = preferredHeight * 10;
 		}
 	}
 	else if(pixelY > preferredHeight)
 	{
 		worldPos.y -= 10;
-		if (worldPos.y < preferredHeight)
+		if (worldPos.getPixelY() < preferredHeight)
 		{
-			worldPos.y = preferredHeight;
+			worldPos.y = preferredHeight * 10;
 		}
 	}
 

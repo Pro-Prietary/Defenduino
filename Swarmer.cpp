@@ -3,7 +3,7 @@
 
 const unsigned char spriteData[] PROGMEM = { 0x05, 0x08,0xc, 0xa, 0xf, 0xa, 0xc, };
 
-#define HORIZONTAL_VELOCITY 5
+#define HORIZONTAL_VELOCITY 7
 #define VERTICAL_VELOCITY 2
 
 #define SWARMER_SCORE 150
@@ -26,8 +26,8 @@ void Swarmer::update(PlayerShip* pPlayerShip)
 		}
 		else
 		{
-			// 1/100 chance we'll fire
-			if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 100 == 0)
+			// 1/10 chance we'll fire
+			if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 10 == 0)
 			{
 				uint16_t xDiff = pPlayerShip->worldPos.x - worldPos.x;
 				if ((xDiff > 0 && velocity.x > 0) || (xDiff < 0 && velocity.x < 0))

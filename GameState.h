@@ -99,7 +99,7 @@ private:
 	uint8_t spawnedLanders = 0;
 	uint8_t lives = 3;
 	uint8_t smartBombs = 3;
-	uint8_t level = 0;
+	uint8_t level = 1;
 	uint8_t liveEnemies = 0;
 	uint16_t spawnCountdown = 0;
 	uint8_t invertCountdown = 0;
