@@ -4,7 +4,7 @@
 const unsigned char spriteData[] PROGMEM = { 0x08, 0x08, 0x2, 0x5, 0x7, 0x5, 0x5, 0x7, 0x5, 0x2, };
 
 #define HORIZONTAL_VELOCITY 6
-#define VERTICAL_VELOCITY 2
+#define VERTICAL_VELOCITY 6
 
 #define BAITER_SCORE 200
 

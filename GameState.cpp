@@ -144,7 +144,6 @@ void GameState::interstitialUpdate()
 void GameState::inPlayUpdate()
 {
 	bool freezeActors = isFlagSet(flags, FLAG_FREEZE_ACTORS);
-
 	uint8_t expectedLanders = getExpectedLandersForLevel();
 	if (!freezeActors)
 	{
@@ -796,7 +795,6 @@ void GameState::spawnBombers()
 		bombers[i].setActive(true);
 	}
 	distributeActiveBombers();
-
 
 	liveEnemies += expectedBombers;
 }

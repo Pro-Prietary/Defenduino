@@ -60,7 +60,4 @@ void Pod::destroy(bool smartBomb, PlayerShip* pPlayerShip)
 	{
 		pGameState->onCountedEnemyDeath(4);	// Account for the swarmers dying too
 	}
-
-	Enemy::destroy(POD_SCORE, true);
-
 }
