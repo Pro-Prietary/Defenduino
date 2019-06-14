@@ -10,6 +10,34 @@
 #define MAX_DISTANCE_SMALL 32
 #define MAX_DISTANCE_LARGE 128
 
+const uint16_t explosionSound[] PROGMEM = {
+	50,10, 25,10, 75,10, 22,10,200,10, 100,10, 66,10, 33,10, 175, 10, 200, 10, 72, 10,
+	50,10, 25,10, 75,10, 22,10,200,10, 100,10, 66,10, 33,10, 175, 10, 200, 10, 72, 10,
+	TONES_END };
+
+const uint16_t playerExplosionSound[] PROGMEM = {
+	150,10, 125,10, 175,10, 122,10,300,10, 200,10, 166,10, 133,10, 275, 10, 300, 10, 172, 10,
+	50,10, 25,10, 75,10, 22,10,200,10, 100,10, 66,10, 33,10, 175, 10, 200, 10, 72, 10,
+	50,10, 25,10, 75,10, 22,10,200,10, 100,10, 66,10, 33,10, 175, 10, 200, 10, 72, 10,
+	TONES_END };
+
+const uint16_t spawnSound[] PROGMEM = {
+	// 22-50
+	50,10, 25,10, 45,10, 22,10,
+	// 50-100
+	70,10, 100,10, 66,10, 50,10,
+	// 75-150
+	75, 10, 150, 10, 120, 10, 80, 10,
+	// 100-200
+	175,10, 200,10, 100,10, 122,10,
+	// 125-250
+	250,10, 125,10, 166,10, 233,10,
+	// 150-300
+	175, 10, 300, 10, 172, 10, 201, 10,
+	// 175-350
+	300, 10, 200, 10, 180, 10, 320, 10,
+	TONES_END };
+
 void Particles::show(uint8_t type)
 {
 	GameObject::setActive(true);
@@ -20,6 +48,7 @@ void Particles::show(uint8_t type)
 
 	if (type == PARTICLES_SPAWN || type == PARTICLES_SPAWN_BAITER || type == PARTICLES_SPAWN_PLAYER)
 	{
+		sound.tones(spawnSound);
 		setFlag(&flags, FLAG_SPAWNING);
 
 		if (type == PARTICLES_SPAWN_BAITER)
@@ -38,6 +67,11 @@ void Particles::show(uint8_t type)
 		setFlag(&flags, FLAG_PLAYER);
 		arduboy.invert(true);
 		setFlag(&flags, FLAG_INVERTED);
+		sound.tones(playerExplosionSound);
+	}
+	else
+	{
+		sound.tones(explosionSound);
 	}
 }
 

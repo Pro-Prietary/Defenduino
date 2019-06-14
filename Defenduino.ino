@@ -22,6 +22,10 @@ MenuState* pMenuState = NULL;
 GameState* pGameState = NULL;
 GameOverState* pGameOverState = NULL;
 
+const uint16_t enemyFireSound[] PROGMEM = {
+	75,50, 50, 50,
+	TONES_END };
+
 void setup() {
     arduboy.begin();
 
@@ -188,6 +192,8 @@ void explodeObject(uint8_t* pFlags, Vector2Int worldPos, uint8_t type)
 
 void fireAtPlayer(PlayerShip* pPlayerShip, Vector2Int startPos)
 {
+	sound.tones(enemyFireSound);
+
 	EnemyShot* pShot = pGameState->getEnemyShot();
 
 	if (pShot != NULL)

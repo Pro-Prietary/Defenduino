@@ -24,8 +24,8 @@ void Baiter::update(PlayerShip* pPlayerShip)
 		}
 		else
 		{
-			// 1/4 chance we'll fire
-			if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 4 == 0)
+			// 1/3 chance we'll fire
+			if (isFlagSet(flags, FLAG_VISIBLE) && rand() % 3 == 0)
 			{
 				int xDiff = pPlayerShip->worldPos.x - worldPos.x;
 				if ((xDiff > 0 && velocity.x > 0) || (xDiff < 0 && velocity.x < 0))
