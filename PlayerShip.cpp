@@ -3,6 +3,7 @@
 
 const unsigned char spriteRight[] PROGMEM = { 0x8, 0x8, 0x2, 0x7, 0x7, 0x6, 0x6, 0x2, 0x2, 0x2, };
 const unsigned char thrusterSprite[] PROGMEM = { 0x2, 0x8, 0x2, 0x7, };
+
 const uint16_t fireSound[] PROGMEM = {
 	500,50, 250,50, 175,50, 75,50,
 	TONES_END };

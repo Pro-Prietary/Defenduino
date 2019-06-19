@@ -15,6 +15,17 @@
 #define SCORE_BOTTOM_Y 57
 #define SCANNER_BOTTOM_Y 52
 
+const uint16_t extraLifeSound[] PROGMEM = {
+	50,100, 250,100,
+	150,100, 350,100,
+	250, 100, 450, 100,
+	350, 100, 550, 100,
+	450, 100, 650, 100,
+	550, 100, 750, 100,
+	650, 100, 850, 100,
+	750, 100, 950, 100,
+	TONES_END };
+
 GameState::GameState()
 {
 	//arduboy.initRandomSeed();
@@ -693,6 +704,7 @@ void GameState::addToScore(uint16_t toAdd)
 		nextBonus += 10000;
 		lives++;
 		smartBombs++;
+		sound.tones(extraLifeSound);
 	}
 }
 

@@ -13,7 +13,11 @@
 #define FLAG_CAUGHT 0x20
 
 const uint16_t capturedSound[] PROGMEM = {
-	1000,25, 250,25, 1000,25, 250,25,1000,25, 250,25, 1000,25, 250,25,1000,25, 250,25,1000,25, 250,25,1000,25, 250,25,1000,25, 250,25,
+	1500,25, 250,25, 1500,25, 250,25,1500,25, 250,25, 1500,25, 250,25,1500,25, 250,25,1500,25, 250,25,1500,25, 250,25,1500,25, 250,25,
+	TONES_END };
+
+const uint16_t fallingSound[] PROGMEM = {
+	1500,175, 1250,150, 1000,125, 750,100, 500, 75, 250, 50, 100, 25,
 	TONES_END };
 
 Humanoid::Humanoid() : MovingGameObject()
@@ -213,6 +217,7 @@ void Humanoid::setCaptured(bool captured)
 
 void Humanoid::startFalling()
 {
+	sound.tones(fallingSound);
 	velocity.y = 1;
 	unsetFlag(&flags, FLAG_CAPTURED);
 	setFlag(&flags, FLAG_FALLING);
