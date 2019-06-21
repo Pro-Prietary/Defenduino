@@ -1,6 +1,5 @@
 #pragma once
 
-#include "TextObject.h"
 #include "PlayerShip.h"
 #include "GameCamera.h"
 #include "Humanoid.h"
@@ -53,7 +52,7 @@ public:
 	void onSmartBomb();
 	PlayerShip playerShip;
 	void onHumanoidDestroyed();
-
+	unsigned long score = 0;
 	uint8_t remainingHumanoids = TOTAL_HUMANOIDS;
 
 private:
@@ -70,8 +69,6 @@ private:
 	Swarmer swarmers[TOTAL_SWARMERS];
 	Baiter baiters[TOTAL_BAITERS];
 
-
-	unsigned long score = 0;
 	unsigned long nextBonus = 10000;
 
 	Lander* getInactiveLander();
@@ -93,7 +90,6 @@ private:
 	void spawnPods();
 	void distributeActiveBombers();
 	void distributeActivePods();
-
 
 	uint8_t flags = 0;
 	uint8_t spawnedLanders = 0;

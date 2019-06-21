@@ -97,9 +97,10 @@ void update()
 	case STATE_GAME_OVER:
 		if (pGameOverState == NULL)
 		{
+			unsigned long score = pGameState->score;
 			delete pGameState;
 			pGameState = NULL;
-			pGameOverState = new GameOverState();
+			pGameOverState = new GameOverState(score);
 		}
 		pGameOverState->update();
 		break;
@@ -214,6 +215,18 @@ void verticalWrap(Vector2Int* pos)
 	}
 }
 
+unsigned long getHighScore()
+{
+	unsigned long highScore;
+	EEPROM.get(EEPROM_STORAGE_SPACE_START + 4, highScore);
+	return highScore;
+}
+
+void setHighScore(unsigned long score)
+{
+	EEPROM.put(EEPROM_STORAGE_SPACE_START + 4, score);
+}
+
 bool EEPROMInitialized()
 {
 	return (EEPROM.read(EEPROM_STORAGE_SPACE_START) == 'd' && EEPROM.read(EEPROM_STORAGE_SPACE_START + 1) == 'f'
@@ -225,6 +238,7 @@ void initEEPROMIfNecessary()
 	if (!EEPROMInitialized())
 	{
 		writeEEProm(EEPROM_STORAGE_SPACE_START, new char[4]{ 'd', 'f', 'n', 'd' }, 4);
+		EEPROM.put(EEPROM_STORAGE_SPACE_START + 4, (unsigned long)0);
 	}
 }
 

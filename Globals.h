@@ -40,4 +40,5 @@ bool renderSpriteIfVisible(const uint8_t* spriteData, uint8_t* pFlags, Vector2In
 extern void explodeObject(uint8_t* pFlags, Vector2Int worldPos, uint8_t type);
 extern void fireAtPlayer(PlayerShip* pPlayerShip, Vector2Int startPos);
 extern void verticalWrap(Vector2Int* pos);
-
+extern unsigned long getHighScore();
+extern void setHighScore(unsigned long score);

@@ -5,9 +5,11 @@
 class GameOverState
 {
 public:
-	GameOverState();
-	virtual void update();
+	GameOverState(unsigned long score);
+	void update();
 
 private:
+	unsigned long score;
+	unsigned long highScore;
 };
 
