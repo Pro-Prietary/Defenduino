@@ -219,27 +219,28 @@ void verticalWrap(Vector2Int* pos)
 unsigned long getHighScore()
 {
 	unsigned long highScore;
-	EEPROM.get(EEPROM_STORAGE_SPACE_START + 4, highScore);
+	EEPROM.get(EEPROM_STORAGE_SPACE_START + 5, highScore);
 	return highScore;
 }
 
 void setHighScore(unsigned long score)
 {
-	EEPROM.put(EEPROM_STORAGE_SPACE_START + 4, score);
+	EEPROM.put(EEPROM_STORAGE_SPACE_START + 5, score);
 }
 
 bool EEPROMInitialized()
 {
 	return (EEPROM.read(EEPROM_STORAGE_SPACE_START) == 'd' && EEPROM.read(EEPROM_STORAGE_SPACE_START + 1) == 'f'
-		&& EEPROM.read(EEPROM_STORAGE_SPACE_START + 2) == 'n' && EEPROM.read(EEPROM_STORAGE_SPACE_START + 3) == 'd');
+		&& EEPROM.read(EEPROM_STORAGE_SPACE_START + 2) == 'n' && EEPROM.read(EEPROM_STORAGE_SPACE_START + 3) == 'd'
+		&& EEPROM.read(EEPROM_STORAGE_SPACE_START + 4) == '1');
 }
 
 void initEEPROMIfNecessary()
 {
 	if (!EEPROMInitialized())
 	{
-		writeEEProm(EEPROM_STORAGE_SPACE_START, new char[4]{ 'd', 'f', 'n', 'd' }, 4);
-		EEPROM.put(EEPROM_STORAGE_SPACE_START + 4, (unsigned long)0);
+		writeEEProm(EEPROM_STORAGE_SPACE_START, new char[5]{ 'd', 'f', 'n', 'd', '1' }, 5);
+		EEPROM.put(EEPROM_STORAGE_SPACE_START + 5, (unsigned long)0);
 	}
 }
 

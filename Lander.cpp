@@ -42,7 +42,7 @@ void Lander::update(Landscape* pLandscape, PlayerShip* pPlayerShip)
 	else if (isFlagSet(flags, FLAG_MUTANT))
 	{
 		mutantUpdate(pPlayerShip);
-		fireChance = 64;	// 1/64
+		fireChance = 32;	// 1/32
 	}
 
 	if (isFlagSet(flags, FLAG_VISIBLE) && rand() % fireChance == 0)
@@ -85,8 +85,8 @@ void Lander::seekingUpdate(Landscape* pLandscape, PlayerShip* pPlayerShip)
 		}
 	}
 
-	// 1/20 chance we'll check for humanoids below
-	if (arduboy.frameCount % 20 == 0)
+	// 1/16 chance we'll check for humanoids below
+	if (arduboy.frameCount % 16 == 0)
 	{
 		humanoid = pGameState->getCapturableHumanoidAtPosition(worldPos.getPixelX()+3);
 
@@ -126,7 +126,7 @@ void Lander::landingUpdate(PlayerShip* pPlayerShip)
 void Lander::escapingUpdate(PlayerShip* pPlayerShip)
 {
 	Humanoid* pHumanoid = pGameState->getHumanoid(humanoid);
-	pHumanoid->worldPos.y = worldPos.y + 60;
+	pHumanoid->worldPos.y = worldPos.y + 40;
 	
 	if (worldPos.getPixelY() <= -38)
 	{

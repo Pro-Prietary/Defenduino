@@ -43,21 +43,15 @@ void Pod::collisionCheck(PlayerShot* pPlayerShots, PlayerShip* pPlayerShip)
 void Pod::destroy(bool smartBomb, PlayerShip* pPlayerShip)
 {
 	Enemy::destroy(POD_SCORE, true);
-	if (!smartBomb)
+
+	for (int i = 0; i < 4; i++)
 	{
-		for (int i = 0; i < 4; i++)
+		Swarmer* pSwarmer = pGameState->getSwarmer();
+		if (pSwarmer != NULL)
 		{
-			Swarmer* pSwarmer = pGameState->getSwarmer();
-			if (pSwarmer != NULL)
-			{
-				pSwarmer->setActive(true);
-				Vector2Int spawnPos(worldPos.x - (40 * i) + 80, worldPos.y - (40 * i) + 80);
-				pSwarmer->onSpawn(spawnPos, pPlayerShip);
-			}
+			pSwarmer->setActive(true);
+			Vector2Int spawnPos(worldPos.x - (40 * i) + 80, worldPos.y - (40 * i) + 80);
+			pSwarmer->onSpawn(spawnPos, pPlayerShip);
 		}
-	}
-	else
-	{
-		pGameState->onCountedEnemyDeath(4);	// Account for the swarmers dying too
 	}
 }
