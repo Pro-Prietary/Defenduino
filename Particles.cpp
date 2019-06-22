@@ -44,6 +44,9 @@ void Particles::show(uint8_t type)
 
 	unsetFlag(&flags, FLAG_PLAYER);
 	unsetFlag(&flags, FLAG_SPAWNING);
+	unsetFlag(&flags, FLAG_SPAWNING_BAITER);
+	unsetFlag(&flags, FLAG_SPAWNING_PLAYER);
+
 	distance = 0;
 
 	if (type == PARTICLES_SPAWN || type == PARTICLES_SPAWN_BAITER || type == PARTICLES_SPAWN_PLAYER)

@@ -47,6 +47,7 @@ void loop() {
 		return;
 #endif
 
+/*
 #ifdef _DEBUG
   if (arduboy.frameCount % 300 == 0)
   {
@@ -54,7 +55,7 @@ void loop() {
 	  Serial.println(freeRam());
   }
 #endif
-
+*/
   arduboy.pollButtons();
 
   // first we clear our screen to black
@@ -250,7 +251,7 @@ void writeEEProm(uint16_t address, byte* data, uint8_t length)
 	}
 }
 
-
+/*
 #ifdef _DEBUG
 int freeRam() {
 	extern int __heap_start, *__brkval;
@@ -258,3 +259,4 @@ int freeRam() {
 	return (int)&v - (__brkval == 0 ? (int)&__heap_start : (int)__brkval);
 }
 #endif
+*/

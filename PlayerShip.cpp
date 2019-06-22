@@ -43,10 +43,18 @@ void PlayerShip::activeUpdate()
 	if (arduboy.pressed(UP_BUTTON) && pixelY > -HALF_SCREEN_HEIGHT)
 	{
 		worldPos.y -= 10;
+		if (worldPos.y < -HALF_SCREEN_HEIGHT_UNITS)
+		{
+			worldPos.y = -HALF_SCREEN_HEIGHT_UNITS;
+		}
 	}
 	else if (arduboy.pressed(DOWN_BUTTON) && pixelY < HALF_SCREEN_HEIGHT - 3)
 	{
 		worldPos.y += 10;
+		if (worldPos.y > HALF_SCREEN_HEIGHT_UNITS - 3)
+		{
+			worldPos.y = HALF_SCREEN_HEIGHT_UNITS - 3;
+		}
 	}
 
 	if (arduboy.pressed(RIGHT_BUTTON))
@@ -265,7 +273,7 @@ void PlayerShip::cancelExplosion()
 void PlayerShip::hyperspace()
 {
 	velocity.x = velocity.y = 0;
-	worldPos.x = rand() % WORLD_WIDTH_UNITS;
+	worldPos.x = rand() % WORLD_WIDTH_UNITS-1;
 	worldPos.y = (rand() % (SCREEN_HEIGHT_UNITS-50)) - (HALF_SCREEN_HEIGHT_UNITS-25);
 	setFlag(&flags, FLAG_FACING_RIGHT, (rand() % 2 == 0) ? true : false);
 	pGameState->getCamera()->worldPos.x = getCameraTarget();

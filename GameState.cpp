@@ -160,6 +160,8 @@ void GameState::inPlayUpdate()
 	{
 		if (spawnCountdown == 0)
 		{
+			/*Serial.print("SpawnedLanders=");
+			Serial.println(spawnedLanders);*/
 			if (spawnedLanders < expectedLanders)
 			{
 				spawnWave(expectedLanders);
@@ -511,6 +513,10 @@ void GameState::completeSpawningLander(int xPos, int yPos)
 		spawnedLanders++;
 		liveEnemies++;
 	}
+	/*else
+	{
+		Serial.println("No available lander!");
+	}*/
 }
 
 void GameState::completeSpawningBaiter(int xPos, int yPos)
@@ -523,6 +529,10 @@ void GameState::completeSpawningBaiter(int xPos, int yPos)
 		pBaiter->worldPos.x = xPos;
 		pBaiter->worldPos.y = yPos;
 	}
+/*	else
+	{
+		Serial.println("No available baiter!");
+	}*/
 }
 
 // Get the index of a humanoid that can be captured, or NO_HUMANOID_FOUND if there is none.
@@ -673,7 +683,14 @@ void GameState::plotOnScanner(uint8_t scannerY, GameObject* pGameObject)
 
 void GameState::onCountedEnemyDeath(uint8_t total = 1)
 {
-	liveEnemies-=total;
+	if (liveEnemies < total)
+	{
+		liveEnemies = 0;
+	}
+	else
+	{
+		liveEnemies -= total;
+	}
 
 	if (liveEnemies == 0 && spawnedLanders == getExpectedLandersForLevel())
 	{

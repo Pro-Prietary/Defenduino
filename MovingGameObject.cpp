@@ -19,6 +19,6 @@ void MovingGameObject::update()
 	}
 	else if (worldPos.x < 0)
 	{
-		worldPos.x += WORLD_WIDTH_UNITS;
+		worldPos.x += WORLD_WIDTH_UNITS-1;
 	}
 }
