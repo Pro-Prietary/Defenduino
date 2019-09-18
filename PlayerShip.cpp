@@ -83,20 +83,20 @@ void PlayerShip::activeUpdate()
 	}
 	else
 	{
-		if (velocity.x > 0)
+		if (velocity.x > 10)
 		{
 			velocity.x -= SHIP_HORIZ_DECELERATION;
-			if (velocity.x < 0)
+			if (velocity.x < SHIP_MAX_SPEED/2)
 			{
-				velocity.x = 0;
+				velocity.x = SHIP_MAX_SPEED/2;
 			}
 		}
-		else if (velocity.x < 0)
+		else if (velocity.x < -10)
 		{
 			velocity.x += SHIP_HORIZ_DECELERATION;
-			if (velocity.x > 0)
+			if (velocity.x > -SHIP_MAX_SPEED/2)
 			{
-				velocity.x = 0;
+				velocity.x = -SHIP_MAX_SPEED/2;
 			}
 		}
 	}

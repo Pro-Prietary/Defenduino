@@ -15,7 +15,7 @@ const uint16_t beep[] PROGMEM = { 255,100,TONES_END };
 const char scrollText[] PROGMEM = "DEBUG";
 
 #else
-const char scrollText[] PROGMEM = " ... VERSION 1.2 ... BY ALEX MCCHESNEY ... WASHINGUP.ITCH.IO ... ";
+const char scrollText[] PROGMEM = " ... VERSION 1.3 ... CONTRIBUTED BY NJ PELPINOSAS ...";
 #endif
 
 MenuState::MenuState()

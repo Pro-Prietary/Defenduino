@@ -88,4 +88,3 @@ Vector2Int GameCamera::worldToScreenPos(Vector2Int objPos)
 
 	return screenPos;
 }
-

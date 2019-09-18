@@ -1,3 +1,9 @@
+/*
+ * Project name: Defenduino Version 1.3
+ * Created by Alex McChesney
+ * Contributed by NJ Pelpinosas
+ */
+
 #include <Arduboy2.h>
 #include "MenuState.h"
 #include "GameState.h"
